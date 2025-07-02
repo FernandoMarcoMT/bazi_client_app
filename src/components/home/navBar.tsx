@@ -1,0 +1,190 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import { Menu, X, ChevronDown } from "lucide-react"
+
+export function NavBar() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const navLinks = [
+    {
+      name: "Day Master Characters",
+      href: "#day-master-characters",
+      dropdown: [
+        { name: "Character A", href: "#character-a" },
+        { name: "Character B", href: "#character-b" },
+        { name: "Character C", href: "#character-c" },
+      ],
+    },
+    { name: "About Us", href: "#about-us" },
+    { name: "Product & Services", href: "#product-services" },
+  ]
+
+  return (
+    <nav
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled ? "bg-blue-950/90 backdrop-blur-sm py-5" : "bg-blue-950/50 py-5"
+      }`}
+    >
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        {/* Logo */}
+        <Link href="#" className="text-xl md:text-2xl font-bold text-amber-400">
+          <span className="flex items-center gap-2">
+            <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-amber-400 flex items-center justify-center">
+              <span className="text-blue-950 font-bold text-lg md:text-xl">K</span>
+            </div>
+            Lorem Ipsum
+          </span>
+        </Link>
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6">
+          {navLinks.map((link) =>
+            link.dropdown ? (
+              <div key={link.name} className="relative group">
+                <div className="text-white hover:text-amber-400 transition-colors flex items-center space-x-1 cursor-pointer">
+                  <span>{link.name}</span>
+                  <ChevronDown size={16} className="transition-transform group-hover:rotate-180" />
+                </div>
+                <div className="absolute top-full left-0 mt-2 w-48 bg-blue-950/95 backdrop-blur-sm rounded-md shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  {link.dropdown.map((subItem) => (
+                    <Link
+                      key={subItem.name}
+                      href={subItem.href}
+                      className="block px-4 py-2 text-white hover:text-amber-400 hover:bg-amber-400/10 transition-colors"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        document.querySelector(subItem.href)?.scrollIntoView({ behavior: "smooth" })
+                      }}
+                    >
+                      {subItem.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-white hover:text-amber-400 transition-colors"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.querySelector(link.href)?.scrollIntoView({ behavior: "smooth" })
+                }}
+              >
+                {link.name}
+              </Link>
+            )
+          )}
+          {/* Login and Calculate Birth Now Buttons */}
+          <div className="flex items-center space-x-4">
+            <Link
+              href="#login"
+              className="text-white hover:text-amber-400 transition-colors"
+              onClick={(e) => {
+                e.preventDefault()
+                document.querySelector("#login")?.scrollIntoView({ behavior: "smooth" })
+              }}
+            >
+              Login
+            </Link>
+            <Link
+              href="/calculator"
+              className="bg-transparent text-white border border-gray-400 font-semibold py-1.5 px-4 rounded-full transition-colors hover:bg-amber-400/20 hover:border-amber-400 hover:text-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-blue-950"
+            >
+              Calculate Birth Now
+            </Link>
+          </div>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-blue-950/95 backdrop-blur-sm">
+          <div className="w-full max-w-7xl mx-auto px-4 py-4 flex flex-col space-y-4">
+            {navLinks.map((link) =>
+              link.dropdown ? (
+                <div key={link.name}>
+                  <button
+                    className="text-white hover:text-amber-400 transition-colors flex items-center space-x-1 w-full text-left py-2"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                  >
+                    <span>{link.name}</span>
+                    <ChevronDown size={16} className={`transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {dropdownOpen && (
+                    <div className="pl-4 flex flex-col space-y-2">
+                      {link.dropdown.map((subItem) => (
+                        <Link
+                          key={subItem.name}
+                          href={subItem.href}
+                          className="text-white hover:text-amber-400 transition-colors py-1"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            document.querySelector(subItem.href)?.scrollIntoView({ behavior: "smooth" })
+                            setIsOpen(false)
+                            setDropdownOpen(false)
+                          }}
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="text-white hover:text-amber-400 transition-colors py-2"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document.querySelector(link.href)?.scrollIntoView({ behavior: "smooth" })
+                    setIsOpen(false)
+                  }}
+                >
+                  {link.name}
+                </Link>
+              )
+            )}
+            {/* Mobile Login and Calculate Birth Now */}
+            <Link
+              href="#login"
+              className="text-white hover:text-amber-400 transition-colors py-2"
+              onClick={(e) => {
+                e.preventDefault()
+                document.querySelector("#login")?.scrollIntoView({ behavior: "smooth" })
+                setIsOpen(false)
+              }}
+            >
+              Login
+            </Link>
+            <Link
+              href="/calculator"
+              className="bg-transparent text-white border border-gray-400 font-semibold py-2 px-4 rounded-full transition-colors hover:bg-amber-400/20 hover:border-amber-400 hover:text-amber-400 text-left"
+            >
+              Calculate Birth Now
+            </Link>
+          </div>
+        </div>
+      )}
+    </nav>
+  )
+}

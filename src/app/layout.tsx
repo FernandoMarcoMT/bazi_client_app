@@ -1,14 +1,22 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Oswald } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NavBar } from "@/components/navBar";
+import { Toaster } from "@/components/ui/sonner";
 
 const openSans = Open_Sans({
   weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
   subsets: ["latin"],
   variable: "--font-open-sans",
+});
+
+const oswald = Oswald({
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-oswald",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${openSans.variable} antialiased`}
+      className={`${openSans.variable} ${oswald.variable} font-sans antialiased`}
       suppressHydrationWarning
     >
       <head />
@@ -41,6 +49,7 @@ export default function RootLayout({
 
             <div className="flex flex-col grow">{children}</div>
           </main>
+          <Toaster duration={2000} position="bottom-right" />
         </ThemeProvider>
       </body>
     </html>

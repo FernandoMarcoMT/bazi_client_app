@@ -1,18 +1,12 @@
-import { ScrollToSection } from "@/components/home/scrollToSection";
-import { NavBar } from "@/components/home/navBar";
-import { HeroSection } from "@/components/home/heroSection";
-import { ContentSection } from "@/components/home/contentSection";
-import { MasterSection } from "@/components/home/masterSection";
-import { FaqSection } from "@/components/home/faqSection";
-import { Footer } from "@/components/home/footer";
+import ProfileDetail from "./components/profile-detail";
+import ProfileTabs from "./components/profile-tabs";
 
-export default function Home() {
+export default async function ProfilePage() {
   return (
-    <div className="relative">
-        <NavBar />
-            <main className="min-h-screen bg-gradient-to-b from-blue-950 to-black text-white overflow-y-auto snap-y snap-mandatory pt-16">
+    <div className="flex flex-col grow px-40 py-20 gap-12">
+      <ProfileDetail />
 
-            </main>
+      <ProfileTabs />
     </div>
   );
 }

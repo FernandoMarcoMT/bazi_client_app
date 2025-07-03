@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Open_Sans, Oswald } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { NavBar } from "@/components/navBar";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const openSans = Open_Sans({
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
   subsets: ["latin"],
+  variable: "--font-open-sans",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const oswald = Oswald({
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
   subsets: ["latin"],
+  variable: "--font-oswald",
 });
 
 export const metadata: Metadata = {
@@ -23,11 +30,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html
+      lang="en"
+      className={`${openSans.variable} ${oswald.variable} font-sans antialiased`}
+      suppressHydrationWarning
+    >
+      <head />
+
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="flex flex-col min-h-screen">
+            <NavBar />
+
+            <div className="flex flex-col grow">{children}</div>
+          </main>
+          <Toaster duration={2000} position="bottom-right" />
+        </ThemeProvider>
       </body>
     </html>
   );

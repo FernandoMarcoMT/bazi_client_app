@@ -3,6 +3,9 @@
 import ButtonShaped from "@/components/button-shaped";
 import { cn } from "@/lib/utils";
 import React, { useState } from "react";
+import PurchaseTab from "./tab/purchase";
+import ReportTab from "./tab/report";
+import ChartTab from "./tab/chart";
 
 const tabItems = [
   {
@@ -27,8 +30,8 @@ export default function ProfileTabs() {
   const [tab, setTab] = useState("chart");
 
   return (
-    <section className="flex flex-col gap-6">
-      <div className="flex gap-6 items-center border-b-2 border-secondary/20">
+    <section className="flex flex-col gap-5 md:gap-6">
+      <div className="flex gap-3 md:gap-6 items-center border-b-2 border-secondary/20">
         {tabItems.map((item, key) => (
           <div
             key={key}
@@ -40,9 +43,9 @@ export default function ProfileTabs() {
           >
             <p
               className={cn(
-                "text-lg font-semibold duration-200",
+                "text-[10px] md:text-lg  duration-200",
                 item.value === tab
-                  ? "opacity-100"
+                  ? "opacity-100 font-semibold"
                   : "opacity-30 hover:opacity-50"
               )}
             >
@@ -52,80 +55,9 @@ export default function ProfileTabs() {
         ))}
       </div>
 
-      {tab === "chart" && <div className="flex flex-col gap-12"></div>}
-      {tab === "purchase" && (
-        <div className="flex flex-col gap-6">
-          {[...new Array(5)].map((item, key) => (
-            <div
-              key={key}
-              className="flex flex-col p-12 gap-6 rounded-lg bg-primary border-secondary/20 border-4"
-            >
-              <p className="uppercase text-2xl font-bold font-oswald">
-                Purchase ID: #0000{key + 1}
-              </p>
-
-              <div className="flex items-center gap-28">
-                <div className="flex flex-col gap-3">
-                  <p className="text-base font-semibold">Detail</p>
-                  <p className="text-base max-w-[150px]">
-                    Extra Consultation Subscription
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <p className="text-base font-semibold">Date</p>
-                  <p className="text-base max-w-[150px]">10 January 2025</p>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <p className="text-base font-semibold">Amount</p>
-                  <p className="text-base max-w-[150px]">$10</p>
-                </div>
-
-                <ButtonShaped
-                  text="View Detail"
-                  variant="light"
-                  buttonClassName="h-14 ml-auto"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-      {tab === "report" && (
-        <div className="flex flex-col gap-6">
-          {[...new Array(2)].map((item, key) => (
-            <div
-              key={key}
-              className="flex flex-col p-12 gap-6 rounded-lg bg-primary border-secondary/20 border-4"
-            >
-              <p className="uppercase text-2xl font-bold font-oswald">
-                Personal Calculation Report
-              </p>
-
-              <div className="flex items-center gap-28">
-                <div className="flex flex-col gap-3">
-                  <p className="text-base font-semibold">Detail</p>
-                  <p className="text-base max-w-[220px]">
-                    Full calculation of personal report
-                  </p>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <p className="text-base font-semibold">Date</p>
-                  <p className="text-base max-w-[150px]">10 January 2025</p>
-                </div>
-
-                <ButtonShaped
-                  text="Download Report"
-                  variant="light"
-                  buttonClassName="h-14 ml-auto"
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      {tab === "chart" && <ChartTab />}
+      {tab === "purchase" && <PurchaseTab />}
+      {tab === "report" && <ReportTab />}
       {tab === "other" && <div className="flex flex-col"></div>}
     </section>
   );

@@ -45,8 +45,10 @@ export function NavBar() {
 
   return (
     <nav
-      className={`sticky top-0 w-full z-50 transition-all duration-300 py-[30px] px-6 xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
-        scrolled ? "bg-primary/90 backdrop-blur-sm" : "bg-primary"
+      className={`sticky top-0 w-full z-50 duration-300 py-4 md:py-[30px] px-6 xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
+        scrolled
+          ? "bg-primary/85 backdrop-blur-sm"
+          : "bg-primary backdrop-blur-none"
       }`}
     >
       <div className="w-full flex justify-between items-center">

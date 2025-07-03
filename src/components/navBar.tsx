@@ -45,7 +45,7 @@ export function NavBar() {
 
   return (
     <nav
-      className={`sticky top-0 w-full z-50 transition-all duration-300 py-[30px] px-6 xl:px-14 2xl:px-[160px] shadow-lg shadow-black/10 ${
+      className={`sticky top-0 w-full z-50 transition-all duration-300 py-[30px] px-6 xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
         scrolled ? "bg-primary/90 backdrop-blur-sm" : "bg-primary"
       }`}
     >
@@ -128,7 +128,7 @@ export function NavBar() {
               <ButtonShaped
                 text="Calculate Birth Now"
                 variant={theme}
-                customClass="h-[60px]"
+                buttonClassName="h-[60px]"
               />
             </Link>
           </div>

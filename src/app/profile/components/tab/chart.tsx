@@ -22,12 +22,12 @@ function CollapsedItem({
   triggerText,
 }: CollapsedItemProps) {
   return (
-    <div className="flex flex-col border-2 border-secondary rounded-xl overflow-hidden">
+    <div className="flex flex-col border-2 border-secondary rounded-lg md:rounded-xl overflow-hidden">
       <div
-        className="flex items-center justify-between p-6 bg-secondary cursor-pointer"
+        className="flex items-center justify-between py-2 px-3 md:p-4 xl:p-6 bg-secondary cursor-pointer"
         onClick={() => onCollapse(itemId)}
       >
-        <p className="font-oswald font-bold text-3xl text-black uppercase">
+        <p className="font-oswald font-bold text-lg md:text-xl xl:text-3xl text-black uppercase">
           {triggerText}
         </p>
 
@@ -41,9 +41,9 @@ function CollapsedItem({
 
       <div
         className={cn(
-          "flex justify-between gap-7 duration-200",
+          "flex flex-col md:flex-row justify-between gap-[14px] md:gap-7 duration-200",
           collapse.includes(itemId)
-            ? "h-full p-8 opacity-100"
+            ? "h-full p-[14px] md:p-8 opacity-100"
             : "h-0 p-0 opacity-20"
         )}
       >
@@ -79,15 +79,17 @@ export default function ChartTab() {
         {[...new Array(3)].map((item, key) => (
           <div
             key={key}
-            className="flex flex-col items-center p-14 border-2 border-secondary bg-white/5"
+            className="flex flex-col items-center p-6 md:p-10 xl:p-14 border-2 border-secondary bg-white/5"
           >
-            <Image
-              src="/"
-              width={200}
-              height={200}
-              className="object-center object-cover"
-              alt=""
-            />
+            <div className="relative w-full max-w-[150px] md:max-w-[200px] h-[150px] md:h-[200px]">
+              <Image
+                src="/"
+                fill
+                sizes="200px"
+                className="object-center object-cover"
+                alt=""
+              />
+            </div>
 
             <div className="flex flex-col gap-1 w-full">
               <p className="text-xl font-oswald font-bold uppercase">
@@ -117,32 +119,32 @@ export default function ChartTab() {
         collapse={collapse}
         onCollapse={handleCollapseItem}
       >
-        <div className="flex flex-col w-full gap-6">
-          <p className="font-oswald font-bold text-2xl uppercase">
+        <div className="flex flex-col w-full gap-4 md:gap-6">
+          <p className="font-oswald font-bold text-base md:text-2xl uppercase">
             Jump Back To:
           </p>
 
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-1 justify-between">
             <ButtonShaped
-              height={70}
               text="Core Identity"
               variant="light"
+              buttonClassName="scale-70 md:scale-100 w-fit -left-11 md:left-0 h-[50px] md:h-auto"
               textClassName="text-white! text-xl"
               greyscale
             />
             <ButtonShaped
               width={400}
-              height={70}
               text="Inherent Strength and Shadow Aspect"
               variant="light"
+              buttonClassName="scale-70 md:scale-100 w-fit -left-17 md:left-0 h-[50px] md:h-auto"
               textClassName="text-white! text-xl"
               greyscale
             />
             <ButtonShaped
               width={350}
-              height={70}
               text="Personal and Professional Growth"
               variant="light"
+              buttonClassName="scale-70 md:scale-100 w-fit -left-15 md:left-0 h-[50px] md:h-auto"
               textClassName="text-white! text-xl"
               greyscale
             />

@@ -26,7 +26,7 @@ export default function ButtonShaped({
   return (
     <button
       className={cn(
-        "relative flex items-center justify-center cursor-pointer group",
+        "relative w-fit flex items-center justify-center cursor-pointer group",
         buttonClassName
       )}
     >

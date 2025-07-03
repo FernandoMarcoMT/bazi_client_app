@@ -30,8 +30,8 @@ export default function ProfileTabs() {
   const [tab, setTab] = useState("chart");
 
   return (
-    <section className="flex flex-col gap-6">
-      <div className="flex gap-6 items-center border-b-2 border-secondary/20">
+    <section className="flex flex-col gap-5 md:gap-6">
+      <div className="flex gap-3 md:gap-6 items-center border-b-2 border-secondary/20">
         {tabItems.map((item, key) => (
           <div
             key={key}
@@ -43,9 +43,9 @@ export default function ProfileTabs() {
           >
             <p
               className={cn(
-                "text-lg font-semibold duration-200",
+                "text-[10px] md:text-lg  duration-200",
                 item.value === tab
-                  ? "opacity-100"
+                  ? "opacity-100 font-semibold"
                   : "opacity-30 hover:opacity-50"
               )}
             >

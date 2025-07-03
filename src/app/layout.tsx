@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { NavBar } from "@/components/navBar";
 
 const openSans = Open_Sans({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -35,7 +36,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <main className="flex flex-col min-h-screen">
+            <NavBar />
+
+            <div className="flex flex-col grow">{children}</div>
+          </main>
         </ThemeProvider>
       </body>
     </html>

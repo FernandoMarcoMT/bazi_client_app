@@ -84,14 +84,14 @@
 }
 
 .dark {
-  --background: #19252B;
+  --background: #19252b;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.145 0 0);
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.145 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --typography: #ffffff;
-  --primary: #192F3799;
+  --primary: #192b32;
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);

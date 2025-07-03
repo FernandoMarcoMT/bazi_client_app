@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronDown, User } from "lucide-react";
-import ButtonShaped from "../button-shaped";
+import ButtonShaped from "./button-shaped";
 import { useTheme } from "next-themes";
 
 export function NavBar() {
@@ -45,13 +45,13 @@ export function NavBar() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 py-[30px] px-6 xl:px-14 2xl:px-[160px] shadow-lg shadow-black/10 ${
-        scrolled ? "bg-primary backdrop-blur-sm" : "bg-primary"
+      className={`sticky top-0 w-full z-50 transition-all duration-300 py-[30px] px-6 xl:px-14 2xl:px-[160px] shadow-lg shadow-black/10 ${
+        scrolled ? "bg-primary/90 backdrop-blur-sm" : "bg-primary"
       }`}
     >
       <div className="w-full flex justify-between items-center">
         {/* Logo */}
-        <Link href="#" className="text-xl md:text-2xl font-bold text-amber-400">
+        <Link href="/" className="text-xl md:text-2xl font-bold text-amber-400">
           <span className="flex items-center gap-2">
             <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-amber-400 flex items-center justify-center">
               <span className="text-blue-950 font-bold text-lg md:text-xl">

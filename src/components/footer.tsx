@@ -106,7 +106,7 @@ export default function FooterSection() {
         </div>
       </div>
 
-      <hr className="border-white mt-8 lg:mt-12 mb-3 lg:mb-6" />
+      <hr className="border-typography mt-8 lg:mt-12 mb-3 lg:mb-6" />
 
       <div className="flex justify-between items-center">
         <p className="text-sm">Company Copyright</p>

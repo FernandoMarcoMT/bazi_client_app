@@ -48,8 +48,8 @@ const accordionItems = [
 
 export default function FAQ() {
   return (
-    <div className="flex flex-col pt-60 pb-20 gap-12 bg-linear-to-b from-transparent via-background to-background ">
-      <p className="uppercase font-oswald font-bold text-[42px] text-center">
+    <div className="flex flex-col pt-28 lg:pt-20 xl:pt-60 pb-16 lg:pb-20 lg:gap-12 bg-linear-to-b from-transparent via-background to-background">
+      <p className="uppercase font-oswald font-bold text-2xl lg:text-[42px] lg:text-center px-6">
         FAQ
       </p>
 
@@ -60,10 +60,10 @@ export default function FAQ() {
             value={`item-${key + 1}`}
             className="border-b-typography/60"
           >
-            <AccordionTrigger className="font-semibold text-lg cursor-pointer py-6">
+            <AccordionTrigger className="lg:font-semibold text-base lg:text-lg cursor-pointer py-3 lg:py-6">
               {item.title}
             </AccordionTrigger>
-            <AccordionContent className="font-light text-pretty text-lg">
+            <AccordionContent className="font-light text-pretty text-sm lg:text-lg">
               {item.description || "-"}
             </AccordionContent>
           </AccordionItem>

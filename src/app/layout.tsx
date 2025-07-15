@@ -36,7 +36,12 @@ export default function RootLayout({
       className={`${openSans.variable} ${oswald.variable} font-sans antialiased`}
       suppressHydrationWarning
     >
-      <head />
+      <head>
+        <meta
+          name="format-detection"
+          content="telephone=no, date=no, email=no, address=no"
+        />
+      </head>
 
       <body>
         <ThemeProvider

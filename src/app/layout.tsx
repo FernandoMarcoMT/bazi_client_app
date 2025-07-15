@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NavBar } from "@/components/navBar";
 import { Toaster } from "@/components/ui/sonner";
+import FooterSection from "@/components/footer";
 
 const openSans = Open_Sans({
   weight: ["300", "400", "500", "600", "700", "800"],
@@ -46,8 +47,8 @@ export default function RootLayout({
         >
           <main className="flex flex-col min-h-screen">
             <NavBar />
-
             <div className="flex flex-col grow">{children}</div>
+            <FooterSection />
           </main>
           <Toaster duration={2000} position="bottom-right" />
         </ThemeProvider>

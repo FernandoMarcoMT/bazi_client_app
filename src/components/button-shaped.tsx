@@ -52,12 +52,13 @@ export default function ButtonShaped({
             variant === "system"
               ? "stroke-outer-stroke/70 group-hover:stroke-outer-stroke duration-200"
               : variant === "light"
-              ? "stroke-light-outer-stroke/70 group-hover:stroke-light-outer-stroke duration-200"
+              ? "stroke-light-outer-stroke duration-200"
               : "stroke-dark-outer-stroke group-hover:stroke-dark-outer-stroke/60 duration-200"
           )}
           strokeMiterlimit="10"
         />
       </svg>
+      
       <div className="absolute">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +86,7 @@ export default function ButtonShaped({
               variant === "system"
                 ? "stroke-inner-stroke fill-inner-fill/70 group-hover:fill-inner-fill duration-200"
                 : variant === "light"
-                ? "stroke-light-outer-stroke fill-light-inner-fill/70 group-hover:fill-light-inner-fill duration-200"
+                ? "stroke-light-outer-stroke fill-light-inner-fill duration-200"
                 : "stroke-dark-outer-stroke fill-dark-inner-fill group-hover:fill-dark-inner-fill/60 duration-200"
             )}
             strokeMiterlimit="10"

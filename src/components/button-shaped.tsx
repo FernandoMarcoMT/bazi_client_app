@@ -58,7 +58,7 @@ export default function ButtonShaped({
           strokeMiterlimit="10"
         />
       </svg>
-      <div className="absolute w-[94%]">
+      <div className="absolute">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={innerWidth}

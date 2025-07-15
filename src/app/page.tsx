@@ -1,56 +1,72 @@
+"use client";
+
 import { ScrollToSection } from "@/components/home/scrollToSection";
-import { NavBar } from "@/components/navBar";
-import { HeroSection } from "@/components/home/heroSection";
-import { ContentSection } from "@/components/home/contentSection";
-import { MasterSection } from "@/components/home/masterSection";
-import { FaqSection } from "@/components/home/faqSection";
-import { Footer } from "@/components/home/footer";
+import HeroPeople from "./components/hero-people";
+import Image from "next/image";
+import BaziWheel from "./components/bazi-wheel";
+import Tailor from "./components/tailor";
+import Fortune from "./components/fortune";
+import FAQ from "./components/faq";
+import Promotion from "@/components/promotion";
 
 export default function Home() {
   return (
-    <div className="relative">
-      <main className="min-h-screen bg-gradient-to-b from-blue-950 to-black text-white overflow-y-auto snap-y snap-mandatory pt-16">
-        <HeroSection />
-
-        <ContentSection
-          id="what-we-do"
-          title="Find Out What We Do"
-          imagePlaceholder="/placeholder.svg?height=300&width=400"
-          position="right"
-          className="snap-start min-h-screen flex items-center py-12 animate-fade-in-up"
-          content=""
+    <div className="relative overflow-hidden">
+      <div className="not-dark:hidden absolute w-full h-full min-h-screen z-[-1]">
+        <Image
+          src="/images/bg-lp-dark.png"
+          alt="Background Landing Page"
+          fill
+          sizes="2880px"
+          className="hidden md:block object-cover object-[0_-120px]"
+          priority
+        />
+        <Image
+          src="/images/bg-lp-dark-mobile.png"
+          alt="Background Landing Page"
+          fill
+          sizes="563px"
+          className="md:hidden object-cover object-[0_-100px]"
+          priority
         />
 
-        <ContentSection
-          id="your-journey"
-          title="Start Your Journey with Us"
-          imagePlaceholder="/placeholder.svg?height=300&width=400"
-          position="left"
-          className="snap-start min-h-screen flex items-center py-12 animate-fade-in-up"
-          content=""
+        <div className="absolute w-full h-full bg-black/20 md:bg-black/40" />
+      </div>
+
+      <div className="dark:hidden absolute w-full h-full min-h-screen z-[-1]">
+        <Image
+          src="/images/bg-lp-light.png"
+          alt="Background Landing Page"
+          fill
+          sizes="2880px"
+          className="hidden md:block object-cover object-[0_-120px]"
+          priority
+        />
+        <Image
+          src="/images/bg-lp-light-mobile.png"
+          alt="Background Landing Page"
+          fill
+          sizes="563px"
+          className="md:hidden object-cover object-[0_-100px]"
+          priority
         />
 
-        <ContentSection
-          id="tailored-to-you"
-          title="Exclusively Tailored to Who You Are"
-          imagePlaceholder="/placeholder.svg?height=300&width=400"
-          position="right"
-          className="snap-start min-h-screen flex items-center py-12 animate-fade-in-up"
-          content=""
-        />
+        <div className="absolute w-full h-full bg-black/10" />
+      </div>
 
-        <MasterSection
-          id="tao-master"
-          className="snap-start min-h-screen flex items-center py-12 animate-fade-in-up"
-        />
+      <HeroPeople />
 
-        <FaqSection
-          id="faq"
-          className="snap-start min-h-screen flex items-center py-12 animate-fade-in-up"
-        />
-      </main>
+      <div className="flex flex-col px-6 xl:px-14 2xl:px-40 mt-48 md:mt-20 lg:mt-0 xl:mt-32 gap-28 md:gap-14 lg:gap-36 xl:gap-80">
+        <BaziWheel />
 
-      <Footer className="snap-start bg-blue-950/90 py-6" />
+        <Tailor />
+
+        <Fortune />
+      </div>
+
+      <FAQ />
+
+      <Promotion />
 
       <ScrollToSection />
     </div>

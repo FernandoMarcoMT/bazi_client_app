@@ -50,15 +50,16 @@ export default function ButtonShaped({
           className={cn(
             greyscale && "grayscale-100",
             variant === "system"
-              ? "stroke-outer-stroke/70 group-hover:stroke-outer-stroke duration-200"
+              ? "stroke-outer-stroke duration-200"
               : variant === "light"
-              ? "stroke-light-outer-stroke/70 group-hover:stroke-light-outer-stroke duration-200"
+              ? "dark:stroke-light-outer-stroke not-dark:stroke-[#CB8F19] duration-200"
               : "stroke-dark-outer-stroke group-hover:stroke-dark-outer-stroke/60 duration-200"
           )}
           strokeMiterlimit="10"
         />
       </svg>
-      <div className="absolute w-[94%]">
+
+      <div className="absolute">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width={innerWidth}
@@ -83,9 +84,9 @@ export default function ButtonShaped({
             className={cn(
               greyscale && "grayscale-100",
               variant === "system"
-                ? "stroke-inner-stroke fill-inner-fill/70 group-hover:fill-inner-fill duration-200"
+                ? "stroke-inner-stroke fill-inner-fill duration-200"
                 : variant === "light"
-                ? "stroke-light-outer-stroke fill-light-inner-fill/70 group-hover:fill-light-inner-fill duration-200"
+                ? "dark:stroke-light-outer-stroke not-dark:stroke-[#CB8F19] dark:fill-light-inner-fill not-dark:fill-[#E9B562] duration-200"
                 : "stroke-dark-outer-stroke fill-dark-inner-fill group-hover:fill-dark-inner-fill/60 duration-200"
             )}
             strokeMiterlimit="10"

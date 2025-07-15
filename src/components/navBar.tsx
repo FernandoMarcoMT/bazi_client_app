@@ -45,9 +45,9 @@ export function NavBar() {
 
   return (
     <nav
-      className={`sticky top-0 w-full z-50 duration-300 py-4 md:py-[30px] px-6 xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
+      className={`sticky top-0 w-full z-50 duration-300 py-4 md:py-7 px-6 xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
         scrolled
-          ? "bg-primary/85 backdrop-blur-sm"
+          ? "bg-primary/45 backdrop-blur-lg"
           : "bg-primary backdrop-blur-none"
       }`}
     >
@@ -65,7 +65,7 @@ export function NavBar() {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-[52px]">
+        <div className="hidden xl:flex items-center gap-[52px]">
           {navLinks.map((link) =>
             link.dropdown ? (
               <div key={link.name} className="relative group">
@@ -138,7 +138,7 @@ export function NavBar() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="lg:hidden text-white"
+          className="xl:hidden text-white"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -147,7 +147,7 @@ export function NavBar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-blue-950/95 backdrop-blur-sm">
+        <div className="xl:hidden absolute top-full left-0 w-full bg-blue-950/95 backdrop-blur-sm">
           <div className="w-full max-w-7xl mx-auto px-4 py-4 flex flex-col space-y-4">
             {navLinks.map((link) =>
               link.dropdown ? (

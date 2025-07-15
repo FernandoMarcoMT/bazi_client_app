@@ -47,16 +47,16 @@
   --color-outer-stroke: var(--button-outer-stroke);
   --color-inner-fill: var(--button-inner-fill);
   --color-inner-stroke: var(--button-inner-stroke);
-  --color-light-outer-stroke: #b38e46;
-  --color-light-inner-fill: #e5bf75;
-  --color-light-inner-stroke: #b38e46;
+  --color-light-outer-stroke: #eecb87;
+  --color-light-inner-fill: #ffe6b4;
+  --color-light-inner-stroke: #eecb87;
   --color-dark-outer-stroke: #647ca3;
   --color-dark-inner-fill: #263b43;
   --color-dark-inner-stroke: #647ca3;
 }
 
 :root {
-  --background: rgb(255, 255, 255);
+  --background: #f8ead5;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -90,9 +90,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --button-outer-stroke: #b38e46;
-  --button-inner-fill: #e5bf75;
-  --button-inner-stroke: #b38e46;
+  --button-outer-stroke: #CB8F19;
+  --button-inner-fill: #E9B562;
+  --button-inner-stroke: #CB8F19;
 }
 
 .dark {

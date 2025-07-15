@@ -9,12 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@radix-ui/react-accordion": "^1.2.8",
+    "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@tabler/icons-react": "^3.34.0",
     "@types/moment": "^2.11.29",
     "antd": "^4.24.3",
     "chinese-lunar": "^0.1.4",

@@ -2,15 +2,18 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, User } from "lucide-react";
+import { Menu, X, ChevronDown, User, ChevronLeft } from "lucide-react";
 import ButtonShaped from "./button-shaped";
 import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { theme } = useTheme();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,7 +48,7 @@ export function NavBar() {
 
   return (
     <nav
-      className={`sticky top-0 w-full z-50 duration-300 py-4 md:py-7 px-[24px] xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
+      className={`sticky top-0 w-full z-50 duration-300 py-[16px] md:py-[28px] px-[24px] xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
         scrolled
           ? "bg-primary/45 backdrop-blur-lg"
           : "bg-primary backdrop-blur-none"
@@ -53,15 +56,27 @@ export function NavBar() {
     >
       <div className="w-full flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="text-xl md:text-2xl font-bold text-amber-400">
-          <span className="flex items-center gap-2">
+        {pathname === "/calculator" && (
+          <Link href="/" className="xl:hidden">
+            <ChevronLeft className="size-8" />
+          </Link>
+        )}
+
+        <Link
+          href="/"
+          className={cn(
+            "text-xl md:text-2xl font-bold text-amber-400",
+            pathname === "/calculator" ? "hidden xl:block" : ""
+          )}
+        >
+          <div className="flex items-center gap-2">
             <div className="h-8 w-8 md:h-10 md:w-10 rounded-full bg-amber-400 flex items-center justify-center">
               <span className="text-blue-950 font-bold text-lg md:text-xl">
                 B
               </span>
             </div>
             Bazi
-          </span>
+          </div>
         </Link>
 
         {/* Desktop Menu */}

@@ -23,7 +23,7 @@ export default function Promotion() {
           </div>
         </div>
 
-        <div className="hidden lg:block relative h-[200px] xl:h-[270px] w-full max-w-[700px]">
+        <div className="hidden lg:block relative h-[200px] xl:h-[270px] w-full max-w-[700px] ml-auto">
           <Image
             src="/images/promotion.png"
             alt="Bazi Wheel"

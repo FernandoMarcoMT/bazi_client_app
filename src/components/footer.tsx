@@ -27,7 +27,7 @@ function FooterItem({ title, items }: FooterItemProps) {
           <Link
             key={key}
             href={item.href}
-            className="text-sm lg:text-base w-fit hover:text-secondary duration-300"
+            className="text-sm lg:text-base w-fit hover:text-secondary duration-300 font-light"
           >
             {item.text}
           </Link>
@@ -60,7 +60,7 @@ export default function FooterSection() {
           </div>
         </div>
 
-        <div className="flex flex-col flex-wrap sm:flex-row justify-between gap-6 lg:gap-16">
+        <div className="flex flex-col flex-wrap sm:flex-row justify-between gap-6 lg:gap-[96px]">
           <FooterItem
             title="About Us"
             items={[

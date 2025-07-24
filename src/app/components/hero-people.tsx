@@ -1,4 +1,5 @@
 import ButtonShaped from "@/components/button-shaped";
+import Link from "next/link";
 import React from "react";
 
 export default function HeroPeople() {
@@ -25,12 +26,12 @@ export default function HeroPeople() {
         </p>
       </div>
 
-      <div className="absolute -bottom-8 lg:bottom-28 xl:bottom-52">
-        <ButtonShaped
-          text="Calculate Now"
-          variant="light"
-        />
-      </div>
+      <Link
+        href="/calculator"
+        className="absolute -bottom-8 lg:bottom-28 xl:bottom-52"
+      >
+        <ButtonShaped text="Calculate Now" variant="light" />
+      </Link>
     </div>
   );
 }

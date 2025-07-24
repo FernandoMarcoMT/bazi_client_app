@@ -9,6 +9,7 @@ interface ButtonShapedProps {
   greyscale?: boolean;
   height?: number;
   width?: number;
+  disabled?: boolean;
 }
 
 export default function ButtonShaped({
@@ -19,6 +20,7 @@ export default function ButtonShaped({
   greyscale,
   width = 253,
   height = 62,
+  disabled = false,
 }: ButtonShapedProps) {
   const innerWidth = width - 20;
   const innerHeight = height - 16;
@@ -29,6 +31,7 @@ export default function ButtonShaped({
         "relative w-fit flex items-center justify-center cursor-pointer group",
         buttonClassName
       )}
+      disabled={disabled}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +51,7 @@ export default function ButtonShaped({
             width - 11
           }.218 1H10.7825C10.7825 6.46285 6.40327 10.8903 1 10.8903V51.1097Z`}
           className={cn(
-            greyscale && "grayscale-100",
+            (greyscale || disabled) && "grayscale-100",
             variant === "system"
               ? "stroke-outer-stroke duration-200"
               : variant === "light"
@@ -82,7 +85,7 @@ export default function ButtonShaped({
               innerHeight - 7
             }.${innerHeight - 2} ${innerWidth - 12}.698 ${innerHeight - 1}Z`}
             className={cn(
-              greyscale && "grayscale-100",
+              (greyscale || disabled) && "grayscale-100",
               variant === "system"
                 ? "stroke-inner-stroke fill-inner-fill duration-200"
                 : variant === "light"

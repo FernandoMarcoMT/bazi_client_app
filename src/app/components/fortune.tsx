@@ -10,7 +10,7 @@ export default function Fortune() {
         THIS GOES BEYOND FORTUNE TELLING
       </p>
 
-      <div className="relative h-[300px] lg:h-[440px] xl:h-[680px] w-full max-w-[680px]">
+      <div className="relative h-[310px] lg:h-[440px] xl:h-[680px] w-[320px] lg:w-full max-w-[680px]">
         <Image
           src="/images/fortune.png"
           alt="Bazi Wheel"
@@ -25,26 +25,33 @@ export default function Fortune() {
           THIS GOES BEYOND FORTUNE TELLING
         </p>
 
-        <div className="flex flex-col gap-3">
-          <p className="text-lg">
+        <div className="flex flex-col gap-4">
+          <p className="text-lg font-light lg:font-normal">
             Join our community of seekers who use ancient wisdom for modern
             self-discovery.
           </p>
 
-          <p className="text-lg">Get instant access to:</p>
+          <p className="text-lg font-light lg:font-normal">
+            Get instant access to:
+          </p>
 
           <ul className="list-disc pl-7 flex flex-col gap-3">
-            <li className="text-lg">
+            <li className="text-lg font-light lg:font-normal">
               A free deeper dive on personalized core identity insights
             </li>
-            <li className="text-lg">Weekly wisdom delivered to your inbox</li>
-            <li className="text-lg">
+            <li className="text-lg font-light lg:font-normal">
+              Weekly wisdom delivered to your inbox
+            </li>
+            <li className="text-lg font-light lg:font-normal">
               Exclusive updates on new tools and resources
             </li>
           </ul>
         </div>
 
-        <form className="flex lg:flex-col mt-3 gap-3 lg:gap-6" suppressHydrationWarning>
+        <form
+          className="flex lg:flex-col mt-3 gap-3 lg:gap-6"
+          suppressHydrationWarning
+        >
           <Input
             type="email"
             className="bg-white! h-12 text-black"

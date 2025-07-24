@@ -27,7 +27,7 @@ function FooterItem({ title, items }: FooterItemProps) {
           <Link
             key={key}
             href={item.href}
-            className="text-sm lg:text-base w-fit hover:text-secondary duration-300"
+            className="text-sm lg:text-base w-fit hover:text-secondary duration-300 font-light"
           >
             {item.text}
           </Link>
@@ -39,7 +39,7 @@ function FooterItem({ title, items }: FooterItemProps) {
 
 export default function FooterSection() {
   return (
-    <div className="flex flex-col py-16 lg:py-10 px-6 xl:px-14 2xl:px-40">
+    <div className="flex flex-col py-16 lg:py-10 px-[24px] xl:px-14 2xl:px-40">
       <div className="flex flex-col lg:flex-row justify-between gap-6">
         <div className="flex flex-col gap-5">
           <div className="relative w-32 lg:w-64 h-12 lg:h-32 bg-zinc-300"></div>
@@ -60,7 +60,7 @@ export default function FooterSection() {
           </div>
         </div>
 
-        <div className="flex flex-col flex-wrap sm:flex-row justify-between gap-6 lg:gap-16">
+        <div className="flex flex-col flex-wrap sm:flex-row justify-between gap-6 lg:gap-[96px]">
           <FooterItem
             title="About Us"
             items={[

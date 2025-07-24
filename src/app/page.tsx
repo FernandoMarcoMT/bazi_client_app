@@ -25,12 +25,12 @@ export default function Home() {
           src="/images/bg-lp-dark-mobile.png"
           alt="Background Landing Page"
           fill
-          sizes="563px"
+          sizes="750px"
           className="md:hidden object-cover object-[0_-100px]"
           priority
         />
 
-        <div className="absolute w-full h-full bg-black/20 md:bg-black/40" />
+        <div className="absolute w-full h-full bg-black/30 md:bg-black/40" />
       </div>
 
       <div className="dark:hidden absolute w-full h-full min-h-screen z-[-1]">
@@ -46,7 +46,7 @@ export default function Home() {
           src="/images/bg-lp-light-mobile.png"
           alt="Background Landing Page"
           fill
-          sizes="563px"
+          sizes="750px"
           className="md:hidden object-cover object-[0_-100px]"
           priority
         />
@@ -56,7 +56,7 @@ export default function Home() {
 
       <HeroPeople />
 
-      <div className="flex flex-col px-6 xl:px-14 2xl:px-40 mt-48 md:mt-20 lg:mt-0 xl:mt-32 gap-28 md:gap-14 lg:gap-36 xl:gap-80">
+      <div className="flex flex-col px-[24px] xl:px-14 2xl:px-40 mt-56 md:mt-20 lg:mt-0 xl:mt-32 gap-32 md:gap-14 lg:gap-36 xl:gap-80">
         <BaziWheel />
 
         <Tailor />

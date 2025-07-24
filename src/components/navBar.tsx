@@ -45,7 +45,7 @@ export function NavBar() {
 
   return (
     <nav
-      className={`sticky top-0 w-full z-50 duration-300 py-4 md:py-7 px-6 xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
+      className={`sticky top-0 w-full z-50 duration-300 py-4 md:py-7 px-[24px] xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
         scrolled
           ? "bg-primary/45 backdrop-blur-lg"
           : "bg-primary backdrop-blur-none"
@@ -148,7 +148,7 @@ export function NavBar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="xl:hidden absolute top-full left-0 w-full bg-blue-950/95 backdrop-blur-sm">
-          <div className="w-full max-w-7xl mx-auto px-4 py-4 flex flex-col space-y-4">
+          <div className="w-full max-w-7xl mx-auto px-[24px] pt-4 pb-[24px] flex flex-col space-y-4">
             {navLinks.map((link) =>
               link.dropdown ? (
                 <div key={link.name}>

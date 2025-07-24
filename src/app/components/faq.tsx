@@ -48,12 +48,12 @@ const accordionItems = [
 
 export default function FAQ() {
   return (
-    <div className="flex flex-col pt-28 lg:pt-20 xl:pt-60 pb-16 lg:pb-20 lg:gap-12 bg-linear-to-b from-transparent via-background to-background">
+    <div className="flex flex-col pt-28 lg:pt-20 xl:pt-60 pb-16 lg:pb-20 lg:gap-12 bg-linear-to-b from-transparent via-[90%] lg:via-[100%] via-background to-background">
       <p className="uppercase font-oswald font-bold text-2xl lg:text-[42px] lg:text-center px-6">
         FAQ
       </p>
 
-      <Accordion type="single" collapsible className="px-6 xl:px-14 2xl:px-40">
+      <Accordion type="single" collapsible className="px-[24px] xl:px-14 2xl:px-40">
         {accordionItems.map((item, key) => (
           <AccordionItem
             key={key}

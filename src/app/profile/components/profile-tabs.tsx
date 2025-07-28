@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import PurchaseTab from "./tab/purchase";
 import ReportTab from "./tab/report";
 import ChartTab from "./tab/chart";
+import OthersTab from "./tab/others";
 
 const tabItems = [
   {
@@ -58,7 +59,7 @@ export default function ProfileTabs() {
       {tab === "chart" && <ChartTab />}
       {tab === "purchase" && <PurchaseTab />}
       {tab === "report" && <ReportTab />}
-      {tab === "other" && <div className="flex flex-col"></div>}
+      {tab === "other" && <OthersTab />}
     </section>
   );
 }

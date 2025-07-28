@@ -50,7 +50,7 @@ export function NavBar() {
     <nav
       className={`sticky top-0 w-full z-50 duration-300 py-[16px] md:py-[28px] px-[24px] xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
         scrolled
-          ? "bg-primary/45 backdrop-blur-lg"
+          ? "bg-primary/65 backdrop-blur-lg"
           : "bg-primary backdrop-blur-none"
       }`}
     >
@@ -129,14 +129,8 @@ export function NavBar() {
           {/* Login and Calculate Birth Now Buttons */}
           <div className="flex items-center gap-[52px]">
             <Link
-              href="#login"
+              href="/auth/sign-in"
               className="text-white hover:text-amber-400 transition-colors flex items-center gap-2"
-              onClick={(e) => {
-                e.preventDefault();
-                document
-                  .querySelector("#login")
-                  ?.scrollIntoView({ behavior: "smooth" });
-              }}
             >
               <User className="size-4 text-typography" />
               <p className="text-typography">Sign Up / Login</p>

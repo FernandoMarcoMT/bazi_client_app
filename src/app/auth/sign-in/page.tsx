@@ -1,26 +1,14 @@
 "use client";
 
-import ButtonShaped from "@/components/button-shaped";
-import { Input } from "@/components/ui/input";
 import {
   IconBrandAppleFilled,
-  IconBrandGoogle,
   IconBrandGoogleFilled,
 } from "@tabler/icons-react";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import SignInForm from "./components/form";
 
 export default function SignIn() {
-  const [inputValue, setInputValue] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-  };
-
   return (
     <div className="relative flex flex-col overflow-hidden">
       <div className="hidden md:block absolute -top-26 h-full w-full">
@@ -46,69 +34,7 @@ export default function SignIn() {
               Enter your login details to continue.
             </p>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-2">
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="email"
-                  className="font-semibold text-white md:text-black"
-                >
-                  Email Address <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  onChange={(e) =>
-                    setInputValue((prevVal) => ({
-                      ...prevVal,
-                      email: e.target.value,
-                    }))
-                  }
-                  className="h-12 bg-[#F4FAFF]! xl:bg-[#A8A8A8]/10! border-[#898888] text-black text-sm! xl:text-base! focus-within:bg-[#F6F6F0]! focus-within:border-secondary! focus-visible:ring-0 transition-all duration-200"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label
-                  htmlFor="password"
-                  className="font-semibold text-white md:text-black"
-                >
-                  Password <span className="text-red-500">*</span>
-                </label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter Password"
-                  onChange={(e) =>
-                    setInputValue((prevVal) => ({
-                      ...prevVal,
-                      password: e.target.value,
-                    }))
-                  }
-                  className="h-12 bg-[#F4FAFF]! xl:bg-[#A8A8A8]/10! border-[#898888] text-black text-sm! xl:text-base! focus-within:bg-[#F6F6F0]! focus-within:border-secondary! focus-visible:ring-0 transition-all duration-200"
-                />
-                <p className="text-right text-white xl:text-black text-sm">
-                  Forget Password?
-                </p>
-              </div>
-
-              <ButtonShaped
-                text="Log In"
-                variant="light"
-                buttonClassName="w-full mt-2 hidden sm:flex"
-                width={426}
-                disabled={!inputValue.email || !inputValue.password}
-              />
-
-              <ButtonShaped
-                text="Log In"
-                variant="light"
-                buttonClassName="w-full mt-2 flex sm:hidden"
-                width={426}
-                height={70}
-                disabled={!inputValue.email || !inputValue.password}
-              />
-            </form>
+            <SignInForm />
 
             <div className="flex flex-col w-full items-center gap-6 mt-4">
               <p className="text-lg text-white md:text-black">or</p>

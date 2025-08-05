@@ -123,7 +123,7 @@ export default function SignIn() {
               </div>
             </div>
 
-            <div className="flex justify-center items-center gap-1.5 text-white md:text-black text-lg mt-auto md:mt-10">
+            <div className="flex justify-center items-center gap-1.5 text-white md:text-black text-sm md:text-lg mt-auto md:mt-10">
               <p>No account yet?</p>
               <Link href="/auth/sign-up" className="font-semibold">
                 Sign up

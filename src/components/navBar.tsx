@@ -56,7 +56,7 @@ export function NavBar() {
     >
       <div className="w-full flex justify-between items-center">
         {/* Logo */}
-        {pathname === "/calculator" && (
+        {(pathname === "/calculator" || pathname.includes("/auth")) && (
           <Link href="/" className="xl:hidden">
             <ChevronLeft className="size-8" />
           </Link>
@@ -66,7 +66,9 @@ export function NavBar() {
           href="/"
           className={cn(
             "text-xl md:text-2xl font-bold text-amber-400",
-            pathname === "/calculator" ? "hidden xl:block" : ""
+            pathname === "/calculator" || pathname.includes("/auth")
+              ? "hidden xl:block"
+              : ""
           )}
         >
           <div className="flex items-center gap-2">

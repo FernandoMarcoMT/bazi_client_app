@@ -1,14 +1,29 @@
 "use client";
 
-import {
-  IconBrandAppleFilled,
-  IconBrandGoogleFilled,
-} from "@tabler/icons-react";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
-import SignUpForm from "./components/form";
+import { useState } from "react";
+import StepEmail from "./components/step/email";
+import StepOTP from "./components/step/otp";
+import StepDetail from "./components/step/detail";
 
 export default function SignUp() {
+  const [inputValue, setInputValue] = useState({
+    email: "",
+    name: "",
+    password: "",
+    confirmPassword: "",
+    referral: "",
+  });
+  const [step, setStep] = useState<"email" | "otp" | "detail">("email");
+
+  const handleInputChange = (name: string, val: string) => {
+    setInputValue((prevVal) => ({
+      ...prevVal,
+      [name]: val,
+    }));
+  };
+
   return (
     <div className="relative flex flex-col overflow-hidden">
       <div className="hidden md:block absolute -top-26 h-full w-full">
@@ -26,37 +41,23 @@ export default function SignUp() {
         </Link>
 
         <div className="xl:border border-secondary md:bg-[#F4FAFF] md:p-9 rounded-md w-full max-w-[500px] mx-auto h-full">
-          <div className="flex flex-col gap-3 md:gap-2 h-full">
-            <p className="uppercase text-3xl font-bold font-oswald text-white md:text-black">
-              Sign Up
-            </p>
-            <p className="text-base md:text-lg text-white md:text-black font-light md:font-normal">
-              Please fill in the required information to create an account.
-            </p>
-
-            <SignUpForm />
-
-            <div className="flex flex-col w-full items-center gap-6 mt-4">
-              <p className="text-lg text-white md:text-black">or</p>
-
-              <div className="flex items-center gap-6">
-                <div className="flex items-center justify-center w-13 h-13 border border-[#8E8E8E] rounded-full">
-                  <IconBrandGoogleFilled className="text-white md:text-black" />
-                </div>
-                <div className="flex items-center justify-center w-13 h-13 border border-[#8E8E8E] rounded-full">
-                  <IconBrandAppleFilled className="text-white md:text-black" />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-center items-center gap-1.5 text-white md:text-black text-sm md:text-lg mt-auto md:mt-10">
-              <p>No account yet?</p>
-              <Link href="/auth/sign-up" className="font-semibold">
-                Sign up
-              </Link>
-              <p>here</p>
-            </div>
-          </div>
+          {step === "email" && (
+            <StepEmail
+              email={inputValue.email}
+              handleInputChange={handleInputChange}
+              setStep={setStep}
+            />
+          )}
+          {step === "otp" && <StepOTP setStep={setStep} />}
+          {step === "detail" && (
+            <StepDetail
+              name={inputValue.name}
+              password={inputValue.password}
+              confirmPassword={inputValue.confirmPassword}
+              referral={inputValue.referral}
+              handleInputChange={handleInputChange}
+            />
+          )}
         </div>
       </div>
     </div>

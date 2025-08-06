@@ -32,6 +32,7 @@ export default function SignInForm() {
             }))
           }
           className="h-12 bg-[#F4FAFF]! xl:bg-[#A8A8A8]/10! border-[#898888] text-black text-sm! xl:text-base! focus-within:bg-[#F6F6F0]! focus-within:border-secondary! focus-visible:ring-0 transition-all duration-200"
+          autoFocus
         />
       </div>
 

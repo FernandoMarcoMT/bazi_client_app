@@ -1,12 +1,9 @@
-"use client";
-
 import ButtonShaped from "@/components/button-shaped";
-import Image from "next/image";
-import React, { useState } from "react";
 import CollapsedItem from "../collapsed-item";
+import { useState } from "react";
 
-export default function ChartTab() {
-  const [collapse, setCollapse] = useState<string[]>(["1", "2", "3"]);
+export default function OthersTab() {
+  const [collapse, setCollapse] = useState<string[]>(["1"]);
 
   function handleCollapseItem(item: string) {
     let newCollapse = collapse;
@@ -21,52 +18,9 @@ export default function ChartTab() {
   }
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-4 md:gap-6">
       <CollapsedItem
         itemId="1"
-        triggerText="Day Master"
-        collapse={collapse}
-        onCollapse={handleCollapseItem}
-      >
-        {[...new Array(3)].map((item, key) => (
-          <div
-            key={key}
-            className="flex flex-col items-center p-6 md:p-10 xl:p-14 border-2 border-secondary bg-white/5"
-          >
-            <div className="relative w-full max-w-[150px] md:max-w-[200px] h-[150px] md:h-[200px]">
-              <Image
-                src="/"
-                fill
-                sizes="200px"
-                className="object-center object-cover"
-                alt=""
-              />
-            </div>
-
-            <div className="flex flex-col gap-1 w-full">
-              <p className="text-xl font-oswald font-bold uppercase">
-                Wu Earth
-              </p>
-              <p className="text-base font-light">
-                The sacred mountain. Still, eternal, and wise. Through chaos,
-                their silence echoes that all things shall pass.
-              </p>
-            </div>
-          </div>
-        ))}
-      </CollapsedItem>
-
-      <CollapsedItem
-        itemId="2"
-        triggerText="Chart"
-        collapse={collapse}
-        onCollapse={handleCollapseItem}
-      >
-        <p></p>
-      </CollapsedItem>
-
-      <CollapsedItem
-        itemId="3"
         triggerText="Others"
         collapse={collapse}
         onCollapse={handleCollapseItem}

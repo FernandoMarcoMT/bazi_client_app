@@ -1,7 +1,7 @@
-import { Lunar } from 'lunar-typescript';
-import React from 'react';
+import { Lunar } from "lunar-typescript";
+import React from "react";
 
-type ElementType = '水' | '木' | '火' | '金' | '土' ;
+type ElementType = "水" | "木" | "火" | "金" | "土";
 
 type StemAdjustment = Partial<Record<string, number>>;
 
@@ -16,399 +16,725 @@ type FiveElementInteractions = {
   control: Record<ElementType, ElementType>;
 };
 
-const TIANGAN_ORDER = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+const TIANGAN_ORDER = [
+  "甲",
+  "乙",
+  "丙",
+  "丁",
+  "戊",
+  "己",
+  "庚",
+  "辛",
+  "壬",
+  "癸",
+];
 const HIDDEN_STEMS: Record<string, string[]> = {
-  '子': ['癸'], '丑': ['己', '癸', '辛'], '寅': ['甲', '丙', '戊'],
-  '卯': ['乙'], '辰': ['戊', '乙', '癸'], '巳': ['丙', '庚', '戊'],
-  '午': ['丁', '己'], '未': ['己', '丁', '乙'], '申': ['庚', '壬', '戊'],
-  '酉': ['辛'], '戌': ['戊', '辛', '丁'], '亥': ['壬', '甲']
+  子: ["癸"],
+  丑: ["己", "癸", "辛"],
+  寅: ["甲", "丙", "戊"],
+  卯: ["乙"],
+  辰: ["戊", "乙", "癸"],
+  巳: ["丙", "庚", "戊"],
+  午: ["丁", "己"],
+  未: ["己", "丁", "乙"],
+  申: ["庚", "壬", "戊"],
+  酉: ["辛"],
+  戌: ["戊", "辛", "丁"],
+  亥: ["壬", "甲"],
 };
 
 // Take month pillar, apply to all elements
 const SEASONAL_MULTIPLIERS: Record<string, Record<string, number>> = {
-  '寅': { '甲': 1.80, '乙': 1.80, '丙': 1.45, '丁': 1.45, '戊': 0.60, '己': 0.60, '庚': 0.75, '辛': 0.75, '壬': 0.86, '癸': 0.86 },
-  '卯': { '甲': 1.90, '乙': 1.90, '丙': 1.41, '丁': 1.41, '戊': 0.50, '己': 0.50, '庚': 0.71, '辛': 0.71, '壬': 1.00, '癸': 1.00 },
-  '辰': { '甲': 1.70, '乙': 1.70, '丙': 0.95, '丁': 0.95, '戊': 1.20, '己': 1.20, '庚': 1.00, '辛': 1.00, '壬': 0.70, '癸': 0.70 },
-  '巳': { '甲': 0.86, '乙': 0.86, '丙': 1.75, '丁': 1.75, '戊': 1.25, '己': 1.25, '庚': 0.72, '辛': 0.72, '壬': 0.92, '癸': 0.92 },
-  '午': { '甲': 0.95, '乙': 0.95, '丙': 1.80, '丁': 1.80, '戊': 1.30, '己': 1.30, '庚': 0.65, '辛': 0.65, '壬': 0.77, '癸': 0.77 },
-  '未': { '甲': 0.92, '乙': 0.92, '丙': 1.70, '丁': 1.70, '戊': 1.30, '己': 1.30, '庚': 1.05, '辛': 1.05, '壬': 0.61, '癸': 0.61 },
-  '申': { '甲': 0.65, '乙': 0.65, '丙': 0.70, '丁': 0.70, '戊': 1.01, '己': 1.01, '庚': 1.80, '辛': 1.80, '壬': 1.45, '癸': 1.45 },
-  '酉': { '甲': 0.50, '乙': 0.50, '丙': 0.71, '丁': 0.71, '戊': 1.00, '己': 1.00, '庚': 1.90, '辛': 1.90, '壬': 1.41, '癸': 1.41 },
-  '戌': { '甲': 0.70, '乙': 0.70, '丙': 1.01, '丁': 1.01, '戊': 1.25, '己': 1.25, '庚': 1.70, '辛': 1.70, '壬': 0.90, '癸': 0.90 },
-  '亥': { '甲': 1.45, '乙': 1.45, '丙': 0.65, '丁': 0.65, '戊': 0.77, '己': 0.77, '庚': 0.91, '辛': 0.91, '壬': 1.80, '癸': 1.80 },
-  '子': { '甲': 1.41, '乙': 1.41, '丙': 0.50, '丁': 0.50, '戊': 0.71, '己': 0.71, '庚': 1.00, '辛': 1.00, '壬': 1.90, '癸': 1.90 },
-  '丑': { '甲': 0.90, '乙': 0.90, '丙': 0.55, '丁': 0.55, '戊': 1.25, '己': 1.25, '庚': 1.20, '辛': 1.20, '壬': 1.70, '癸': 1.70 },
+  寅: {
+    甲: 1.8,
+    乙: 1.8,
+    丙: 1.45,
+    丁: 1.45,
+    戊: 0.6,
+    己: 0.6,
+    庚: 0.75,
+    辛: 0.75,
+    壬: 0.86,
+    癸: 0.86,
+  },
+  卯: {
+    甲: 1.9,
+    乙: 1.9,
+    丙: 1.41,
+    丁: 1.41,
+    戊: 0.5,
+    己: 0.5,
+    庚: 0.71,
+    辛: 0.71,
+    壬: 1.0,
+    癸: 1.0,
+  },
+  辰: {
+    甲: 1.7,
+    乙: 1.7,
+    丙: 0.95,
+    丁: 0.95,
+    戊: 1.2,
+    己: 1.2,
+    庚: 1.0,
+    辛: 1.0,
+    壬: 0.7,
+    癸: 0.7,
+  },
+  巳: {
+    甲: 0.86,
+    乙: 0.86,
+    丙: 1.75,
+    丁: 1.75,
+    戊: 1.25,
+    己: 1.25,
+    庚: 0.72,
+    辛: 0.72,
+    壬: 0.92,
+    癸: 0.92,
+  },
+  午: {
+    甲: 0.95,
+    乙: 0.95,
+    丙: 1.8,
+    丁: 1.8,
+    戊: 1.3,
+    己: 1.3,
+    庚: 0.65,
+    辛: 0.65,
+    壬: 0.77,
+    癸: 0.77,
+  },
+  未: {
+    甲: 0.92,
+    乙: 0.92,
+    丙: 1.7,
+    丁: 1.7,
+    戊: 1.3,
+    己: 1.3,
+    庚: 1.05,
+    辛: 1.05,
+    壬: 0.61,
+    癸: 0.61,
+  },
+  申: {
+    甲: 0.65,
+    乙: 0.65,
+    丙: 0.7,
+    丁: 0.7,
+    戊: 1.01,
+    己: 1.01,
+    庚: 1.8,
+    辛: 1.8,
+    壬: 1.45,
+    癸: 1.45,
+  },
+  酉: {
+    甲: 0.5,
+    乙: 0.5,
+    丙: 0.71,
+    丁: 0.71,
+    戊: 1.0,
+    己: 1.0,
+    庚: 1.9,
+    辛: 1.9,
+    壬: 1.41,
+    癸: 1.41,
+  },
+  戌: {
+    甲: 0.7,
+    乙: 0.7,
+    丙: 1.01,
+    丁: 1.01,
+    戊: 1.25,
+    己: 1.25,
+    庚: 1.7,
+    辛: 1.7,
+    壬: 0.9,
+    癸: 0.9,
+  },
+  亥: {
+    甲: 1.45,
+    乙: 1.45,
+    丙: 0.65,
+    丁: 0.65,
+    戊: 0.77,
+    己: 0.77,
+    庚: 0.91,
+    辛: 0.91,
+    壬: 1.8,
+    癸: 1.8,
+  },
+  子: {
+    甲: 1.41,
+    乙: 1.41,
+    丙: 0.5,
+    丁: 0.5,
+    戊: 0.71,
+    己: 0.71,
+    庚: 1.0,
+    辛: 1.0,
+    壬: 1.9,
+    癸: 1.9,
+  },
+  丑: {
+    甲: 0.9,
+    乙: 0.9,
+    丙: 0.55,
+    丁: 0.55,
+    戊: 1.25,
+    己: 1.25,
+    庚: 1.2,
+    辛: 1.2,
+    壬: 1.7,
+    癸: 1.7,
+  },
 };
 
 // Apply to heavenly stems only, but consider its own branch element
 const STEM_BRANCH_MULTIPLIERS: Record<string, Record<string, number>> = {
-  '寅': { '甲': 1.3, '丙': 1.2, '戊': 0.75, '庚': 0.85, '壬': 0.9 },
-  '卯': { '乙': 1.3, '丁': 1.2, '己': 0.75, '辛': 0.85, '癸': 0.9 },
-  '辰': { '甲': 1.15, '丙': 0.9, '戊': 1.3, '庚': 1.2, '壬': 0.75 },
-  '巳': { '乙': 0.9, '丁': 1.3, '己': 1.2, '辛': 0.75, '癸': 0.85 },
-  '午': { '甲': 1.3, '丙': 1.2, '戊': 0.75, '庚': 0.85, '壬': 0.9 },
-  '未': { '乙': 0.85, '丁': 1.15, '己': 1.3, '辛': 1.2, '癸': 0.75 },
-  '申': { '甲': 0.75, '丙': 0.85, '戊': 0.9, '庚': 1.3, '壬': 1.2 },
-  '酉': { '乙': 0.75, '丁': 0.85, '己': 0.9, '辛': 1.3, '癸': 1.2 },
-  '戌': { '甲': 0.85, '丙': 0.9, '戊': 1.3, '庚': 1.15, '壬': 0.75 },
-  '亥': { '乙': 1.2, '丁': 0.75, '己': 0.85, '辛': 0.9, '癸': 1.3 },
-  '子': { '甲': 1.2, '丙': 0.75, '戊': 0.85, '庚': 0.9, '壬': 1.3 },
-  '丑': { '乙': 0.85, '丁': 0.9, '己': 1.3, '辛': 1.2, '癸': 0.75 },
+  寅: { 甲: 1.3, 丙: 1.2, 戊: 0.75, 庚: 0.85, 壬: 0.9 },
+  卯: { 乙: 1.3, 丁: 1.2, 己: 0.75, 辛: 0.85, 癸: 0.9 },
+  辰: { 甲: 1.15, 丙: 0.9, 戊: 1.3, 庚: 1.2, 壬: 0.75 },
+  巳: { 乙: 0.9, 丁: 1.3, 己: 1.2, 辛: 0.75, 癸: 0.85 },
+  午: { 甲: 1.3, 丙: 1.2, 戊: 0.75, 庚: 0.85, 壬: 0.9 },
+  未: { 乙: 0.85, 丁: 1.15, 己: 1.3, 辛: 1.2, 癸: 0.75 },
+  申: { 甲: 0.75, 丙: 0.85, 戊: 0.9, 庚: 1.3, 壬: 1.2 },
+  酉: { 乙: 0.75, 丁: 0.85, 己: 0.9, 辛: 1.3, 癸: 1.2 },
+  戌: { 甲: 0.85, 丙: 0.9, 戊: 1.3, 庚: 1.15, 壬: 0.75 },
+  亥: { 乙: 1.2, 丁: 0.75, 己: 0.85, 辛: 0.9, 癸: 1.3 },
+  子: { 甲: 1.2, 丙: 0.75, 戊: 0.85, 庚: 0.9, 壬: 1.3 },
+  丑: { 乙: 0.85, 丁: 0.9, 己: 1.3, 辛: 1.2, 癸: 0.75 },
 };
 
 const RELATED_STEMS: Record<string, string[]> = {
-  '甲': ['甲', '乙'], '乙': ['乙', '甲'],
-  '丙': ['丙', '丁'], '丁': ['丁', '丙'],
-  '戊': ['戊', '己'], '己': ['己', '戊'],
-  '庚': ['庚', '辛'], '辛': ['辛', '庚'],
-  '壬': ['壬', '癸'], '癸': ['癸', '壬'],
+  甲: ["甲", "乙"],
+  乙: ["乙", "甲"],
+  丙: ["丙", "丁"],
+  丁: ["丁", "丙"],
+  戊: ["戊", "己"],
+  己: ["己", "戊"],
+  庚: ["庚", "辛"],
+  辛: ["辛", "庚"],
+  壬: ["壬", "癸"],
+  癸: ["癸", "壬"],
 };
 
 // For every element in Heavenly Stems, check the month Branch only
 const MONTH_BRANCH_BOOSTS: Record<string, string[]> = {
-  '甲': ['寅', '卯', '辰'], '乙': ['寅', '卯', '辰'], '丙': ['巳', '午', '未'],
-  '丁': ['巳', '午', '未'], '戊': ['辰', '戌', '丑', '未'], '己': ['辰', '戌', '丑', '未'],
-  '庚': ['申', '酉', '戌'], '辛': ['申', '酉', '戌'], '壬': ['亥', '子', '丑'],
-  '癸': ['亥', '子', '丑']
+  甲: ["寅", "卯", "辰"],
+  乙: ["寅", "卯", "辰"],
+  丙: ["巳", "午", "未"],
+  丁: ["巳", "午", "未"],
+  戊: ["辰", "戌", "丑", "未"],
+  己: ["辰", "戌", "丑", "未"],
+  庚: ["申", "酉", "戌"],
+  辛: ["申", "酉", "戌"],
+  壬: ["亥", "子", "丑"],
+  癸: ["亥", "子", "丑"],
 };
 
 const BRANCH_COMBINATIONS: Record<string, string[]> = {
-  '甲': ['亥', '卯', '未'], '乙': ['亥', '卯', '未'], '丙': ['寅', '午', '戌'],
-  '丁': ['寅', '午', '戌'], '戊': ['寅', '午', '戌'], '己': ['寅', '午', '戌'],
-  '庚': ['巳', '酉', '丑'], '辛': ['巳', '酉', '丑'], '壬': ['申', '子', '辰'],
-  '癸': ['申', '子', '辰']
+  甲: ["亥", "卯", "未"],
+  乙: ["亥", "卯", "未"],
+  丙: ["寅", "午", "戌"],
+  丁: ["寅", "午", "戌"],
+  戊: ["寅", "午", "戌"],
+  己: ["寅", "午", "戌"],
+  庚: ["巳", "酉", "丑"],
+  辛: ["巳", "酉", "丑"],
+  壬: ["申", "子", "辰"],
+  癸: ["申", "子", "辰"],
 };
 
 const BRANCH_COMBINATION_MULTIPLIER: Record<string, number> = {
-  '戊': 1.025, '己': 1.025, '甲': 1.05, '乙': 1.05, '丙': 1.05,
-  '丁': 1.05, '庚': 1.05, '辛': 1.05, '壬': 1.05, '癸': 1.05
+  戊: 1.025,
+  己: 1.025,
+  甲: 1.05,
+  乙: 1.05,
+  丙: 1.05,
+  丁: 1.05,
+  庚: 1.05,
+  辛: 1.05,
+  壬: 1.05,
+  癸: 1.05,
 };
 
 const STEM_INTERACTIONS: Record<string, Record<string, number>> = {
-  '甲': { 
-    '甲': 0.0, '乙': 0.0, // 同 (Same)
-    '丙': -0.5, '丁': -0.5, // 生 (Generates)
-    '壬': 1.0, '癸': 1.0, // 被生 (Generated by)
-    '戊': -0.75, '己': -0.75, // 克 (Controls)
-    '庚': -1.0, '辛': -1.0 // 被克 (Controlled by)
+  甲: {
+    甲: 0.0,
+    乙: 0.0, // 同 (Same)
+    丙: -0.5,
+    丁: -0.5, // 生 (Generates)
+    壬: 1.0,
+    癸: 1.0, // 被生 (Generated by)
+    戊: -0.75,
+    己: -0.75, // 克 (Controls)
+    庚: -1.0,
+    辛: -1.0, // 被克 (Controlled by)
   },
-  '乙': { 
-    '甲': 0.0, '乙': 0.0, // 同 (Same)
-    '丙': -0.5, '丁': -0.5, // 生 (Generates)
-    '壬': 1.0, '癸': 1.0, // 被生 (Generated by)
-    '戊': -0.75, '己': -0.75, // 克 (Controls)
-    '庚': -1.0, '辛': -1.0 // 被克 (Controlled by)
+  乙: {
+    甲: 0.0,
+    乙: 0.0, // 同 (Same)
+    丙: -0.5,
+    丁: -0.5, // 生 (Generates)
+    壬: 1.0,
+    癸: 1.0, // 被生 (Generated by)
+    戊: -0.75,
+    己: -0.75, // 克 (Controls)
+    庚: -1.0,
+    辛: -1.0, // 被克 (Controlled by)
   },
-  '丙': { 
-    '丙': 0.0, '丁': 0.0, // 同 (Same)
-    '戊': -0.5, '己': -0.5, // 生 (Generates)
-    '甲': 1.0, '乙': 1.0, // 被生 (Generated by)
-    '庚': -0.75, '辛': -0.75, // 克 (Controls)
-    '壬': -1.0, '癸': -1.0 // 被克 (Controlled by)
+  丙: {
+    丙: 0.0,
+    丁: 0.0, // 同 (Same)
+    戊: -0.5,
+    己: -0.5, // 生 (Generates)
+    甲: 1.0,
+    乙: 1.0, // 被生 (Generated by)
+    庚: -0.75,
+    辛: -0.75, // 克 (Controls)
+    壬: -1.0,
+    癸: -1.0, // 被克 (Controlled by)
   },
-  '丁': { 
-    '丙': 0.0, '丁': 0.0, // 同 (Same)
-    '戊': -0.5, '己': -0.5, // 生 (Generates)
-    '甲': 1.0, '乙': 1.0, // 被生 (Generated by)
-    '庚': -0.75, '辛': -0.75, // 克 (Controls)
-    '壬': -1.0, '癸': -1.0 // 被克 (Controlled by)
+  丁: {
+    丙: 0.0,
+    丁: 0.0, // 同 (Same)
+    戊: -0.5,
+    己: -0.5, // 生 (Generates)
+    甲: 1.0,
+    乙: 1.0, // 被生 (Generated by)
+    庚: -0.75,
+    辛: -0.75, // 克 (Controls)
+    壬: -1.0,
+    癸: -1.0, // 被克 (Controlled by)
   },
-  '戊': { 
-    '戊': 0.0, '己': 0.0, // 同 (Same)
-    '庚': -0.5, '辛': -0.5, // 生 (Generates)
-    '丙': 1.0, '丁': 1.0, // 被生 (Generated by)
-    '壬': -0.75, '癸': -0.75, // 克 (Controls)
-    '甲': -1.0, '乙': -1.0 // 被克 (Controlled by)
+  戊: {
+    戊: 0.0,
+    己: 0.0, // 同 (Same)
+    庚: -0.5,
+    辛: -0.5, // 生 (Generates)
+    丙: 1.0,
+    丁: 1.0, // 被生 (Generated by)
+    壬: -0.75,
+    癸: -0.75, // 克 (Controls)
+    甲: -1.0,
+    乙: -1.0, // 被克 (Controlled by)
   },
-  '己': { 
-    '戊': 0.0, '己': 0.0, // 同 (Same)
-    '庚': -0.5, '辛': -0.5, // 生 (Generates)
-    '丙': 1.0, '丁': 1.0, // 被生 (Generated by)
-    '壬': -0.75, '癸': -0.75, // 克 (Controls)
-    '甲': -1.0, '乙': -1.0 // 被克 (Controlled by)
+  己: {
+    戊: 0.0,
+    己: 0.0, // 同 (Same)
+    庚: -0.5,
+    辛: -0.5, // 生 (Generates)
+    丙: 1.0,
+    丁: 1.0, // 被生 (Generated by)
+    壬: -0.75,
+    癸: -0.75, // 克 (Controls)
+    甲: -1.0,
+    乙: -1.0, // 被克 (Controlled by)
   },
-  '庚': { 
-    '庚': 0.0, '辛': 0.0, // 同 (Same)
-    '壬': -0.5, '癸': -0.5, // 生 (Generates)
-    '戊': 1.0, '己': 1.0, // 被生 (Generated by)
-    '甲': -0.75, '乙': -0.75, // 克 (Controls)
-    '丙': -1.0, '丁': -1.0 // 被克 (Controlled by)
+  庚: {
+    庚: 0.0,
+    辛: 0.0, // 同 (Same)
+    壬: -0.5,
+    癸: -0.5, // 生 (Generates)
+    戊: 1.0,
+    己: 1.0, // 被生 (Generated by)
+    甲: -0.75,
+    乙: -0.75, // 克 (Controls)
+    丙: -1.0,
+    丁: -1.0, // 被克 (Controlled by)
   },
-  '辛': { 
-    '庚': 0.0, '辛': 0.0, // 同 (Same)
-    '壬': -0.5, '癸': -0.5, // 生 (Generates)
-    '戊': 1.0, '己': 1.0, // 被生 (Generated by)
-    '甲': -0.75, '乙': -0.75, // 克 (Controls)
-    '丙': -1.0, '丁': -1.0 // 被克 (Controlled by)
+  辛: {
+    庚: 0.0,
+    辛: 0.0, // 同 (Same)
+    壬: -0.5,
+    癸: -0.5, // 生 (Generates)
+    戊: 1.0,
+    己: 1.0, // 被生 (Generated by)
+    甲: -0.75,
+    乙: -0.75, // 克 (Controls)
+    丙: -1.0,
+    丁: -1.0, // 被克 (Controlled by)
   },
-  '壬': { 
-    '壬': 0.0, '癸': 0.0, // 同 (Same)
-    '甲': -0.5, '乙': -0.5, // 生 (Generates)
-    '庚': 1.0, '辛': 1.0, // 被生 (Generated by)
-    '丙': -0.75, '丁': -0.75, // 克 (Controls)
-    '戊': -1.0, '己': -1.0 // 被克 (Controlled by)
+  壬: {
+    壬: 0.0,
+    癸: 0.0, // 同 (Same)
+    甲: -0.5,
+    乙: -0.5, // 生 (Generates)
+    庚: 1.0,
+    辛: 1.0, // 被生 (Generated by)
+    丙: -0.75,
+    丁: -0.75, // 克 (Controls)
+    戊: -1.0,
+    己: -1.0, // 被克 (Controlled by)
   },
-  '癸': { 
-    '壬': 0.0, '癸': 0.0, // 同 (Same)
-    '甲': -0.5, '乙': -0.5, // 生 (Generates)
-    '庚': 1.0, '辛': 1.0, // 被生 (Generated by)
-    '丙': -0.75, '丁': -0.75, // 克 (Controls)
-    '戊': -1.0, '己': -1.0 // 被克 (Controlled by)
+  癸: {
+    壬: 0.0,
+    癸: 0.0, // 同 (Same)
+    甲: -0.5,
+    乙: -0.5, // 生 (Generates)
+    庚: 1.0,
+    辛: 1.0, // 被生 (Generated by)
+    丙: -0.75,
+    丁: -0.75, // 克 (Controls)
+    戊: -1.0,
+    己: -1.0, // 被克 (Controlled by)
   },
 };
 
 const SIX_HARMONY: Record<string, string> = {
-  '子': '丑', '丑': '子', '寅': '亥', '亥': '寅', '卯': '戌', '戌': '卯',
-  '辰': '酉', '酉': '辰', '巳': '申', '申': '巳', '午': '未', '未': '午',
+  子: "丑",
+  丑: "子",
+  寅: "亥",
+  亥: "寅",
+  卯: "戌",
+  戌: "卯",
+  辰: "酉",
+  酉: "辰",
+  巳: "申",
+  申: "巳",
+  午: "未",
+  未: "午",
 };
 
 const SEASONAL_HARMONY: Record<string, string[]> = {
-  '子': ['辰', '申'], '丑': ['巳', '酉'], '寅': ['午', '戌'], '卯': ['未', '亥'],
-  '辰': ['申', '子'], '巳': ['酉', '丑'], '午': ['戌', '寅'], '未': ['亥', '卯'],
-  '申': ['子', '辰'], '酉': ['丑', '巳'], '戌': ['寅', '午'], '亥': ['卯', '未'],
+  子: ["辰", "申"],
+  丑: ["巳", "酉"],
+  寅: ["午", "戌"],
+  卯: ["未", "亥"],
+  辰: ["申", "子"],
+  巳: ["酉", "丑"],
+  午: ["戌", "寅"],
+  未: ["亥", "卯"],
+  申: ["子", "辰"],
+  酉: ["丑", "巳"],
+  戌: ["寅", "午"],
+  亥: ["卯", "未"],
 };
 
 const ELEMENTAL_HARMONY: Record<string, string[]> = {
-  '子': ['丑', '亥'], '丑': ['子', '亥'], '寅': ['卯', '辰'], '卯': ['寅', '辰'],
-  '辰': ['寅', '卯'], '巳': ['午', '未'], '午': ['巳', '未'], '未': ['巳', '午'],
-  '申': ['酉', '戌'], '酉': ['申', '戌'], '戌': ['申', '酉'], '亥': ['子', '丑'],
+  子: ["丑", "亥"],
+  丑: ["子", "亥"],
+  寅: ["卯", "辰"],
+  卯: ["寅", "辰"],
+  辰: ["寅", "卯"],
+  巳: ["午", "未"],
+  午: ["巳", "未"],
+  未: ["巳", "午"],
+  申: ["酉", "戌"],
+  酉: ["申", "戌"],
+  戌: ["申", "酉"],
+  亥: ["子", "丑"],
 };
 
 const CLASH: Record<string, string> = {
-  '子': '午', '午': '子', '丑': '未', '未': '丑', '寅': '申', '申': '寅',
-  '卯': '酉', '酉': '卯', '辰': '戌', '戌': '辰', '巳': '亥', '亥': '巳',
+  子: "午",
+  午: "子",
+  丑: "未",
+  未: "丑",
+  寅: "申",
+  申: "寅",
+  卯: "酉",
+  酉: "卯",
+  辰: "戌",
+  戌: "辰",
+  巳: "亥",
+  亥: "巳",
 };
 
 const HARM: Record<string, string> = {
-  '子': '未', '未': '子', '丑': '午', '午': '丑', '寅': '巳', '巳': '寅',
-  '卯': '辰', '辰': '卯', '戌': '酉', '酉': '戌', '亥': '申', '申': '亥',
+  子: "未",
+  未: "子",
+  丑: "午",
+  午: "丑",
+  寅: "巳",
+  巳: "寅",
+  卯: "辰",
+  辰: "卯",
+  戌: "酉",
+  酉: "戌",
+  亥: "申",
+  申: "亥",
 };
 
 const DESTRUCTION: Record<string, string> = {
-  '子': '酉', '酉': '子', '丑': '辰', '辰': '丑', '寅': '亥', '亥': '寅',
-  '卯': '午', '午': '卯', '巳': '申', '申': '巳', '未': '戌', '戌': '未',
+  子: "酉",
+  酉: "子",
+  丑: "辰",
+  辰: "丑",
+  寅: "亥",
+  亥: "寅",
+  卯: "午",
+  午: "卯",
+  巳: "申",
+  申: "巳",
+  未: "戌",
+  戌: "未",
 };
 
 const PUNISHMENT: Record<string, string[]> = {
-  '子': ['卯'], '卯': ['子'], '丑': ['戌', '未'], '未': ['丑', '戌'],
-  '戌': ['丑', '未'], '寅': ['巳', '申'], '巳': ['寅', '申'], '申': ['寅', '巳'],
-  '辰': ['辰'], '午': ['午'], '酉': ['酉'], '亥': ['亥'],
+  子: ["卯"],
+  卯: ["子"],
+  丑: ["戌", "未"],
+  未: ["丑", "戌"],
+  戌: ["丑", "未"],
+  寅: ["巳", "申"],
+  巳: ["寅", "申"],
+  申: ["寅", "巳"],
+  辰: ["辰"],
+  午: ["午"],
+  酉: ["酉"],
+  亥: ["亥"],
 };
 
 const RELATIONSHIP_MULTIPLIERS: Record<string, number[]> = {
-  'sixHarmony': [1.0, 1.75, 3.0], // Add
-  'seasonalHarmony': [0.8, 1.5, 2.5], // Add
-  'elementalHarmony': [0.5, 1.0, 2.0], // Add
-  'clash': [-0.5, -1.75, -3.0], // Deduct
-  'harm': [-0.4, -1.5, -2.5], // Deduct
-  'destruction': [-0.3, -1.25, -2.25], // Deduct
-  'punishment': [-0.2, -1.0, -2.0], // Deduct
+  sixHarmony: [1.0, 1.75, 3.0], // Add
+  seasonalHarmony: [0.8, 1.5, 2.5], // Add
+  elementalHarmony: [0.5, 1.0, 2.0], // Add
+  clash: [-0.5, -1.75, -3.0], // Deduct
+  harm: [-0.4, -1.5, -2.5], // Deduct
+  destruction: [-0.3, -1.25, -2.25], // Deduct
+  punishment: [-0.2, -1.0, -2.0], // Deduct
 };
 
 const HEAVENLY_STEM_BASE_SCORES = [4, 5, 5, 4];
 
 // Five Elements mapping
 const FIVE_ELEMENTS: Record<string, string> = {
-  '甲': 'Wood', '乙': 'Wood',
-  '丙': 'Fire', '丁': 'Fire',
-  '戊': 'Earth', '己': 'Earth',
-  '庚': 'Metal', '辛': 'Metal',
-  '壬': 'Water', '癸': 'Water',
+  甲: "Wood",
+  乙: "Wood",
+  丙: "Fire",
+  丁: "Fire",
+  戊: "Earth",
+  己: "Earth",
+  庚: "Metal",
+  辛: "Metal",
+  壬: "Water",
+  癸: "Water",
 };
 
 // Step 6: Apply new branch interactions based on provided calculation method
 const SEASONAL_COMBINATIONS: Record<ElementType, string[]> = {
-  '水': ['亥', '子', '丑'],
-  '木': ['寅', '卯', '辰'],
-  '火': ['巳', '午', '未'],
-  '金': ['申', '酉', '戌'],
-  '土':[]
+  水: ["亥", "子", "丑"],
+  木: ["寅", "卯", "辰"],
+  火: ["巳", "午", "未"],
+  金: ["申", "酉", "戌"],
+  土: [],
 };
 
 const SEASONAL_FULL_ADJUSTMENTS: FullAdjustments = {
-  '水': { '壬': 3, '癸': 2, '己': -2.5, '甲': -1.5, '辛': -1 },
-  '木': { '甲': 3, '乙': 2, '戊': -2.5, '丙': -1.5, '癸': -1 },
-  '火': { '丙': 3, '丁': 2, '己': -2.5, '庚': -1.5, '乙': -1 },
-  '金': { '庚': 3, '辛': 2, '戊': -2.5, '壬': -1.5, '丁': -1 },
-  '土': {}
+  水: { 壬: 3, 癸: 2, 己: -2.5, 甲: -1.5, 辛: -1 },
+  木: { 甲: 3, 乙: 2, 戊: -2.5, 丙: -1.5, 癸: -1 },
+  火: { 丙: 3, 丁: 2, 己: -2.5, 庚: -1.5, 乙: -1 },
+  金: { 庚: 3, 辛: 2, 戊: -2.5, 壬: -1.5, 丁: -1 },
+  土: {},
 };
 
 const SEASONAL_PAIR_ADJUSTMENTS: PairAdjustments = {
-  '水': {
-    '亥,子': { '壬': 1, '癸': 1 },
-    '子,丑': { '癸': 0.5, '己': 1 }, // Also six harmony
+  水: {
+    "亥,子": { 壬: 1, 癸: 1 },
+    "子,丑": { 癸: 0.5, 己: 1 }, // Also six harmony
   },
-  '木': {
-    '寅,卯': { '甲': 1, '乙': 1 },
+  木: {
+    "寅,卯": { 甲: 1, 乙: 1 },
   },
-  '火': {
-    '巳,午': { '丙': 1, '丁': 1 },
-    '午,未': { '丁': 0.5, '己': 1 }, // Also six harmony
+  火: {
+    "巳,午": { 丙: 1, 丁: 1 },
+    "午,未": { 丁: 0.5, 己: 1 }, // Also six harmony
   },
-  '金': {
-    '申,酉': { '庚': 1, '辛': 1 },
+  金: {
+    "申,酉": { 庚: 1, 辛: 1 },
   },
-  '土': {}
-
+  土: {},
 };
 
 const ELEMENTAL_COMBINATIONS: Record<ElementType, string[]> = {
-  '水': ['申', '子', '辰'],
-  '木': ['亥', '卯', '未'],
-  '火': ['寅', '午', '戌'],
-  '金': ['巳', '酉', '丑'],
-  '土': []
+  水: ["申", "子", "辰"],
+  木: ["亥", "卯", "未"],
+  火: ["寅", "午", "戌"],
+  金: ["巳", "酉", "丑"],
+  土: [],
 };
 
 const ELEMENTAL_FULL_ADJUSTMENTS: FullAdjustments = {
-  '水': { '壬': 2, '癸': 1.5, '庚': -1, '戊': -1, '乙': -1 },
-  '木': { '甲': 2, '乙': 1.5, '己': -1, '丁': -1, '壬': -1 },
-  '火': { '丙': 2, '丁': 1.5, '己': 1, '戊': 1, '甲': -1, '辛': -1 },
-  '金': { '庚': 2, '辛': 1.5, '己': -1, '戊': -1, '癸': -1, '丙': -1 },
-  '土': {}
+  水: { 壬: 2, 癸: 1.5, 庚: -1, 戊: -1, 乙: -1 },
+  木: { 甲: 2, 乙: 1.5, 己: -1, 丁: -1, 壬: -1 },
+  火: { 丙: 2, 丁: 1.5, 己: 1, 戊: 1, 甲: -1, 辛: -1 },
+  金: { 庚: 2, 辛: 1.5, 己: -1, 戊: -1, 癸: -1, 丙: -1 },
+  土: {},
 };
 
 const ELEMENTAL_PAIR_ADJUSTMENTS: PairAdjustments = {
-  '水': {
-    '申,子': { '癸': 1 },
+  水: {
+    "申,子": { 癸: 1 },
   },
-  '木': {
-    '亥,卯': { '乙': 1 },
+  木: {
+    "亥,卯": { 乙: 1 },
   },
-  '火': {
-    '寅,午': { '丁': 1 },
+  火: {
+    "寅,午": { 丁: 1 },
   },
-  '金': {
-    '巳,酉': { '辛': 1 },
+  金: {
+    "巳,酉": { 辛: 1 },
   },
-  '土': {}
+  土: {},
 };
 
-const SIX_HARMONY_ADJUSTMENTS : PairSpecificAdjustments = {
-  '子,丑': { '癸': 0.5, '己': 1 },
-  '亥,寅': { '甲': 1 },
-  '卯,戌': { '丁': 1 },
-  '辰,酉': { '辛': 1 },
-  '巳,申': { '壬': 1 },
-  '午,未': { '丁': 0.5, '己': 1 },
+const SIX_HARMONY_ADJUSTMENTS: PairSpecificAdjustments = {
+  "子,丑": { 癸: 0.5, 己: 1 },
+  "亥,寅": { 甲: 1 },
+  "卯,戌": { 丁: 1 },
+  "辰,酉": { 辛: 1 },
+  "巳,申": { 壬: 1 },
+  "午,未": { 丁: 0.5, 己: 1 },
 };
 
-const CLASH_ADJUSTMENTS : PairSpecificAdjustments = {
-  '子,午': { '癸': -3, '丁': -3, '己': -1 },
-  '卯,酉': { '乙': -3, '辛': -3 },
-  '寅,申': { '甲': -2, '丙': -1, '戊': -0.5, '庚': -2, '壬': -1 },
-  '巳,亥': { '丙': -2, '庚': -1, '戊': -0.5, '壬': -2, '甲': -1 },
-  '辰,戌': { '戊': 2, '乙': -1, '癸': -0.5, '辛': -1, '丁': -0.5 },
-  '丑,未': { '己': 2, '癸': -1, '辛': -0.5, '丁': -1, '乙': -0.5 },
+const CLASH_ADJUSTMENTS: PairSpecificAdjustments = {
+  "子,午": { 癸: -3, 丁: -3, 己: -1 },
+  "卯,酉": { 乙: -3, 辛: -3 },
+  "寅,申": { 甲: -2, 丙: -1, 戊: -0.5, 庚: -2, 壬: -1 },
+  "巳,亥": { 丙: -2, 庚: -1, 戊: -0.5, 壬: -2, 甲: -1 },
+  "辰,戌": { 戊: 2, 乙: -1, 癸: -0.5, 辛: -1, 丁: -0.5 },
+  "丑,未": { 己: 2, 癸: -1, 辛: -0.5, 丁: -1, 乙: -0.5 },
 };
 
 const HARM_ADJUSTMENTS: PairSpecificAdjustments = {
-  '子,未': { '癸': -1.5, '己': -0.5, '丁': -0.5 },
-  '丑,午': { '己': 1, '癸': -1, '丁': -1, '辛': -0.5 },
-  '寅,巳': { '甲': -1, '庚': -1 },
-  '申,亥': { '甲': -1, '庚': -1 },
-  '卯,辰': { '戊': -1.5, '癸': -0.5 },
-  '酉,戌': { '戊': -0.5, '辛': -0.5 },
+  "子,未": { 癸: -1.5, 己: -0.5, 丁: -0.5 },
+  "丑,午": { 己: 1, 癸: -1, 丁: -1, 辛: -0.5 },
+  "寅,巳": { 甲: -1, 庚: -1 },
+  "申,亥": { 甲: -1, 庚: -1 },
+  "卯,辰": { 戊: -1.5, 癸: -0.5 },
+  "酉,戌": { 戊: -0.5, 辛: -0.5 },
 };
 
 const MUTUAL_PUNISHMENT_ADJUSTMENTS: PairSpecificAdjustments = {
-  '子,卯': { '癸': 1, '乙': 1 },
+  "子,卯": { 癸: 1, 乙: 1 },
 };
 
 const THREE_WAY_PUNISHMENT_ADJUSTMENTS: Record<string, StemAdjustment> = {
-  '寅,巳,申': { '甲': -1.5, '庚': -1.5, '丙': -1.5, '壬': -0.5, '戊': -0.5 },
-  '丑,未,戌': { '戊': 1.5, '己': 1.5, '癸': -1, '辛': -1, '丁': -1, '乙': -0.5 },
+  "寅,巳,申": { 甲: -1.5, 庚: -1.5, 丙: -1.5, 壬: -0.5, 戊: -0.5 },
+  "丑,未,戌": { 戊: 1.5, 己: 1.5, 癸: -1, 辛: -1, 丁: -1, 乙: -0.5 },
 };
 
 const SELF_PUNISHMENT_ADJUSTMENTS: Record<string, StemAdjustment> = {
-  '辰': { '戊': 1 },
-  '午': { '丁': 1 },
-  '酉': { '辛': 1 },
-  '亥': { '壬': 1 },
+  辰: { 戊: 1 },
+  午: { 丁: 1 },
+  酉: { 辛: 1 },
+  亥: { 壬: 1 },
 };
 
 // Define BRANCH_TO_ELEMENT mapping
 const BRANCH_TO_ELEMENT: Record<string, ElementType> = {
-  '子': '水',
-  '丑': '土',
-  '寅': '木',
-  '卯': '木',
-  '辰': '土',
-  '巳': '火',
-  '午': '火',
-  '未': '土',
-  '申': '金',
-  '酉': '金',
-  '戌': '土',
-  '亥': '水',
+  子: "水",
+  丑: "土",
+  寅: "木",
+  卯: "木",
+  辰: "土",
+  巳: "火",
+  午: "火",
+  未: "土",
+  申: "金",
+  酉: "金",
+  戌: "土",
+  亥: "水",
 };
 
 // Define PAIR_TO_ELEMENT mapping for pair-based adjustments
 const PAIR_TO_ELEMENT: Record<string, ElementType> = {
   // Six harmony pairs (based on BaZi harmony transformation elements)
-  '子,丑': '土', // 子丑合化土
-  '亥,寅': '木', // 寅亥合化木
-  '卯,戌': '火', // 卯戌合化火
-  '辰,酉': '金', // 辰酉合化金
-  '巳,申': '水', // 巳申合化水
-  '午,未': '火', // 午未合化火 (commonly Fire, though some systems use Earth)
+  "子,丑": "土", // 子丑合化土
+  "亥,寅": "木", // 寅亥合化木
+  "卯,戌": "火", // 卯戌合化火
+  "辰,酉": "金", // 辰酉合化金
+  "巳,申": "水", // 巳申合化水
+  "午,未": "火", // 午未合化火 (commonly Fire, though some systems use Earth)
   // Clash pairs (based on dominant element)
-  '子,午': '水', // 子午冲: Water vs. Fire, Water dominates
-  '卯,酉': '木', // 卯酉冲: Wood vs. Metal, Wood dominates
-  '寅,申': '木', // 寅申冲: Wood vs. Metal, Wood dominates
-  '巳,亥': '火', // 巳亥冲: Fire vs. Water, Fire dominates
-  '辰,戌': '土', // 辰戌冲: Earth vs. Earth
-  '丑,未': '土', // 丑未冲: Earth vs. Earth
+  "子,午": "水", // 子午冲: Water vs. Fire, Water dominates
+  "卯,酉": "木", // 卯酉冲: Wood vs. Metal, Wood dominates
+  "寅,申": "木", // 寅申冲: Wood vs. Metal, Wood dominates
+  "巳,亥": "火", // 巳亥冲: Fire vs. Water, Fire dominates
+  "辰,戌": "土", // 辰戌冲: Earth vs. Earth
+  "丑,未": "土", // 丑未冲: Earth vs. Earth
   // Harm pairs (based on primary affected element)
-  '子,未': '土', // 子未害: Earth (未) affected
-  '丑,午': '土', // 丑午害: Earth (丑) affected
-  '寅,巳': '木', // 寅巳害: Wood (寅) affected
-  '申,亥': '金', // 申亥害: Metal (申) affected
-  '卯,辰': '木', // 卯辰害: Wood (卯) affected
-  '酉,戌': '金', // 酉戌害: Metal (酉) affected
+  "子,未": "土", // 子未害: Earth (未) affected
+  "丑,午": "土", // 丑午害: Earth (丑) affected
+  "寅,巳": "木", // 寅巳害: Wood (寅) affected
+  "申,亥": "金", // 申亥害: Metal (申) affected
+  "卯,辰": "木", // 卯辰害: Wood (卯) affected
+  "酉,戌": "金", // 酉戌害: Metal (酉) affected
   // Mutual punishment
-  '子,卯': '水', // 子卯刑: Water (子) dominates
+  "子,卯": "水", // 子卯刑: Water (子) dominates
 };
 
 // Define COMBO_TO_ELEMENT for three-way punishments
 const COMBO_TO_ELEMENT: Record<string, ElementType> = {
-  '寅,巳,申': '木', // 寅巳申刑: Wood (寅) as primary influence
-  '丑,未,戌': '土', // 丑未戌刑: Earth as common element
+  "寅,巳,申": "木", // 寅巳申刑: Wood (寅) as primary influence
+  "丑,未,戌": "土", // 丑未戌刑: Earth as common element
 };
 
 const NOBLEMAN: Record<string, string[]> = {
-  '甲': ['丑', '未'], '戊': ['丑', '未'], '庚': ['丑', '未'],
-  '乙': ['子', '申'], '己': ['子', '申'],
-  '丙': ['亥', '酉'], '丁': ['亥', '酉'],
-  '辛': ['寅', '午'],
-  '壬': ['卯', '巳'], '癸': ['卯', '巳']
+  甲: ["丑", "未"],
+  戊: ["丑", "未"],
+  庚: ["丑", "未"],
+  乙: ["子", "申"],
+  己: ["子", "申"],
+  丙: ["亥", "酉"],
+  丁: ["亥", "酉"],
+  辛: ["寅", "午"],
+  壬: ["卯", "巳"],
+  癸: ["卯", "巳"],
 };
 
 const WENCHANG: Record<string, string> = {
-  '甲': '巳', '乙': '午', '丙': '申', '丁': '酉',
-  '戊': '申', '己': '酉', '庚': '亥', '辛': '子',
-  '壬': '寅', '癸': '卯'
+  甲: "巳",
+  乙: "午",
+  丙: "申",
+  丁: "酉",
+  戊: "申",
+  己: "酉",
+  庚: "亥",
+  辛: "子",
+  壬: "寅",
+  癸: "卯",
 };
 
 const TRAVELER_STAR: Record<string, string> = {
-  '子': '寅', '丑': '亥', '寅': '申', '卯': '巳',
-  '辰': '寅', '巳': '亥', '午': '申', '未': '巳',
-  '申': '寅', '酉': '亥', '戌': '申', '亥': '巳'
+  子: "寅",
+  丑: "亥",
+  寅: "申",
+  卯: "巳",
+  辰: "寅",
+  巳: "亥",
+  午: "申",
+  未: "巳",
+  申: "寅",
+  酉: "亥",
+  戌: "申",
+  亥: "巳",
 };
 
 const PEACH_BLOSSOM: Record<string, string> = {
-  '寅,午,戌': '卯',
-  '申,子,辰': '酉',
-  '亥,卯,未': '子',
-  '巳,酉,丑': '午'
+  "寅,午,戌": "卯",
+  "申,子,辰": "酉",
+  "亥,卯,未": "子",
+  "巳,酉,丑": "午",
 };
 
 const SOLITARY_STAR: Record<string, string> = {
-  '子': '寅', '丑': '寅', '寅': '巳', '卯': '巳',
-  '辰': '巳', '巳': '申', '午': '申', '未': '申',
-  '申': '亥', '酉': '亥', '戌': '亥', '亥': '寅'
+  子: "寅",
+  丑: "寅",
+  寅: "巳",
+  卯: "巳",
+  辰: "巳",
+  巳: "申",
+  午: "申",
+  未: "申",
+  申: "亥",
+  酉: "亥",
+  戌: "亥",
+  亥: "寅",
 };
-
 
 interface EightChar {
   getYun(genderNum: number, sect: number): any;
@@ -441,7 +767,7 @@ interface BaziResultChartProps {
 const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
   const eightChar: EightChar = lunar.getEightChar();
   // Luck Cycle
-  const genderNum = gender === 'male' ? 1 : 0;
+  const genderNum = gender === "male" ? 1 : 0;
   const yun = eightChar.getYun(genderNum, 2);
   const startSolar = yun.getStartSolar();
   const qiYun = `${startSolar.getYear()}年${startSolar.getMonth()}月${startSolar.getDay()}日`;
@@ -456,21 +782,22 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
       startYear: daYun.getStartYear(),
       startAge: daYun.getStartAge() - 1,
       ganZhi,
-      hiddenStems: daYunHiddenStems
+      hiddenStems: daYunHiddenStems,
     };
   });
   // Current DaYun
   const currentYearNum = new Date().getFullYear();
-  const currentDaYun = daYunArr.find((daYun: any) => {
-    const startYear = daYun.getStartYear();
-    const endYear = startYear + 10;
-    return currentYearNum >= startYear && currentYearNum < endYear;
-  }) || daYunArr[0]; // Default to first if none found
+  const currentDaYun =
+    daYunArr.find((daYun: any) => {
+      const startYear = daYun.getStartYear();
+      const endYear = startYear + 10;
+      return currentYearNum >= startYear && currentYearNum < endYear;
+    }) || daYunArr[0]; // Default to first if none found
   const daYunGanZhi = currentDaYun.getGanZhi();
   const daYunStem = daYunGanZhi.charAt(0);
   const daYunBranch = daYunGanZhi.charAt(1);
   const daYunHiddenStems = HIDDEN_STEMS[daYunBranch] || [];
-  
+
   // Current date
   const currentDate = new Date();
   const currentLunar = Lunar.fromDate(currentDate);
@@ -487,13 +814,13 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
     eightChar.getTime(),
   ];
 
-  const pillarStems = pillars.map(p => p.charAt(0));
-  const pillarBranches = pillars.map(p => p.charAt(1));
+  const pillarStems = pillars.map((p) => p.charAt(0));
+  const pillarBranches = pillars.map((p) => p.charAt(1));
   // Define hiddenStems for each pillar
-  const hiddenStems = pillarBranches.map((branch) => HIDDEN_STEMS[branch] || []);
+  const hiddenStems = pillarBranches.map(
+    (branch) => HIDDEN_STEMS[branch] || []
+  );
 
-
-  
   // Calculate Five Features
   const dayStem = pillarStems[2]; // Day Pillar Heavenly Stem
   const dayBranch = pillarBranches[2]; // Day Pillar Earthly Branch
@@ -502,79 +829,135 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
 
   // Nobleman (贵人)
   const noblemanBranches = NOBLEMAN[dayStem] || [];
-  const nobleman = noblemanBranches.map(branch => {
-    const zodiac = {
-      '子': 'Rat', '丑': 'Ox', '寅': 'Tiger', '卯': 'Rabbit', '辰': 'Dragon',
-      '巳': 'Snake', '午': 'Horse', '未': 'Goat', '申': 'Monkey', '酉': 'Rooster',
-      '戌': 'Dog', '亥': 'Pig'
-    }[branch] || branch;
-    return zodiac;
-  }).join(', ');
+  const nobleman = noblemanBranches
+    .map((branch) => {
+      const zodiac =
+        {
+          子: "Rat",
+          丑: "Ox",
+          寅: "Tiger",
+          卯: "Rabbit",
+          辰: "Dragon",
+          巳: "Snake",
+          午: "Horse",
+          未: "Goat",
+          申: "Monkey",
+          酉: "Rooster",
+          戌: "Dog",
+          亥: "Pig",
+        }[branch] || branch;
+      return zodiac;
+    })
+    .join(", ");
 
   // Wenchang Star (文昌星)
-  const wenchangBranch = WENCHANG[dayStem] || '';
-  const wenchang = wenchangBranch ? {
-    '子': 'Rat', '丑': 'Ox', '寅': 'Tiger', '卯': 'Rabbit', '辰': 'Dragon',
-    '巳': 'Snake', '午': 'Horse', '未': 'Goat', '申': 'Monkey', '酉': 'Rooster',
-    '戌': 'Dog', '亥': 'Pig'
-  }[wenchangBranch] || wenchangBranch : 'None';
+  const wenchangBranch = WENCHANG[dayStem] || "";
+  const wenchang = wenchangBranch
+    ? {
+        子: "Rat",
+        丑: "Ox",
+        寅: "Tiger",
+        卯: "Rabbit",
+        辰: "Dragon",
+        巳: "Snake",
+        午: "Horse",
+        未: "Goat",
+        申: "Monkey",
+        酉: "Rooster",
+        戌: "Dog",
+        亥: "Pig",
+      }[wenchangBranch] || wenchangBranch
+    : "None";
 
   // Traveler Star (驛馬)
-  const travelerBranch = TRAVELER_STAR[dayBranch] || '';
-  const travelerStar = travelerBranch ? {
-    '子': 'Rat', '丑': 'Ox', '寅': 'Tiger', '卯': 'Rabbit', '辰': 'Dragon',
-    '巳': 'Snake', '午': 'Horse', '未': 'Goat', '申': 'Monkey', '酉': 'Rooster',
-    '戌': 'Dog', '亥': 'Pig'
-  }[travelerBranch] || travelerBranch : 'None';
+  const travelerBranch = TRAVELER_STAR[dayBranch] || "";
+  const travelerStar = travelerBranch
+    ? {
+        子: "Rat",
+        丑: "Ox",
+        寅: "Tiger",
+        卯: "Rabbit",
+        辰: "Dragon",
+        巳: "Snake",
+        午: "Horse",
+        未: "Goat",
+        申: "Monkey",
+        酉: "Rooster",
+        戌: "Dog",
+        亥: "Pig",
+      }[travelerBranch] || travelerBranch
+    : "None";
 
   // Peach Blossom (桃花)
-  let peachBlossom = 'None';
+  let peachBlossom = "None";
   Object.entries(PEACH_BLOSSOM).forEach(([group, peachBranch]) => {
-    const groupBranches = group.split(',');
-    console.log("Group Branches: ",groupBranches)
-    console.log("Day Branches: ",dayBranch)
-    console.log("Year Branches: ",yearBranch)
-    console.log("Peach Branches: ",peachBranch)
-    if (groupBranches.includes(yearBranch) || groupBranches.includes(dayBranch)) {
-      
-        const zodiac = {
-          '子': 'Rat', '丑': 'Ox', '寅': 'Tiger', '卯': 'Rabbit', '辰': 'Dragon',
-          '巴': 'Snake', '午': 'Horse', '未': 'Goat', '申': 'Monkey', '酉': 'Rooster',
-          '戌': 'Dog', '亥': 'Pig'
+    const groupBranches = group.split(",");
+    console.log("Group Branches: ", groupBranches);
+    console.log("Day Branches: ", dayBranch);
+    console.log("Year Branches: ", yearBranch);
+    console.log("Peach Branches: ", peachBranch);
+    if (
+      groupBranches.includes(yearBranch) ||
+      groupBranches.includes(dayBranch)
+    ) {
+      const zodiac =
+        {
+          子: "Rat",
+          丑: "Ox",
+          寅: "Tiger",
+          卯: "Rabbit",
+          辰: "Dragon",
+          巴: "Snake",
+          午: "Horse",
+          未: "Goat",
+          申: "Monkey",
+          酉: "Rooster",
+          戌: "Dog",
+          亥: "Pig",
         }[peachBranch] || peachBranch;
-        peachBlossom = zodiac;
-      
+      peachBlossom = zodiac;
     }
   });
 
   // Solitary Star (孤辰)
-  const solitaryBranch = SOLITARY_STAR[yearBranch] || '';
-  const solitaryStar = solitaryBranch ? {
-    '子': 'Rat', '丑': 'Ox', '寅': 'Tiger', '卯': 'Rabbit', '辰': 'Dragon',
-    '巳': 'Snake', '午': 'Horse', '未': 'Goat', '申': 'Monkey', '酉': 'Rooster',
-    '戌': 'Dog', '亥': 'Pig'
-  }[solitaryBranch] || solitaryBranch : 'None';
-
+  const solitaryBranch = SOLITARY_STAR[yearBranch] || "";
+  const solitaryStar = solitaryBranch
+    ? {
+        子: "Rat",
+        丑: "Ox",
+        寅: "Tiger",
+        卯: "Rabbit",
+        辰: "Dragon",
+        巳: "Snake",
+        午: "Horse",
+        未: "Goat",
+        申: "Monkey",
+        酉: "Rooster",
+        戌: "Dog",
+        亥: "Pig",
+      }[solitaryBranch] || solitaryBranch
+    : "None";
 
   // Step 1: Assign all base scores (Heavenly Stems, Earthly Branches, Hidden Stems)
   const heavenlyStemScores: Record<string, number> = {};
   const stemScores: Record<string, Record<string, number>> = {
-    '0': {}, '1': {}, '2': {}, '3': {}, // Natal pillars (Year, Month, Day, Hour)
-    '4': {}, // DaYun pillar
-    '5': {}  // Annual pillar
+    "0": {},
+    "1": {},
+    "2": {},
+    "3": {}, // Natal pillars (Year, Month, Day, Hour)
+    "4": {}, // DaYun pillar
+    "5": {}, // Annual pillar
   };
 
-    // Initialize stemScores for all pillars
-    Object.keys(stemScores).forEach(pillarIndex => {
-      TIANGAN_ORDER.forEach(stem => {
-        stemScores[pillarIndex][stem] = 0;
-      });
+  // Initialize stemScores for all pillars
+  Object.keys(stemScores).forEach((pillarIndex) => {
+    TIANGAN_ORDER.forEach((stem) => {
+      stemScores[pillarIndex][stem] = 0;
     });
-
+  });
 
   // --- DaYun and Current Year Scoring (Separate) ---
   const daYunAnnualHeavenlyStemScores: Record<string, number> = {};
-
 
   const processPillar = (branch: string, index: number, stem: string) => {
     console.log(`Processing pillar ${index}: Branch=${branch}, Stem=${stem}`);
@@ -583,9 +966,13 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
     if (!heavenlyStemScores[stem]) {
       heavenlyStemScores[stem] = 0;
     }
-    console.log(`Before adding score: heavenlyStemScores[${stem}] = ${heavenlyStemScores[stem]}`);
+    console.log(
+      `Before adding score: heavenlyStemScores[${stem}] = ${heavenlyStemScores[stem]}`
+    );
     heavenlyStemScores[stem] += HEAVENLY_STEM_BASE_SCORES[index];
-    console.log(`After adding ${HEAVENLY_STEM_BASE_SCORES[index]}: heavenlyStemScores[${stem}] = ${heavenlyStemScores[stem]}`);
+    console.log(
+      `After adding ${HEAVENLY_STEM_BASE_SCORES[index]}: heavenlyStemScores[${stem}] = ${heavenlyStemScores[stem]}`
+    );
 
     const hidden = HIDDEN_STEMS[branch] || [];
     console.log(`Hidden stems for ${branch}:`, hidden);
@@ -593,21 +980,35 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
     let scores: number[] = [];
     if (index === 1) {
       // Month pillar scoring
-      console.log('Applying month pillar scoring');
+      console.log("Applying month pillar scoring");
       switch (hidden.length) {
-        case 1: scores = [12]; break;
-        case 2: scores = [8, 4]; break;
-        case 3: scores = [8, 3, 1]; break;
-        default: scores = [];
+        case 1:
+          scores = [12];
+          break;
+        case 2:
+          scores = [8, 4];
+          break;
+        case 3:
+          scores = [8, 3, 1];
+          break;
+        default:
+          scores = [];
       }
     } else {
       // Scoring for all other pillars (year, day, hour)
-      console.log('Applying other pillar scoring');
+      console.log("Applying other pillar scoring");
       switch (hidden.length) {
-        case 1: scores = [10]; break;
-        case 2: scores = [7, 3]; break;
-        case 3: scores = [6, 3, 1]; break;
-        default: scores = [];
+        case 1:
+          scores = [10];
+          break;
+        case 2:
+          scores = [7, 3];
+          break;
+        case 3:
+          scores = [6, 3, 1];
+          break;
+        default:
+          scores = [];
       }
     }
     console.log(`Assigned scores:`, scores);
@@ -617,178 +1018,230 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
     });
   };
 
-  pillarBranches.forEach((branch, index) => processPillar(branch, index, pillarStems[index]));
+  pillarBranches.forEach((branch, index) =>
+    processPillar(branch, index, pillarStems[index])
+  );
 
-// Process DaYun and Annual pillars (indices 4 and 5)
-const processDaYunAnnualPillar = (branch: string, index: number, stem: string) => {
-  console.log(`Processing DaYun/Annual pillar ${index}: Branch=${branch}, Stem=${stem}`);
+  // Process DaYun and Annual pillars (indices 4 and 5)
+  const processDaYunAnnualPillar = (
+    branch: string,
+    index: number,
+    stem: string
+  ) => {
+    console.log(
+      `Processing DaYun/Annual pillar ${index}: Branch=${branch}, Stem=${stem}`
+    );
 
-  // Validate inputs
-  if (!branch || !stem) {
-    console.log(`Warning: Invalid branch (${branch}) or stem (${stem}) for pillar ${index}`);
-    return;
-  }
-
-  // Assign Heavenly Stem base score
-  if (!daYunAnnualHeavenlyStemScores[stem]) {
-    daYunAnnualHeavenlyStemScores[stem] = 0;
-  }
-  console.log(`Before adding heavenly stem score: daYunAnnualHeavenlyStemScores[${stem}] = ${daYunAnnualHeavenlyStemScores[stem]}`);
-  const heavenlyStemBaseScore = index === 4 ? 4 : 2.5; // 4 for DaYun, 2.5 for Annual
-  daYunAnnualHeavenlyStemScores[stem] += heavenlyStemBaseScore;
-  console.log(`After adding ${heavenlyStemBaseScore}: daYunAnnualHeavenlyStemScores[${stem}] = ${daYunAnnualHeavenlyStemScores[stem]}`);
-
-  // Assign Earthly Branch base score directly to the branch in stemScores for the pillar
-  const branchBaseScore = index === 4 ? 6 : 4.5; // 6 for DaYun, 4.5 for Annual
-  console.log(`Assigning Earthly Branch ${branch} score=${branchBaseScore} to pillar ${index}`);
-
-  // Ensure stemScores for the pillar is initialized
-  if (!stemScores[index.toString()]) {
-    stemScores[index.toString()] = {};
-    console.log(`Initialized stemScores[${index}]`);
-  }
-
-  // Assign the full branch score to the Earthly Branch key
-  stemScores[index.toString()][branch] = (stemScores[index.toString()][branch] || 0) + branchBaseScore;
-  console.log(`Added ${branchBaseScore} to branch ${branch} in stemScores[${index}]`);
-
-  console.log(`stemScores[${index}] after update:`, JSON.parse(JSON.stringify(stemScores[index.toString()])));
-};
-
-
-  // Process DaYun and Current Year
-  processDaYunAnnualPillar(daYunBranch, 4, daYunStem);
-  processDaYunAnnualPillar(currentYearBranch,5, currentYearStem);
-  console.log("DaYun Annual Heavenly Stem Scores:", JSON.parse(JSON.stringify(daYunAnnualHeavenlyStemScores)));
-  console.log("Current Stem Scores:", JSON.parse(JSON.stringify(stemScores)));
-
-// Old Step 2: Apply seasonal multipliers to hidden stems (month branch only)
-// const monthBranch = pillarBranches[1];
-// console.log("Month branch:", monthBranch);
-// const seasonalMultipliers = SEASONAL_MULTIPLIERS[monthBranch] || {};
-// console.log("seasonalMultipliers:", seasonalMultipliers);
-
-// // Log stemScores before applying multipliers
-// console.log("Stem Score (before adding): ", stemScores);
-
-// // Apply seasonal multipliers to hidden stems
-// Object.keys(stemScores).forEach(pillarIndex => {
-//   const isMonthPillar = pillarIndex === '1';
-//   const pillarScores = stemScores[pillarIndex];
-
-//   Object.keys(pillarScores).forEach(stem => {
-//     console.log("The current stem: ", stem);
-//     const multiplier = seasonalMultipliers[stem] || 1.0;
-//     console.log("The corresponding multiplier: ", multiplier);
-//     console.log("Current pillar scores: ", pillarScores);
-//     const oldScore = pillarScores[stem];
-//     pillarScores[stem] *= multiplier;
-//     console.log(`Stem ${stem} in pillar ${pillarIndex}: Old Score = ${oldScore}, New Score = ${pillarScores[stem]}`);
-//   });
-
-//   // Apply additional 1.2 multiplier to hidden stems of the month pillar
-//   if (isMonthPillar) {
-//     console.log(`Applying additional 1.2 multiplier to hidden stems of month pillar (index ${pillarIndex})`);
-//     Object.keys(pillarScores).forEach(stem => {
-//       if (pillarScores[stem] > 0) { // Only apply to stems with a score
-//         const oldScore = pillarScores[stem];
-//         pillarScores[stem] *= 1.2;
-//         console.log(`Month Pillar Stem ${stem}: Old Score = ${oldScore}, After 1.2 Multiplier = ${pillarScores[stem]}`);
-//       }
-//     });
-//   }
-// });
-
-// // Log stemScores after applying multipliers
-// console.log("StemScore: ", stemScores);
-
-// // Apply seasonal multipliers to heavenly stems
-// Object.keys(heavenlyStemScores).forEach(stem => {
-//   const multiplier = seasonalMultipliers[stem] || 1.0;
-//   console.log(`Applying multiplier to heavenly stem ${stem}: ${multiplier}`);
-//   const oldScore = heavenlyStemScores[stem];
-//   heavenlyStemScores[stem] *= multiplier;
-//   console.log(`Heavenly Stem ${stem}: Old Score = ${oldScore}, New Score = ${heavenlyStemScores[stem]}`);
-// });
-
-
-
-// Step 2: Apply seasonal multipliers to hidden stems (month branch only, exclude month pillar hidden stems)
-const monthBranch = pillarBranches[1];
-console.log("Month branch:", monthBranch);
-const seasonalMultipliers = SEASONAL_MULTIPLIERS[monthBranch] || {};
-console.log("seasonalMultipliers:", seasonalMultipliers);
-
-// Get the hidden stems of the month pillar
-const monthHiddenStems = HIDDEN_STEMS[monthBranch] || [];
-console.log("Month pillar hidden stems (to exclude):", monthHiddenStems);
-
-// Log stemScores before applying multipliers
-console.log("Stem Scores (before applying multipliers):", stemScores);
-
-// Apply seasonal multipliers to hidden stems, excluding those from the month pillar
-Object.keys(stemScores).forEach(pillarIndex => {
-  // Skip DaYun and Annual pillars for seasonal multipliers
-  if (pillarIndex === '4' || pillarIndex === '5') return;
-
-  const isMonthPillar = pillarIndex === '1';
-  const pillarScores = stemScores[pillarIndex];
-
-  Object.keys(pillarScores).forEach(stem => {
-    // Skip if this is the month pillar and the stem is one of its hidden stems
-    if (isMonthPillar) {
-      console.log(`Skipping multiplier for stem ${stem} in pillar ${pillarIndex} because it is a hidden stem of the month pillar`);
+    // Validate inputs
+    if (!branch || !stem) {
+      console.log(
+        `Warning: Invalid branch (${branch}) or stem (${stem}) for pillar ${index}`
+      );
       return;
     }
 
-    const multiplier = seasonalMultipliers[stem] || 1.0;
-    console.log(`Applying multiplier to stem ${stem} in pillar ${pillarIndex}: ${multiplier}`);
-    const oldScore = pillarScores[stem];
-    pillarScores[stem] *= multiplier;
-    console.log(`Stem ${stem} in pillar ${pillarIndex}: Old Score = ${oldScore}, New Score = ${pillarScores[stem]}`);
+    // Assign Heavenly Stem base score
+    if (!daYunAnnualHeavenlyStemScores[stem]) {
+      daYunAnnualHeavenlyStemScores[stem] = 0;
+    }
+    console.log(
+      `Before adding heavenly stem score: daYunAnnualHeavenlyStemScores[${stem}] = ${daYunAnnualHeavenlyStemScores[stem]}`
+    );
+    const heavenlyStemBaseScore = index === 4 ? 4 : 2.5; // 4 for DaYun, 2.5 for Annual
+    daYunAnnualHeavenlyStemScores[stem] += heavenlyStemBaseScore;
+    console.log(
+      `After adding ${heavenlyStemBaseScore}: daYunAnnualHeavenlyStemScores[${stem}] = ${daYunAnnualHeavenlyStemScores[stem]}`
+    );
+
+    // Assign Earthly Branch base score directly to the branch in stemScores for the pillar
+    const branchBaseScore = index === 4 ? 6 : 4.5; // 6 for DaYun, 4.5 for Annual
+    console.log(
+      `Assigning Earthly Branch ${branch} score=${branchBaseScore} to pillar ${index}`
+    );
+
+    // Ensure stemScores for the pillar is initialized
+    if (!stemScores[index.toString()]) {
+      stemScores[index.toString()] = {};
+      console.log(`Initialized stemScores[${index}]`);
+    }
+
+    // Assign the full branch score to the Earthly Branch key
+    stemScores[index.toString()][branch] =
+      (stemScores[index.toString()][branch] || 0) + branchBaseScore;
+    console.log(
+      `Added ${branchBaseScore} to branch ${branch} in stemScores[${index}]`
+    );
+
+    console.log(
+      `stemScores[${index}] after update:`,
+      JSON.parse(JSON.stringify(stemScores[index.toString()]))
+    );
+  };
+
+  // Process DaYun and Current Year
+  processDaYunAnnualPillar(daYunBranch, 4, daYunStem);
+  processDaYunAnnualPillar(currentYearBranch, 5, currentYearStem);
+  console.log(
+    "DaYun Annual Heavenly Stem Scores:",
+    JSON.parse(JSON.stringify(daYunAnnualHeavenlyStemScores))
+  );
+  console.log("Current Stem Scores:", JSON.parse(JSON.stringify(stemScores)));
+
+  // Old Step 2: Apply seasonal multipliers to hidden stems (month branch only)
+  // const monthBranch = pillarBranches[1];
+  // console.log("Month branch:", monthBranch);
+  // const seasonalMultipliers = SEASONAL_MULTIPLIERS[monthBranch] || {};
+  // console.log("seasonalMultipliers:", seasonalMultipliers);
+
+  // // Log stemScores before applying multipliers
+  // console.log("Stem Score (before adding): ", stemScores);
+
+  // // Apply seasonal multipliers to hidden stems
+  // Object.keys(stemScores).forEach(pillarIndex => {
+  //   const isMonthPillar = pillarIndex === '1';
+  //   const pillarScores = stemScores[pillarIndex];
+
+  //   Object.keys(pillarScores).forEach(stem => {
+  //     console.log("The current stem: ", stem);
+  //     const multiplier = seasonalMultipliers[stem] || 1.0;
+  //     console.log("The corresponding multiplier: ", multiplier);
+  //     console.log("Current pillar scores: ", pillarScores);
+  //     const oldScore = pillarScores[stem];
+  //     pillarScores[stem] *= multiplier;
+  //     console.log(`Stem ${stem} in pillar ${pillarIndex}: Old Score = ${oldScore}, New Score = ${pillarScores[stem]}`);
+  //   });
+
+  //   // Apply additional 1.2 multiplier to hidden stems of the month pillar
+  //   if (isMonthPillar) {
+  //     console.log(`Applying additional 1.2 multiplier to hidden stems of month pillar (index ${pillarIndex})`);
+  //     Object.keys(pillarScores).forEach(stem => {
+  //       if (pillarScores[stem] > 0) { // Only apply to stems with a score
+  //         const oldScore = pillarScores[stem];
+  //         pillarScores[stem] *= 1.2;
+  //         console.log(`Month Pillar Stem ${stem}: Old Score = ${oldScore}, After 1.2 Multiplier = ${pillarScores[stem]}`);
+  //       }
+  //     });
+  //   }
+  // });
+
+  // // Log stemScores after applying multipliers
+  // console.log("StemScore: ", stemScores);
+
+  // // Apply seasonal multipliers to heavenly stems
+  // Object.keys(heavenlyStemScores).forEach(stem => {
+  //   const multiplier = seasonalMultipliers[stem] || 1.0;
+  //   console.log(`Applying multiplier to heavenly stem ${stem}: ${multiplier}`);
+  //   const oldScore = heavenlyStemScores[stem];
+  //   heavenlyStemScores[stem] *= multiplier;
+  //   console.log(`Heavenly Stem ${stem}: Old Score = ${oldScore}, New Score = ${heavenlyStemScores[stem]}`);
+  // });
+
+  // Step 2: Apply seasonal multipliers to hidden stems (month branch only, exclude month pillar hidden stems)
+  const monthBranch = pillarBranches[1];
+  console.log("Month branch:", monthBranch);
+  const seasonalMultipliers = SEASONAL_MULTIPLIERS[monthBranch] || {};
+  console.log("seasonalMultipliers:", seasonalMultipliers);
+
+  // Get the hidden stems of the month pillar
+  const monthHiddenStems = HIDDEN_STEMS[monthBranch] || [];
+  console.log("Month pillar hidden stems (to exclude):", monthHiddenStems);
+
+  // Log stemScores before applying multipliers
+  console.log("Stem Scores (before applying multipliers):", stemScores);
+
+  // Apply seasonal multipliers to hidden stems, excluding those from the month pillar
+  Object.keys(stemScores).forEach((pillarIndex) => {
+    // Skip DaYun and Annual pillars for seasonal multipliers
+    if (pillarIndex === "4" || pillarIndex === "5") return;
+
+    const isMonthPillar = pillarIndex === "1";
+    const pillarScores = stemScores[pillarIndex];
+
+    Object.keys(pillarScores).forEach((stem) => {
+      // Skip if this is the month pillar and the stem is one of its hidden stems
+      if (isMonthPillar) {
+        console.log(
+          `Skipping multiplier for stem ${stem} in pillar ${pillarIndex} because it is a hidden stem of the month pillar`
+        );
+        return;
+      }
+
+      const multiplier = seasonalMultipliers[stem] || 1.0;
+      console.log(
+        `Applying multiplier to stem ${stem} in pillar ${pillarIndex}: ${multiplier}`
+      );
+      const oldScore = pillarScores[stem];
+      pillarScores[stem] *= multiplier;
+      console.log(
+        `Stem ${stem} in pillar ${pillarIndex}: Old Score = ${oldScore}, New Score = ${pillarScores[stem]}`
+      );
+    });
+
+    // Apply additional 1.2 multiplier to hidden stems of the month pillar
+    if (isMonthPillar) {
+      console.log(
+        `Applying additional 1.1 multiplier to hidden stems of month pillar (index ${pillarIndex})`
+      );
+      Object.keys(pillarScores).forEach((stem) => {
+        if (pillarScores[stem] > 0) {
+          // Only apply to stems with a score
+          const oldScore = pillarScores[stem];
+          pillarScores[stem] *= 1.1;
+          console.log(
+            `Month Pillar Stem ${stem}: Old Score = ${oldScore}, After 1.2 Multiplier = ${pillarScores[stem]}`
+          );
+        }
+      });
+    }
+    console.log(
+      "Stem Scores (after applying multipliers):",
+      JSON.parse(JSON.stringify(stemScores))
+    );
   });
 
-  // Apply additional 1.2 multiplier to hidden stems of the month pillar
-  if (isMonthPillar) {
-    console.log(`Applying additional 1.1 multiplier to hidden stems of month pillar (index ${pillarIndex})`);
-    Object.keys(pillarScores).forEach(stem => {
-      if (pillarScores[stem] > 0) { // Only apply to stems with a score
-        const oldScore = pillarScores[stem];
-        pillarScores[stem] *= 1.1;
-        console.log(`Month Pillar Stem ${stem}: Old Score = ${oldScore}, After 1.2 Multiplier = ${pillarScores[stem]}`);
-      }
-    });
-  }
-  console.log("Stem Scores (after applying multipliers):", JSON.parse(JSON.stringify(stemScores)));
+  // Log stemScores after applying multipliers
+  console.log(
+    "Heavenly Stem Scores (before Step 2):",
+    JSON.parse(JSON.stringify(heavenlyStemScores))
+  );
 
-});
+  // Apply seasonal multipliers to heavenly stems, excluding the month pillar's heavenly stem
+  Object.keys(heavenlyStemScores).forEach((stem) => {
+    // Check if this stem is the month pillar's heavenly stem
+    const multiplier = seasonalMultipliers[stem] || 1.0;
+    console.log(`Applying multiplier to heavenly stem ${stem}: ${multiplier}`);
+    const oldScore = heavenlyStemScores[stem];
+    heavenlyStemScores[stem] *= multiplier;
+    console.log(
+      `Heavenly Stem ${stem}: Old Score = ${oldScore}, New Score = ${heavenlyStemScores[stem]}`
+    );
+  });
 
-// Log stemScores after applying multipliers
-console.log("Heavenly Stem Scores (before Step 2):", JSON.parse(JSON.stringify(heavenlyStemScores)));
-
-// Apply seasonal multipliers to heavenly stems, excluding the month pillar's heavenly stem
-Object.keys(heavenlyStemScores).forEach(stem => {
-  // Check if this stem is the month pillar's heavenly stem
-  const multiplier = seasonalMultipliers[stem] || 1.0;
-  console.log(`Applying multiplier to heavenly stem ${stem}: ${multiplier}`);
-  const oldScore = heavenlyStemScores[stem];
-  heavenlyStemScores[stem] *= multiplier;
-  console.log(`Heavenly Stem ${stem}: Old Score = ${oldScore}, New Score = ${heavenlyStemScores[stem]}`);
-});
-
-console.log("Heavenly Stem Scores (before applying multipliers):", JSON.parse(JSON.stringify(heavenlyStemScores)));
+  console.log(
+    "Heavenly Stem Scores (before applying multipliers):",
+    JSON.parse(JSON.stringify(heavenlyStemScores))
+  );
 
   // Step 3: Apply stem-branch multipliers to Heavenly Stems
   pillars.forEach((pillar, index) => {
     const stem = pillarStems[index];
     const branch = pillarBranches[index];
     const stemBranchMultiplier = STEM_BRANCH_MULTIPLIERS[branch]?.[stem] ?? 1.0;
-    console.log("Checker multiplier: For: ", branch, "On: ",stem, "Multiplier: ",stemBranchMultiplier)
+    console.log(
+      "Checker multiplier: For: ",
+      branch,
+      "On: ",
+      stem,
+      "Multiplier: ",
+      stemBranchMultiplier
+    );
     heavenlyStemScores[stem] *= stemBranchMultiplier;
   });
 
-  console.log("Heavenly Stem Scores (after applying Step 3):", JSON.parse(JSON.stringify(heavenlyStemScores)));
-
+  console.log(
+    "Heavenly Stem Scores (after applying Step 3):",
+    JSON.parse(JSON.stringify(heavenlyStemScores))
+  );
 
   // // Step 4: Apply inter-stem and branch relationship multipliers to Heavenly Stems
   // const calculateStemMultiplier = (stem: string): number => {
@@ -836,7 +1289,6 @@ console.log("Heavenly Stem Scores (before applying multipliers):", JSON.parse(JS
   //   heavenlyStemScores[stem] *= multiplier;
   // });
 
-  
   // Step 5: Heavenly Stem interactions with distance weightage
   const applyHeavenlyStemInteractions = () => {
     pillarStems.forEach((stem, pos) => {
@@ -852,534 +1304,771 @@ console.log("Heavenly Stem Scores (before applying multipliers):", JSON.parse(JS
   };
 
   applyHeavenlyStemInteractions();
-  console.log("Heavenly Stem Scores (after applying multipliers):", JSON.parse(JSON.stringify(heavenlyStemScores)));
-
-// Step 6: Apply branch interactions to hidden stem scores
-const applyBranchInteractions = (
-  branches: string[],
-  stemScores: Record<string, Record<string, number>>,
-  pillarIndices: string[],
-  isNatal: boolean = true
-) => {
-  console.log(`Applying branch interactions for branches: ${branches}, pillarIndices: ${pillarIndices}, isNatal: ${isNatal}`);
-  console.log(`Initial scores:`, JSON.parse(JSON.stringify(stemScores)));
-
-  // Track elements that have already had their adjustments applied (only for element-based interactions)
-  const appliedElements: Set<ElementType> = new Set();
-
-  // Collect adjacent branch pairs with their pillar indices (non-directional)
-  const branchPairs: { pair: string; indices: string[] }[] = [];
-  for (let i = 0; i < branches.length - 1; i++) {
-    const b1 = branches[i];
-    const b2 = branches[i + 1];
-    branchPairs.push({ pair: `${b1},${b2}`, indices: [pillarIndices[i], pillarIndices[i + 1]] });
-  }
-  console.log(`Adjacent branch pairs:`, branchPairs);
-
-  // Helper function to check if indices are consecutive
-  const areIndicesConsecutive = (indices: string[]): boolean => {
-    const numericIndices = indices.map(idx => pillarIndices.indexOf(idx)).sort((a, b) => a - b);
-    for (let i = 1; i < numericIndices.length; i++) {
-      if (numericIndices[i] !== numericIndices[i - 1] + 1) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-// Apply seasonal combinations (full, three branches)
-(Object.entries(SEASONAL_COMBINATIONS) as [ElementType, string[]][]).forEach(([element, combo]) => {
-  if (combo.every(b => branches.includes(b))) {
-    const involvedIndices = combo.map(branch => pillarIndices[branches.indexOf(branch)]);
-    if (appliedElements.has(element)) {
-      console.log(`Skipping seasonal combination for ${element}: ${combo} (already applied for this element)`);
-      return;
-    }
-    // Ensure indices exist
-    if (!involvedIndices.length) {
-      console.log(`No indices found for seasonal combination: ${combo}`);
-      return;
-    }
-    console.log(`Found seasonal combination for ${element}: ${combo}`);
-    const adjustments = SEASONAL_FULL_ADJUSTMENTS[element] || {};
-    const pillarIndex = involvedIndices[0]; // Choose the first index
-    Object.entries(adjustments).forEach(([stem, adj]) => {
-      console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for seasonal combination ${element}`);
-      stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-    });
-    appliedElements.add(element); // Mark element as applied
-  }
-});
-
-// Apply seasonal pair adjustments
-(Object.entries(SEASONAL_PAIR_ADJUSTMENTS) as [ElementType, Record<string, StemAdjustment>][]).forEach(([element, pairs]) => {
-  Object.entries(pairs).forEach(([pairKey, adjustments]) => {
-    // Split pairKey into branches (e.g., "A,B" -> ["A", "B"])
-    const [branch1, branch2] = pairKey.split(',');
-    // Find pair, checking both orderings (e.g., "A,B" or "B,A")
-    const pair = branchPairs.find(bp => 
-      bp.pair === `${branch1},${branch2}` || bp.pair === `${branch2},${branch1}`
-    );
-    if (!pair) {
-      console.log(`Skipping seasonal pair for ${element}: ${pairKey} (branches not adjacent)`);
-      return;
-    }
-    if (appliedElements.has(element)) {
-      console.log(`Skipping seasonal pair for ${element}: ${pairKey} (already applied for this element)`);
-      return;
-    }
-    console.log(`Found seasonal pair for ${element}: ${pairKey}`);
-    // Ensure indices exist
-    if (!pair.indices.length) {
-      console.log(`No indices found for seasonal pair: ${pairKey}`);
-      return;
-    }
-    const pillarIndex = pair.indices[0]; // Choose the first index
-    Object.entries(adjustments).forEach(([stem, adj]) => {
-      console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for seasonal pair ${pairKey}`);
-      stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-    });
-    appliedElements.add(element); // Mark element as applied
-  });
-});
-
-// Apply elemental combinations (full, three branches)
-(Object.entries(ELEMENTAL_COMBINATIONS) as [ElementType, string[]][]).forEach(([element, combo]) => {
-  if (combo.every(b => branches.includes(b))) {
-    const involvedIndices = combo.map(branch => pillarIndices[branches.indexOf(branch)]);
-    if (appliedElements.has(element)) {
-      console.log(`Skipping elemental combination for ${element}: ${combo} (already applied for this element)`);
-      return;
-    }
-    console.log(`Found elemental combination for ${element}: ${combo}`);
-    const adjustments = ELEMENTAL_FULL_ADJUSTMENTS[element] || {};
-    const pillarIndex = involvedIndices[0]; // Choose the first index
-    Object.entries(adjustments).forEach(([stem, adj]) => {
-      console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for elemental combination ${element}`);
-      stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-    });
-    appliedElements.add(element); // Mark element as applied
-  }
-});
-
-// Apply elemental pair adjustments
-(Object.entries(ELEMENTAL_PAIR_ADJUSTMENTS) as [ElementType, Record<string, StemAdjustment>][]).forEach(([element, pairs]) => {
-  Object.entries(pairs).forEach(([pairKey, adjustments]) => {
-    // Split pairKey into branches (e.g., "A,B" -> ["A", "B"])
-    const [branch1, branch2] = pairKey.split(',');
-    // Find pair, checking both orderings (e.g., "A,B" or "B,A")
-    const pair = branchPairs.find(bp => 
-      bp.pair === `${branch1},${branch2}` || bp.pair === `${branch2},${branch1}`
-    );
-    if (!pair) {
-      console.log(`Skipping elemental pair for ${element}: ${pairKey} (branches not adjacent)`);
-      return;
-    }
-    if (appliedElements.has(element)) {
-      console.log(`Skipping elemental pair for ${element}: ${pairKey} (already applied for this element)`);
-      return;
-    }
-    console.log(`Found elemental pair for ${element}: ${pairKey}`);
-    // Ensure indices exist
-    if (!pair.indices.length) {
-      console.log(`No indices found for elemental pair: ${pairKey}`);
-      return;
-    }
-    const pillarIndex = pair.indices[0]; // Choose the first index
-    Object.entries(adjustments).forEach(([stem, adj]) => {
-      console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for elemental pair ${pairKey}`);
-      stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-    });
-    appliedElements.add(element); // Mark element as applied
-  });
-});
-
-
-// Apply six harmony adjustments
-Object.entries(SIX_HARMONY_ADJUSTMENTS).forEach(([pairKey, adjustments]) => {
-  const element = PAIR_TO_ELEMENT[pairKey];
-  if (!element) {
-    console.log(`No element defined for six harmony pair: ${pairKey}`);
-    return;
-  }
-  const [branch1, branch2] = pairKey.split(',');
-  const pair = branchPairs.find(bp => 
-    bp.pair === `${branch1},${branch2}` || bp.pair === `${branch2},${branch1}`
+  console.log(
+    "Heavenly Stem Scores (after applying multipliers):",
+    JSON.parse(JSON.stringify(heavenlyStemScores))
   );
-  if (!pair) {
-    console.log(`Skipping six harmony pair for ${element}: ${pairKey} (branches not adjacent)`);
-    return;
-  }
-  if (appliedElements.has(element)) {
-    console.log(`Skipping six harmony pair for ${element}: ${pairKey} (already applied for this element)`);
-    return;
-  }
-  console.log(`Found six harmony pair for ${element}: ${pairKey}`);
-  const pillarIndex = pair.indices[0]; // Choose the first index
-  Object.entries(adjustments).forEach(([stem, adj]) => {
-    console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for six harmony pair ${pairKey}`);
-    stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-  });
-  appliedElements.add(element);
-});
 
-  // Apply clash adjustments
-  Object.entries(CLASH_ADJUSTMENTS).forEach(([pairKey, adjustments]) => {
-    const element = PAIR_TO_ELEMENT[pairKey];
-    if (!element) {
-      console.log(`No element defined for clash pair: ${pairKey}`);
-      return;
-    }
-    const [branch1, branch2] = pairKey.split(',');
-    const pair = branchPairs.find(bp => 
-      bp.pair === `${branch1},${branch2}` || bp.pair === `${branch2},${branch1}`
+  // Step 6: Apply branch interactions to hidden stem scores
+  const applyBranchInteractions = (
+    branches: string[],
+    stemScores: Record<string, Record<string, number>>,
+    pillarIndices: string[],
+    isNatal: boolean = true
+  ) => {
+    console.log(
+      `Applying branch interactions for branches: ${branches}, pillarIndices: ${pillarIndices}, isNatal: ${isNatal}`
     );
-    if (!pair) {
-      console.log(`Skipping clash pair for ${element}: ${pairKey} (branches not adjacent)`);
-      return;
-    }
-    if (appliedElements.has(element)) {
-      console.log(`Skipping clash pair for ${element}: ${pairKey} (already applied for this element)`);
-      return;
-    }
-    console.log(`Found clash pair for ${element}: ${pairKey}`);
-    const pillarIndex = pair.indices[0]; // Choose the first index
-    Object.entries(adjustments).forEach(([stem, adj]) => {
-      console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for clash pair ${pairKey}`);
-      stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-    });
-    appliedElements.add(element);
-  });
+    console.log(`Initial scores:`, JSON.parse(JSON.stringify(stemScores)));
 
-  // Apply harm adjustments
-  Object.entries(HARM_ADJUSTMENTS).forEach(([pairKey, adjustments]) => {
-    const element = PAIR_TO_ELEMENT[pairKey];
-    if (!element) {
-      console.log(`No element defined for harm pair: ${pairKey}`);
-      return;
+    // Track elements that have already had their adjustments applied (only for element-based interactions)
+    const appliedElements: Set<ElementType> = new Set();
+
+    // Collect adjacent branch pairs with their pillar indices (non-directional)
+    const branchPairs: { pair: string; indices: string[] }[] = [];
+    for (let i = 0; i < branches.length - 1; i++) {
+      const b1 = branches[i];
+      const b2 = branches[i + 1];
+      branchPairs.push({
+        pair: `${b1},${b2}`,
+        indices: [pillarIndices[i], pillarIndices[i + 1]],
+      });
     }
-    const [branch1, branch2] = pairKey.split(',');
-    const pair = branchPairs.find(bp => 
-      bp.pair === `${branch1},${branch2}` || bp.pair === `${branch2},${branch1}`
+    console.log(`Adjacent branch pairs:`, branchPairs);
+
+    // Helper function to check if indices are consecutive
+    const areIndicesConsecutive = (indices: string[]): boolean => {
+      const numericIndices = indices
+        .map((idx) => pillarIndices.indexOf(idx))
+        .sort((a, b) => a - b);
+      for (let i = 1; i < numericIndices.length; i++) {
+        if (numericIndices[i] !== numericIndices[i - 1] + 1) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    // Apply seasonal combinations (full, three branches)
+    (
+      Object.entries(SEASONAL_COMBINATIONS) as [ElementType, string[]][]
+    ).forEach(([element, combo]) => {
+      if (combo.every((b) => branches.includes(b))) {
+        const involvedIndices = combo.map(
+          (branch) => pillarIndices[branches.indexOf(branch)]
+        );
+        if (appliedElements.has(element)) {
+          console.log(
+            `Skipping seasonal combination for ${element}: ${combo} (already applied for this element)`
+          );
+          return;
+        }
+        // Ensure indices exist
+        if (!involvedIndices.length) {
+          console.log(`No indices found for seasonal combination: ${combo}`);
+          return;
+        }
+        console.log(`Found seasonal combination for ${element}: ${combo}`);
+        const adjustments = SEASONAL_FULL_ADJUSTMENTS[element] || {};
+        const pillarIndex = involvedIndices[0]; // Choose the first index
+        Object.entries(adjustments).forEach(([stem, adj]) => {
+          console.log(
+            `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for seasonal combination ${element}`
+          );
+          stemScores[pillarIndex][stem] =
+            (stemScores[pillarIndex][stem] || 0) + (adj as number);
+        });
+        appliedElements.add(element); // Mark element as applied
+      }
+    });
+
+    // Apply seasonal pair adjustments
+    (
+      Object.entries(SEASONAL_PAIR_ADJUSTMENTS) as [
+        ElementType,
+        Record<string, StemAdjustment>
+      ][]
+    ).forEach(([element, pairs]) => {
+      Object.entries(pairs).forEach(([pairKey, adjustments]) => {
+        // Split pairKey into branches (e.g., "A,B" -> ["A", "B"])
+        const [branch1, branch2] = pairKey.split(",");
+        // Find pair, checking both orderings (e.g., "A,B" or "B,A")
+        const pair = branchPairs.find(
+          (bp) =>
+            bp.pair === `${branch1},${branch2}` ||
+            bp.pair === `${branch2},${branch1}`
+        );
+        if (!pair) {
+          console.log(
+            `Skipping seasonal pair for ${element}: ${pairKey} (branches not adjacent)`
+          );
+          return;
+        }
+        if (appliedElements.has(element)) {
+          console.log(
+            `Skipping seasonal pair for ${element}: ${pairKey} (already applied for this element)`
+          );
+          return;
+        }
+        console.log(`Found seasonal pair for ${element}: ${pairKey}`);
+        // Ensure indices exist
+        if (!pair.indices.length) {
+          console.log(`No indices found for seasonal pair: ${pairKey}`);
+          return;
+        }
+        const pillarIndex = pair.indices[0]; // Choose the first index
+        Object.entries(adjustments).forEach(([stem, adj]) => {
+          console.log(
+            `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for seasonal pair ${pairKey}`
+          );
+          stemScores[pillarIndex][stem] =
+            (stemScores[pillarIndex][stem] || 0) + (adj as number);
+        });
+        appliedElements.add(element); // Mark element as applied
+      });
+    });
+
+    // Apply elemental combinations (full, three branches)
+    (
+      Object.entries(ELEMENTAL_COMBINATIONS) as [ElementType, string[]][]
+    ).forEach(([element, combo]) => {
+      if (combo.every((b) => branches.includes(b))) {
+        const involvedIndices = combo.map(
+          (branch) => pillarIndices[branches.indexOf(branch)]
+        );
+        if (appliedElements.has(element)) {
+          console.log(
+            `Skipping elemental combination for ${element}: ${combo} (already applied for this element)`
+          );
+          return;
+        }
+        console.log(`Found elemental combination for ${element}: ${combo}`);
+        const adjustments = ELEMENTAL_FULL_ADJUSTMENTS[element] || {};
+        const pillarIndex = involvedIndices[0]; // Choose the first index
+        Object.entries(adjustments).forEach(([stem, adj]) => {
+          console.log(
+            `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for elemental combination ${element}`
+          );
+          stemScores[pillarIndex][stem] =
+            (stemScores[pillarIndex][stem] || 0) + (adj as number);
+        });
+        appliedElements.add(element); // Mark element as applied
+      }
+    });
+
+    // Apply elemental pair adjustments
+    (
+      Object.entries(ELEMENTAL_PAIR_ADJUSTMENTS) as [
+        ElementType,
+        Record<string, StemAdjustment>
+      ][]
+    ).forEach(([element, pairs]) => {
+      Object.entries(pairs).forEach(([pairKey, adjustments]) => {
+        // Split pairKey into branches (e.g., "A,B" -> ["A", "B"])
+        const [branch1, branch2] = pairKey.split(",");
+        // Find pair, checking both orderings (e.g., "A,B" or "B,A")
+        const pair = branchPairs.find(
+          (bp) =>
+            bp.pair === `${branch1},${branch2}` ||
+            bp.pair === `${branch2},${branch1}`
+        );
+        if (!pair) {
+          console.log(
+            `Skipping elemental pair for ${element}: ${pairKey} (branches not adjacent)`
+          );
+          return;
+        }
+        if (appliedElements.has(element)) {
+          console.log(
+            `Skipping elemental pair for ${element}: ${pairKey} (already applied for this element)`
+          );
+          return;
+        }
+        console.log(`Found elemental pair for ${element}: ${pairKey}`);
+        // Ensure indices exist
+        if (!pair.indices.length) {
+          console.log(`No indices found for elemental pair: ${pairKey}`);
+          return;
+        }
+        const pillarIndex = pair.indices[0]; // Choose the first index
+        Object.entries(adjustments).forEach(([stem, adj]) => {
+          console.log(
+            `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for elemental pair ${pairKey}`
+          );
+          stemScores[pillarIndex][stem] =
+            (stemScores[pillarIndex][stem] || 0) + (adj as number);
+        });
+        appliedElements.add(element); // Mark element as applied
+      });
+    });
+
+    // Apply six harmony adjustments
+    Object.entries(SIX_HARMONY_ADJUSTMENTS).forEach(
+      ([pairKey, adjustments]) => {
+        const element = PAIR_TO_ELEMENT[pairKey];
+        if (!element) {
+          console.log(`No element defined for six harmony pair: ${pairKey}`);
+          return;
+        }
+        const [branch1, branch2] = pairKey.split(",");
+        const pair = branchPairs.find(
+          (bp) =>
+            bp.pair === `${branch1},${branch2}` ||
+            bp.pair === `${branch2},${branch1}`
+        );
+        if (!pair) {
+          console.log(
+            `Skipping six harmony pair for ${element}: ${pairKey} (branches not adjacent)`
+          );
+          return;
+        }
+        if (appliedElements.has(element)) {
+          console.log(
+            `Skipping six harmony pair for ${element}: ${pairKey} (already applied for this element)`
+          );
+          return;
+        }
+        console.log(`Found six harmony pair for ${element}: ${pairKey}`);
+        const pillarIndex = pair.indices[0]; // Choose the first index
+        Object.entries(adjustments).forEach(([stem, adj]) => {
+          console.log(
+            `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for six harmony pair ${pairKey}`
+          );
+          stemScores[pillarIndex][stem] =
+            (stemScores[pillarIndex][stem] || 0) + (adj as number);
+        });
+        appliedElements.add(element);
+      }
     );
-    if (!pair) {
-      console.log(`Skipping harm pair for ${element}: ${pairKey} (branches not adjacent)`);
-      return;
-    }
-    if (appliedElements.has(element)) {
-      console.log(`Skipping harm pair for ${element}: ${pairKey} (already applied for this element)`);
-      return;
-    }
-    console.log(`Found harm pair for ${element}: ${pairKey}`);
-    const pillarIndex = pair.indices[0]; // Choose the first index
-    Object.entries(adjustments).forEach(([stem, adj]) => {
-      console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for harm pair ${pairKey}`);
-      stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-    });
-    appliedElements.add(element);
-  });
 
-  // Apply mutual punishment adjustments
-  Object.entries(MUTUAL_PUNISHMENT_ADJUSTMENTS).forEach(([pairKey, adjustments]) => {
-    const element = PAIR_TO_ELEMENT[pairKey];
-    if (!element) {
-      console.log(`No element defined for mutual punishment pair: ${pairKey}`);
-      return;
-    }
-    const [branch1, branch2] = pairKey.split(',');
-    const pair = branchPairs.find(bp => 
-      bp.pair === `${branch1},${branch2}` || bp.pair === `${branch2},${branch1}`
-    );
-    if (!pair) {
-      console.log(`Skipping mutual punishment pair for ${element}: ${pairKey} (branches not adjacent)`);
-      return;
-    }
-    if (appliedElements.has(element)) {
-      console.log(`Skipping mutual punishment pair for ${element}: ${pairKey} (already applied for this element)`);
-      return;
-    }
-    console.log(`Found mutual punishment pair for ${element}: ${pairKey}`);
-    const pillarIndex = pair.indices[0]; // Choose the first index
-    Object.entries(adjustments).forEach(([stem, adj]) => {
-      console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for mutual punishment pair ${pairKey}`);
-      stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-    });
-    appliedElements.add(element);
-  });
-
-  // Apply three-way punishment adjustments
-  Object.entries(THREE_WAY_PUNISHMENT_ADJUSTMENTS).forEach(([comboKey, adjustments]) => {
-    const element = COMBO_TO_ELEMENT[comboKey];
-    if (!element) {
-      console.log(`No element defined for three-way punishment: ${comboKey}`);
-      return;
-    }
-    const branchesRequired = comboKey.split(',');
-    if (branchesRequired.every(b => branches.includes(b))) {
-      const involvedIndices = branchesRequired.map(branch => pillarIndices[branches.indexOf(branch)]);
-      if (!areIndicesConsecutive(involvedIndices)) {
-        console.log(`Skipping three-way punishment for ${element}: ${comboKey} (branches not adjacent)`);
+    // Apply clash adjustments
+    Object.entries(CLASH_ADJUSTMENTS).forEach(([pairKey, adjustments]) => {
+      const element = PAIR_TO_ELEMENT[pairKey];
+      if (!element) {
+        console.log(`No element defined for clash pair: ${pairKey}`);
+        return;
+      }
+      const [branch1, branch2] = pairKey.split(",");
+      const pair = branchPairs.find(
+        (bp) =>
+          bp.pair === `${branch1},${branch2}` ||
+          bp.pair === `${branch2},${branch1}`
+      );
+      if (!pair) {
+        console.log(
+          `Skipping clash pair for ${element}: ${pairKey} (branches not adjacent)`
+        );
         return;
       }
       if (appliedElements.has(element)) {
-        console.log(`Skipping three-way punishment for ${element}: ${comboKey} (already applied for this element)`);
+        console.log(
+          `Skipping clash pair for ${element}: ${pairKey} (already applied for this element)`
+        );
         return;
       }
-      console.log(`Found three-way punishment for ${element}: ${comboKey}`);
-      involvedIndices.forEach(pillarIndex => {
-        Object.entries(adjustments).forEach(([stem, adj]) => {
-          console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for three-way punishment ${comboKey}`);
-          stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-        });
+      console.log(`Found clash pair for ${element}: ${pairKey}`);
+      const pillarIndex = pair.indices[0]; // Choose the first index
+      Object.entries(adjustments).forEach(([stem, adj]) => {
+        console.log(
+          `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for clash pair ${pairKey}`
+        );
+        stemScores[pillarIndex][stem] =
+          (stemScores[pillarIndex][stem] || 0) + (adj as number);
       });
       appliedElements.add(element);
-    }
-  });
+    });
 
-  // Apply self-punishment for adjacent identical natal branches
-  if (isNatal) {
-    for (let i = 0; i < branches.length - 1; i++) {
-      if (branches[i] === branches[i + 1] && SELF_PUNISHMENT_ADJUSTMENTS[branches[i]]) {
-        console.log(`Found self-punishment for adjacent branches: ${branches[i]}`);
-        const adjustments = SELF_PUNISHMENT_ADJUSTMENTS[branches[i]];
-        const pillarIndex1 = pillarIndices[i];
-        const pillarIndex2 = pillarIndices[i + 1];
-        [pillarIndex1, pillarIndex2].forEach(pillarIndex => {
-          Object.entries(adjustments).forEach(([stem, adj]) => {
-            console.log(`Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for self-punishment ${branches[i]}`);
-            stemScores[pillarIndex][stem] = (stemScores[pillarIndex][stem] || 0) + (adj as number);
-          });
+    // Apply harm adjustments
+    Object.entries(HARM_ADJUSTMENTS).forEach(([pairKey, adjustments]) => {
+      const element = PAIR_TO_ELEMENT[pairKey];
+      if (!element) {
+        console.log(`No element defined for harm pair: ${pairKey}`);
+        return;
+      }
+      const [branch1, branch2] = pairKey.split(",");
+      const pair = branchPairs.find(
+        (bp) =>
+          bp.pair === `${branch1},${branch2}` ||
+          bp.pair === `${branch2},${branch1}`
+      );
+      if (!pair) {
+        console.log(
+          `Skipping harm pair for ${element}: ${pairKey} (branches not adjacent)`
+        );
+        return;
+      }
+      if (appliedElements.has(element)) {
+        console.log(
+          `Skipping harm pair for ${element}: ${pairKey} (already applied for this element)`
+        );
+        return;
+      }
+      console.log(`Found harm pair for ${element}: ${pairKey}`);
+      const pillarIndex = pair.indices[0]; // Choose the first index
+      Object.entries(adjustments).forEach(([stem, adj]) => {
+        console.log(
+          `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for harm pair ${pairKey}`
+        );
+        stemScores[pillarIndex][stem] =
+          (stemScores[pillarIndex][stem] || 0) + (adj as number);
+      });
+      appliedElements.add(element);
+    });
+
+    // Apply mutual punishment adjustments
+    Object.entries(MUTUAL_PUNISHMENT_ADJUSTMENTS).forEach(
+      ([pairKey, adjustments]) => {
+        const element = PAIR_TO_ELEMENT[pairKey];
+        if (!element) {
+          console.log(
+            `No element defined for mutual punishment pair: ${pairKey}`
+          );
+          return;
+        }
+        const [branch1, branch2] = pairKey.split(",");
+        const pair = branchPairs.find(
+          (bp) =>
+            bp.pair === `${branch1},${branch2}` ||
+            bp.pair === `${branch2},${branch1}`
+        );
+        if (!pair) {
+          console.log(
+            `Skipping mutual punishment pair for ${element}: ${pairKey} (branches not adjacent)`
+          );
+          return;
+        }
+        if (appliedElements.has(element)) {
+          console.log(
+            `Skipping mutual punishment pair for ${element}: ${pairKey} (already applied for this element)`
+          );
+          return;
+        }
+        console.log(`Found mutual punishment pair for ${element}: ${pairKey}`);
+        const pillarIndex = pair.indices[0]; // Choose the first index
+        Object.entries(adjustments).forEach(([stem, adj]) => {
+          console.log(
+            `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for mutual punishment pair ${pairKey}`
+          );
+          stemScores[pillarIndex][stem] =
+            (stemScores[pillarIndex][stem] || 0) + (adj as number);
         });
+        appliedElements.add(element);
+      }
+    );
+
+    // Apply three-way punishment adjustments
+    Object.entries(THREE_WAY_PUNISHMENT_ADJUSTMENTS).forEach(
+      ([comboKey, adjustments]) => {
+        const element = COMBO_TO_ELEMENT[comboKey];
+        if (!element) {
+          console.log(
+            `No element defined for three-way punishment: ${comboKey}`
+          );
+          return;
+        }
+        const branchesRequired = comboKey.split(",");
+        if (branchesRequired.every((b) => branches.includes(b))) {
+          const involvedIndices = branchesRequired.map(
+            (branch) => pillarIndices[branches.indexOf(branch)]
+          );
+          if (!areIndicesConsecutive(involvedIndices)) {
+            console.log(
+              `Skipping three-way punishment for ${element}: ${comboKey} (branches not adjacent)`
+            );
+            return;
+          }
+          if (appliedElements.has(element)) {
+            console.log(
+              `Skipping three-way punishment for ${element}: ${comboKey} (already applied for this element)`
+            );
+            return;
+          }
+          console.log(`Found three-way punishment for ${element}: ${comboKey}`);
+          involvedIndices.forEach((pillarIndex) => {
+            Object.entries(adjustments).forEach(([stem, adj]) => {
+              console.log(
+                `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for three-way punishment ${comboKey}`
+              );
+              stemScores[pillarIndex][stem] =
+                (stemScores[pillarIndex][stem] || 0) + (adj as number);
+            });
+          });
+          appliedElements.add(element);
+        }
+      }
+    );
+
+    // Apply self-punishment for adjacent identical natal branches
+    if (isNatal) {
+      for (let i = 0; i < branches.length - 1; i++) {
+        if (
+          branches[i] === branches[i + 1] &&
+          SELF_PUNISHMENT_ADJUSTMENTS[branches[i]]
+        ) {
+          console.log(
+            `Found self-punishment for adjacent branches: ${branches[i]}`
+          );
+          const adjustments = SELF_PUNISHMENT_ADJUSTMENTS[branches[i]];
+          const pillarIndex1 = pillarIndices[i];
+          const pillarIndex2 = pillarIndices[i + 1];
+          [pillarIndex1, pillarIndex2].forEach((pillarIndex) => {
+            Object.entries(adjustments).forEach(([stem, adj]) => {
+              console.log(
+                `Adjusting ${stem} in pillar ${pillarIndex} by ${adj} for self-punishment ${branches[i]}`
+              );
+              stemScores[pillarIndex][stem] =
+                (stemScores[pillarIndex][stem] || 0) + (adj as number);
+            });
+          });
+        }
       }
     }
-  }
 
-  console.log(`Final scores after interactions:`, JSON.parse(JSON.stringify(stemScores)));
-};
-  
+    console.log(
+      `Final scores after interactions:`,
+      JSON.parse(JSON.stringify(stemScores))
+    );
+  };
 
   // Log initial scores before Step 6
   console.log("Before Step 6 - Natal stemScores:", { ...stemScores });
 
   // Apply Step 6 to natal pillar hidden stem scores
-  applyBranchInteractions(pillarBranches, stemScores, ['0', '1', '2', '3'], true);
+  applyBranchInteractions(
+    pillarBranches,
+    stemScores,
+    ["0", "1", "2", "3"],
+    true
+  );
 
   // Log scores after Step 6
   console.log("After Step 6 - Natal stemScores:", { ...stemScores });
 
-
-
-
-
-  // DaYun calculation 
+  // DaYun calculation
 
   // New Step 2.1: Apply Five Elements interactions (上下) for DaYun and Annual pillars
- // Five Elements interactions (generate and control cycles)
- const fiveElementInteractions = {
-  generate: {
-    'Wood': 'Fire',
-    'Fire': 'Earth',
-    'Earth': 'Metal',
-    'Metal': 'Water',
-    'Water': 'Wood',
-  },
-  control: {
-    'Wood': 'Earth',
-    'Earth': 'Water',
-    'Water': 'Fire',
-    'Fire': 'Metal',
-    'Metal': 'Wood',
-  },
-};
+  // Five Elements interactions (generate and control cycles)
+  const fiveElementInteractions = {
+    generate: {
+      Wood: "Fire",
+      Fire: "Earth",
+      Earth: "Metal",
+      Metal: "Water",
+      Water: "Wood",
+    },
+    control: {
+      Wood: "Earth",
+      Earth: "Water",
+      Water: "Fire",
+      Fire: "Metal",
+      Metal: "Wood",
+    },
+  };
 
-const ELEMENT_RELATIONS = {
-  Wood: { produces: 'Fire', counters: 'Earth', producedBy: 'Water', counteredBy: 'Metal' },
-  Fire: { produces: 'Earth', counters: 'Metal', producedBy: 'Wood', counteredBy: 'Water' },
-  Earth: { produces: 'Metal', counters: 'Water', producedBy: 'Fire', counteredBy: 'Wood' },
-  Metal: { produces: 'Water', counters: 'Wood', producedBy: 'Earth', counteredBy: 'Fire' },
-  Water: { produces: 'Wood', counters: 'Fire', producedBy: 'Metal', counteredBy: 'Earth' }
-};
+  const ELEMENT_RELATIONS = {
+    Wood: {
+      produces: "Fire",
+      counters: "Earth",
+      producedBy: "Water",
+      counteredBy: "Metal",
+    },
+    Fire: {
+      produces: "Earth",
+      counters: "Metal",
+      producedBy: "Wood",
+      counteredBy: "Water",
+    },
+    Earth: {
+      produces: "Metal",
+      counters: "Water",
+      producedBy: "Fire",
+      counteredBy: "Wood",
+    },
+    Metal: {
+      produces: "Water",
+      counters: "Wood",
+      producedBy: "Earth",
+      counteredBy: "Fire",
+    },
+    Water: {
+      produces: "Wood",
+      counters: "Fire",
+      producedBy: "Metal",
+      counteredBy: "Earth",
+    },
+  };
 
-// Scoring adjustments based on pillar type (LP or AP)
-const interactionAdjustments = {
-  InterStem: {
-    generate: -1.0,    // Produce
-    generated: 1.0,    // Being Produced
-    control: -1.5,     // Counter
-    controlled: -2.0,  // Being Countered
-  },
-  LP: {
-    generate: -0.5,    // Produce
-    generated: 0.5,    // Being Produce
-    control: -1.0,     // Counter
-    controlled: -1.5,  // Being Countered
-  },
-  AP: {
-    generate: -1.5,    // Produce
-    generated: 1.5,    // Being Produce
-    control: -2.0,     // Counter
-    controlled: -2.5,  // Being Countered
-  },
-};
+  // Scoring adjustments based on pillar type (LP or AP)
+  const interactionAdjustments = {
+    InterStem: {
+      generate: -1.0, // Produce
+      generated: 1.0, // Being Produced
+      control: -1.5, // Counter
+      controlled: -2.0, // Being Countered
+    },
+    LP: {
+      generate: -0.5, // Produce
+      generated: 0.5, // Being Produce
+      control: -1.0, // Counter
+      controlled: -1.5, // Being Countered
+    },
+    AP: {
+      generate: -1.5, // Produce
+      generated: 1.5, // Being Produce
+      control: -2.0, // Counter
+      controlled: -2.5, // Being Countered
+    },
+  };
 
-// Function to get interaction type and score adjustment based on pillar type
-const getInteraction = (stem1: string, elem2: string, interactionType: 'InterStem' | 'LP' | 'AP'): { type: string, adjustment: number } => {
-  const elem1 = FIVE_ELEMENTS[stem1]; // Map the Heavenly Stem to its element
-  console.log(`Calculating interaction between Stem=${stem1} (${elem1}) and Element=${elem2}, Type=${interactionType}`);
+  // Function to get interaction type and score adjustment based on pillar type
+  const getInteraction = (
+    stem1: string,
+    elem2: string,
+    interactionType: "InterStem" | "LP" | "AP"
+  ): { type: string; adjustment: number } => {
+    const elem1 = FIVE_ELEMENTS[stem1]; // Map the Heavenly Stem to its element
+    console.log(
+      `Calculating interaction between Stem=${stem1} (${elem1}) and Element=${elem2}, Type=${interactionType}`
+    );
 
-  const adjustments = interactionAdjustments[interactionType];
+    const adjustments = interactionAdjustments[interactionType];
 
-  // Check Produce (生)
-  if (fiveElementInteractions.generate[elem1] === elem2) {
-    return { type: 'generate', adjustment: adjustments.generate }; // Stem1 produces elem2
-  }
-  // Check Being Produced (被生)
-  if (fiveElementInteractions.generate[elem2] === elem1) {
-    return { type: 'generated', adjustment: adjustments.generated }; // Stem1 is produced by elem2
-  }
-  // Check Counter (克)
-  if (fiveElementInteractions.control[elem1] === elem2) {
-    return { type: 'control', adjustment: adjustments.control }; // Stem1 counters elem2
-  }
-  // Check Being Countered (被克)
-  if (fiveElementInteractions.control[elem2] === elem1) {
-    return { type: 'controlled', adjustment: adjustments.controlled }; // Stem1 is countered by elem2
-  }
-  return { type: 'none', adjustment: 0 }; // No interaction
-};
+    // Check Produce (生)
+    if (
+      fiveElementInteractions.generate[
+        elem1 as keyof typeof fiveElementInteractions.generate
+      ] === elem2
+    ) {
+      return { type: "generate", adjustment: adjustments.generate }; // Stem1 produces elem2
+    }
+    // Check Being Produced (被生)
+    if (
+      fiveElementInteractions.generate[
+        elem2 as keyof typeof fiveElementInteractions.generate
+      ] === elem1
+    ) {
+      return { type: "generated", adjustment: adjustments.generated }; // Stem1 is produced by elem2
+    }
+    // Check Counter (克)
+    if (
+      fiveElementInteractions.control[
+        elem1 as keyof typeof fiveElementInteractions.generate
+      ] === elem2
+    ) {
+      return { type: "control", adjustment: adjustments.control }; // Stem1 counters elem2
+    }
+    // Check Being Countered (被克)
+    if (
+      fiveElementInteractions.control[
+        elem2 as keyof typeof fiveElementInteractions.generate
+      ] === elem1
+    ) {
+      return { type: "controlled", adjustment: adjustments.controlled }; // Stem1 is countered by elem2
+    }
+    return { type: "none", adjustment: 0 }; // No interaction
+  };
 
-// Step 2.1: Up-Down (Inter Stem) interactions within each pillar
-const applyInterStemInteractions = (stem: string, branch: string, pillarIndex: string, pillarType: 'LP' | 'AP') => {
-  console.log(`Step 2.1: Applying up-down interactions for ${pillarType}: Stem=${stem}, Branch=${branch}, Pillar=${pillarIndex}`);
+  // Step 2.1: Up-Down (Inter Stem) interactions within each pillar
+  const applyInterStemInteractions = (
+    stem: string,
+    branch: string,
+    pillarIndex: string,
+    pillarType: "LP" | "AP"
+  ) => {
+    console.log(
+      `Step 2.1: Applying up-down interactions for ${pillarType}: Stem=${stem}, Branch=${branch}, Pillar=${pillarIndex}`
+    );
 
-  // Map the Heavenly Stem and Earthly Branch to their elements
-  const stemElement = FIVE_ELEMENTS[stem];
-  const branchElement = BRANCH_TO_ELEMENT[branch] || 'Earth'; // Default to Earth if not found
-  console.log(`Stem ${stem} element: ${stemElement}, Branch ${branch} element: ${branchElement}`);
+    // Map the Heavenly Stem and Earthly Branch to their elements
+    const stemElement = FIVE_ELEMENTS[stem];
+    const branchElement = BRANCH_TO_ELEMENT[branch] || "Earth"; // Default to Earth if not found
+    console.log(
+      `Stem ${stem} element: ${stemElement}, Branch ${branch} element: ${branchElement}`
+    );
 
-  // Calculate interaction between the Heavenly Stem and the Earthly Branch
-  const interaction = getInteraction(stem, branchElement, 'InterStem');
-  console.log(`Interaction between Stem=${stem} (${stemElement}) and Branch=${branch} (${branchElement}): ${interaction.type}, Adjustment=${interaction.adjustment}`);
+    // Calculate interaction between the Heavenly Stem and the Earthly Branch
+    const interaction = getInteraction(stem, branchElement, "InterStem");
+    console.log(
+      `Interaction between Stem=${stem} (${stemElement}) and Branch=${branch} (${branchElement}): ${interaction.type}, Adjustment=${interaction.adjustment}`
+    );
 
-  // Adjust Heavenly Stem score
-  daYunAnnualHeavenlyStemScores[stem] = (daYunAnnualHeavenlyStemScores[stem] || 0) + interaction.adjustment;
+    // Adjust Heavenly Stem score
+    daYunAnnualHeavenlyStemScores[stem] =
+      (daYunAnnualHeavenlyStemScores[stem] || 0) + interaction.adjustment;
 
-  // Adjust Earthly Branch score (forward perspective)
-  stemScores[pillarIndex][branch] = (stemScores[pillarIndex][branch] || 0) + interaction.adjustment;
+    // Adjust Earthly Branch score (forward perspective)
+    stemScores[pillarIndex][branch] =
+      (stemScores[pillarIndex][branch] || 0) + interaction.adjustment;
 
-  // Apply reverse interaction (Branch to Heavenly Stem)
-  const reverseInteraction = getInteraction(branchElement, stem, 'InterStem');
-  console.log(`Reverse interaction between Branch=${branch} (${branchElement}) and Stem=${stem} (${stemElement}): ${reverseInteraction.type}, Adjustment=${reverseInteraction.adjustment}`);
+    // Apply reverse interaction (Branch to Heavenly Stem)
+    const reverseInteraction = getInteraction(branchElement, stem, "InterStem");
+    console.log(
+      `Reverse interaction between Branch=${branch} (${branchElement}) and Stem=${stem} (${stemElement}): ${reverseInteraction.type}, Adjustment=${reverseInteraction.adjustment}`
+    );
 
-  // Adjust Earthly Branch score
-  stemScores[pillarIndex][branch] = (stemScores[pillarIndex][branch] || 0) + reverseInteraction.adjustment;
-  // Adjust Heavenly Stem score
-  daYunAnnualHeavenlyStemScores[stem] = (daYunAnnualHeavenlyStemScores[stem] || 0) + reverseInteraction.adjustment;
-};
+    // Adjust Earthly Branch score
+    stemScores[pillarIndex][branch] =
+      (stemScores[pillarIndex][branch] || 0) + reverseInteraction.adjustment;
+    // Adjust Heavenly Stem score
+    daYunAnnualHeavenlyStemScores[stem] =
+      (daYunAnnualHeavenlyStemScores[stem] || 0) +
+      reverseInteraction.adjustment;
+  };
 
-// Step 2.2: Luck Pillar affects Annual Pillar
-const applyLuckAffectsAnnual = () => {
-  console.log('Step 2.2: Applying Luck Pillar affects Annual Pillar interactions');
+  // Step 2.2: Luck Pillar affects Annual Pillar
+  const applyLuckAffectsAnnual = () => {
+    console.log(
+      "Step 2.2: Applying Luck Pillar affects Annual Pillar interactions"
+    );
 
-  // Map DaYun Stem and Annual Branch to their elements
-  const daYunStemElement = FIVE_ELEMENTS[daYunStem];
-  const annualBranchElement = BRANCH_TO_ELEMENT[currentYearBranch] || 'Earth';
-  console.log(`DaYun Stem ${daYunStem} element: ${daYunStemElement}, Annual Branch ${currentYearBranch} element: ${annualBranchElement}`);
+    // Map DaYun Stem and Annual Branch to their elements
+    const daYunStemElement = FIVE_ELEMENTS[daYunStem];
+    const annualBranchElement = BRANCH_TO_ELEMENT[currentYearBranch] || "Earth";
+    console.log(
+      `DaYun Stem ${daYunStem} element: ${daYunStemElement}, Annual Branch ${currentYearBranch} element: ${annualBranchElement}`
+    );
 
-  // Calculate interaction: DaYun Stem affects Annual Branch
-  const interaction = getInteraction(daYunStem, annualBranchElement, 'LP');
-  console.log(`Interaction between DaYun Stem=${daYunStem} (${daYunStemElement}) and Annual Branch=${currentYearBranch} (${annualBranchElement}): ${interaction.type}, Adjustment=${interaction.adjustment}`);
+    // Calculate interaction: DaYun Stem affects Annual Branch
+    const interaction = getInteraction(daYunStem, annualBranchElement, "LP");
+    console.log(
+      `Interaction between DaYun Stem=${daYunStem} (${daYunStemElement}) and Annual Branch=${currentYearBranch} (${annualBranchElement}): ${interaction.type}, Adjustment=${interaction.adjustment}`
+    );
 
-  // Adjust DaYun Heavenly Stem score
-  daYunAnnualHeavenlyStemScores[daYunStem] = (daYunAnnualHeavenlyStemScores[daYunStem] || 0) + interaction.adjustment;
-  // Adjust Annual Branch score
-  stemScores['5'][currentYearBranch] = (stemScores['5'][currentYearBranch] || 0) + interaction.adjustment;
+    // Adjust DaYun Heavenly Stem score
+    daYunAnnualHeavenlyStemScores[daYunStem] =
+      (daYunAnnualHeavenlyStemScores[daYunStem] || 0) + interaction.adjustment;
+    // Adjust Annual Branch score
+    stemScores["5"][currentYearBranch] =
+      (stemScores["5"][currentYearBranch] || 0) + interaction.adjustment;
 
-  // Apply reverse interaction: Annual Branch affects DaYun Stem
-  const reverseInteraction = getInteraction(annualBranchElement, daYunStem, 'AP');
-  console.log(`Reverse interaction between Annual Branch=${currentYearBranch} (${annualBranchElement}) and DaYun Stem=${daYunStem} (${daYunStemElement}): ${reverseInteraction.type}, Adjustment=${reverseInteraction.adjustment}`);
+    // Apply reverse interaction: Annual Branch affects DaYun Stem
+    const reverseInteraction = getInteraction(
+      annualBranchElement,
+      daYunStem,
+      "AP"
+    );
+    console.log(
+      `Reverse interaction between Annual Branch=${currentYearBranch} (${annualBranchElement}) and DaYun Stem=${daYunStem} (${daYunStemElement}): ${reverseInteraction.type}, Adjustment=${reverseInteraction.adjustment}`
+    );
 
-  // Adjust Annual Branch score
-  stemScores['5'][currentYearBranch] = (stemScores['5'][currentYearBranch] || 0) + reverseInteraction.adjustment;
-  // Adjust DaYun Heavenly Stem score
-  daYunAnnualHeavenlyStemScores[daYunStem] = (daYunAnnualHeavenlyStemScores[daYunStem] || 0) + reverseInteraction.adjustment;
-};
+    // Adjust Annual Branch score
+    stemScores["5"][currentYearBranch] =
+      (stemScores["5"][currentYearBranch] || 0) + reverseInteraction.adjustment;
+    // Adjust DaYun Heavenly Stem score
+    daYunAnnualHeavenlyStemScores[daYunStem] =
+      (daYunAnnualHeavenlyStemScores[daYunStem] || 0) +
+      reverseInteraction.adjustment;
+  };
 
-// Step 2.3: Annual Pillar affects Luck Pillar
-const applyAnnualAffectsLuck = () => {
-  console.log('Step 2.3: Applying Annual Pillar affects Luck Pillar interactions');
+  // Step 2.3: Annual Pillar affects Luck Pillar
+  const applyAnnualAffectsLuck = () => {
+    console.log(
+      "Step 2.3: Applying Annual Pillar affects Luck Pillar interactions"
+    );
 
-  // Map Annual Stem and DaYun Branch to their elements
-  const annualStemElement = FIVE_ELEMENTS[currentYearStem];
-  const daYunBranchElement = BRANCH_TO_ELEMENT[daYunBranch] || 'Earth';
-  console.log(`Annual Stem ${currentYearStem} element: ${annualStemElement}, DaYun Branch ${daYunBranch} element: ${daYunBranchElement}`);
+    // Map Annual Stem and DaYun Branch to their elements
+    const annualStemElement = FIVE_ELEMENTS[currentYearStem];
+    const daYunBranchElement = BRANCH_TO_ELEMENT[daYunBranch] || "Earth";
+    console.log(
+      `Annual Stem ${currentYearStem} element: ${annualStemElement}, DaYun Branch ${daYunBranch} element: ${daYunBranchElement}`
+    );
 
-  // Calculate interaction: Annual Stem affects DaYun Branch
-  const interaction = getInteraction(currentYearStem, daYunBranchElement, 'AP');
-  console.log(`Interaction between Annual Stem=${currentYearStem} (${annualStemElement}) and DaYun Branch=${daYunBranch} (${daYunBranchElement}): ${interaction.type}, Adjustment=${interaction.adjustment}`);
+    // Calculate interaction: Annual Stem affects DaYun Branch
+    const interaction = getInteraction(
+      currentYearStem,
+      daYunBranchElement,
+      "AP"
+    );
+    console.log(
+      `Interaction between Annual Stem=${currentYearStem} (${annualStemElement}) and DaYun Branch=${daYunBranch} (${daYunBranchElement}): ${interaction.type}, Adjustment=${interaction.adjustment}`
+    );
 
-  // Adjust Annual Heavenly Stem score
-  daYunAnnualHeavenlyStemScores[currentYearStem] = (daYunAnnualHeavenlyStemScores[currentYearStem] || 0) + interaction.adjustment;
-  // Adjust DaYun Branch score
-  stemScores['4'][daYunBranch] = (stemScores['4'][daYunBranch] || 0) + interaction.adjustment;
+    // Adjust Annual Heavenly Stem score
+    daYunAnnualHeavenlyStemScores[currentYearStem] =
+      (daYunAnnualHeavenlyStemScores[currentYearStem] || 0) +
+      interaction.adjustment;
+    // Adjust DaYun Branch score
+    stemScores["4"][daYunBranch] =
+      (stemScores["4"][daYunBranch] || 0) + interaction.adjustment;
 
-  // Apply reverse interaction: DaYun Branch affects Annual Stem
-  const reverseInteraction = getInteraction(daYunBranchElement, currentYearStem, 'LP');
-  console.log(`Reverse interaction between DaYun Branch=${daYunBranch} (${daYunBranchElement}) and Annual Stem=${currentYearStem} (${annualStemElement}): ${reverseInteraction.type}, Adjustment=${reverseInteraction.adjustment}`);
+    // Apply reverse interaction: DaYun Branch affects Annual Stem
+    const reverseInteraction = getInteraction(
+      daYunBranchElement,
+      currentYearStem,
+      "LP"
+    );
+    console.log(
+      `Reverse interaction between DaYun Branch=${daYunBranch} (${daYunBranchElement}) and Annual Stem=${currentYearStem} (${annualStemElement}): ${reverseInteraction.type}, Adjustment=${reverseInteraction.adjustment}`
+    );
 
-  // Adjust DaYun Branch score
-  stemScores['4'][daYunBranch] = (stemScores['4'][daYunBranch] || 0) + reverseInteraction.adjustment;
-  // Adjust Annual Heavenly Stem score
-  daYunAnnualHeavenlyStemScores[currentYearStem] = (daYunAnnualHeavenlyStemScores[currentYearStem] || 0) + reverseInteraction.adjustment;
-};
+    // Adjust DaYun Branch score
+    stemScores["4"][daYunBranch] =
+      (stemScores["4"][daYunBranch] || 0) + reverseInteraction.adjustment;
+    // Adjust Annual Heavenly Stem score
+    daYunAnnualHeavenlyStemScores[currentYearStem] =
+      (daYunAnnualHeavenlyStemScores[currentYearStem] || 0) +
+      reverseInteraction.adjustment;
+  };
 
   // Execute Steps
   // Step 2.1: Up-Down (Inter Stem) interactions
-  applyInterStemInteractions(daYunStem, daYunBranch, '4', 'LP');
-  applyInterStemInteractions(currentYearStem, currentYearBranch, '5', 'AP');
+  applyInterStemInteractions(daYunStem, daYunBranch, "4", "LP");
+  applyInterStemInteractions(currentYearStem, currentYearBranch, "5", "AP");
 
   // Step 2.2: Luck affects Annual
   applyLuckAffectsAnnual();
 
   // Step 2.3: Annual affects Luck
   applyAnnualAffectsLuck();
- 
-  console.log("Current daYunAnnualHeavenlyStemScores, ", JSON.parse(JSON.stringify(daYunAnnualHeavenlyStemScores)) )
-  console.log("Current daYunAnnualStemScores, ", JSON.parse(JSON.stringify(stemScores)) )
+
+  console.log(
+    "Current daYunAnnualHeavenlyStemScores, ",
+    JSON.parse(JSON.stringify(daYunAnnualHeavenlyStemScores))
+  );
+  console.log(
+    "Current daYunAnnualStemScores, ",
+    JSON.parse(JSON.stringify(stemScores))
+  );
   // Calculate natal-only combined stem scores
   const natalCombinedStemScores: Record<string, number> = {};
-  TIANGAN_ORDER.forEach(stem => {
+  TIANGAN_ORDER.forEach((stem) => {
     natalCombinedStemScores[stem] = 0;
     // Sum hidden stem scores across natal pillars (0 to 3)
     for (let i = 0; i <= 3; i++) {
-      console.log("Stemscore to string: ",stemScores[i.toString()] )
+      console.log("Stemscore to string: ", stemScores[i.toString()]);
       natalCombinedStemScores[stem] += stemScores[i.toString()][stem] || 0;
-      console.log("Current natal score: ", natalCombinedStemScores)
+      console.log("Current natal score: ", natalCombinedStemScores);
     }
     // Add heavenly stem scores
     if (heavenlyStemScores[stem]) {
-      console.log("Adding heavenly stems scores...")
+      console.log("Adding heavenly stems scores...");
       natalCombinedStemScores[stem] += heavenlyStemScores[stem];
     }
   });
 
-    // Calculate total combined stem scores
-  const totalNatalCombinedStemScores = Object.values(natalCombinedStemScores).reduce((sum, score) => sum + score, 0);
+  // Calculate total combined stem scores
+  const totalNatalCombinedStemScores = Object.values(
+    natalCombinedStemScores
+  ).reduce((sum, score) => sum + score, 0);
 
-    // Convert scores to percentages
+  // Convert scores to percentages
   const natalStemPercentages: Record<string, string> = {};
-  TIANGAN_ORDER.forEach(stem => {
-    natalStemPercentages[stem] = natalCombinedStemScores[stem] > 0 
-      ? (natalCombinedStemScores[stem] / totalNatalCombinedStemScores * 100).toFixed(2)
-      : "0.00"; // Use string "0.00" to match the type
+  TIANGAN_ORDER.forEach((stem) => {
+    natalStemPercentages[stem] =
+      natalCombinedStemScores[stem] > 0
+        ? (
+            (natalCombinedStemScores[stem] / totalNatalCombinedStemScores) *
+            100
+          ).toFixed(2)
+        : "0.00"; // Use string "0.00" to match the type
   });
 
   // Calculate DaYun+Annual combined scores
   const combinedDaYunAnnualScores: Record<string, number> = {};
-  TIANGAN_ORDER.forEach(stem => {
+  TIANGAN_ORDER.forEach((stem) => {
     combinedDaYunAnnualScores[stem] = 0;
     // Sum hidden stem scores for DaYun (4) and Annual (5) pillars
-    ['4', '5'].forEach(pillarIndex => {
+    ["4", "5"].forEach((pillarIndex) => {
       combinedDaYunAnnualScores[stem] += stemScores[pillarIndex][stem] || 0;
     });
     // Add DaYun and Annual heavenly stem scores
@@ -1389,11 +2078,11 @@ const applyAnnualAffectsLuck = () => {
   });
 
   const daYunAnnualElementScores: Record<string, number> = {
-    'Wood': 0,
-    'Fire': 0,
-    'Earth': 0,
-    'Metal': 0,
-    'Water': 0
+    Wood: 0,
+    Fire: 0,
+    Earth: 0,
+    Metal: 0,
+    Water: 0,
   };
   Object.entries(combinedDaYunAnnualScores).forEach(([stem, score]) => {
     const element = FIVE_ELEMENTS[stem];
@@ -1404,30 +2093,39 @@ const applyAnnualAffectsLuck = () => {
 
   // Element adjustment (If there are two elements sharing the same score)
 
-  const sortedFiveElements = Object.entries(daYunAnnualElementScores)
-  .sort(([, scoreA], [, scoreB]) => scoreB - scoreA);
+  const sortedFiveElements = Object.entries(daYunAnnualElementScores).sort(
+    ([, scoreA], [, scoreB]) => scoreB - scoreA
+  );
 
   // Check if the top two elements are tied
   const [topElement, topScore] = sortedFiveElements[0];
   const [secondElement, secondScore] = sortedFiveElements[1];
 
   if (topScore === secondScore) {
-    console.log(`Tie detected: ${topElement} (${topScore}) and ${secondElement} (${secondScore}) are tied`);
+    console.log(
+      `Tie detected: ${topElement} (${topScore}) and ${secondElement} (${secondScore}) are tied`
+    );
 
     // Only apply tiebreaker if the tied elements are Water and Wood
     if (
-      (topElement === 'Water' && secondElement === 'Wood') ||
-      (topElement === 'Wood' && secondElement === 'Water')
+      (topElement === "Water" && secondElement === "Wood") ||
+      (topElement === "Wood" && secondElement === "Water")
     ) {
       // Count Water branches (亥, 子) and Wood branches (寅, 卯) in DaYun and Annual pillars
-      const waterBranches = ['亥', '子'];
-      const woodBranches = ['寅', '卯'];
+      const waterBranches = ["亥", "子"];
+      const woodBranches = ["寅", "卯"];
 
       const branches = [daYunBranch, currentYearBranch];
-      console.log(`DaYun Branch: ${daYunBranch}, Annual Branch: ${currentYearBranch}`);
+      console.log(
+        `DaYun Branch: ${daYunBranch}, Annual Branch: ${currentYearBranch}`
+      );
 
-      const waterCount = branches.filter(branch => waterBranches.includes(branch)).length;
-      const woodCount = branches.filter(branch => woodBranches.includes(branch)).length;
+      const waterCount = branches.filter((branch) =>
+        waterBranches.includes(branch)
+      ).length;
+      const woodCount = branches.filter((branch) =>
+        woodBranches.includes(branch)
+      ).length;
 
       console.log(`Water branches (亥, 子) count: ${waterCount}`);
       console.log(`Wood branches (寅, 卯) count: ${woodCount}`);
@@ -1435,15 +2133,19 @@ const applyAnnualAffectsLuck = () => {
       // Apply tiebreaker: +1 to the element with more associated branches
       if (waterCount > woodCount) {
         console.log("Water wins tiebreaker: +1 to Water");
-        daYunAnnualElementScores['Water'] += 1;
+        daYunAnnualElementScores["Water"] += 1;
       } else if (woodCount > waterCount) {
         console.log("Wood wins tiebreaker: +1 to Wood");
-        daYunAnnualElementScores['Wood'] += 1;
+        daYunAnnualElementScores["Wood"] += 1;
       } else {
-        console.log("Tiebreaker: Equal number of Water and Wood branches, no bonus applied");
+        console.log(
+          "Tiebreaker: Equal number of Water and Wood branches, no bonus applied"
+        );
       }
     } else {
-      console.log("Tiebreaker not applicable: Tied elements are not Water and Wood");
+      console.log(
+        "Tiebreaker not applicable: Tied elements are not Water and Wood"
+      );
     }
   } else {
     console.log("No tie: Proceeding with current scores");
@@ -1451,31 +2153,36 @@ const applyAnnualAffectsLuck = () => {
 
   // Adjust DaYun+Annual Element Scores based on top two elements gap
   const sortedElements = Object.entries(daYunAnnualElementScores)
-  .sort((a, b) => b[1] - a[1]) // Sort descending by score
-  .map(([element, score]) => ({ element, score }));
+    .sort((a, b) => b[1] - a[1]) // Sort descending by score
+    .map(([element, score]) => ({ element, score }));
 
   const strongestElement = sortedElements[0].element;
   const secondStrongestElement = sortedElements[1].element;
   const gap = sortedElements[0].score - sortedElements[1].score;
 
-  console.log(`Strongest Element: ${strongestElement}, Score: ${sortedElements[0].score}`);
-  console.log(`Second Strongest Element: ${secondStrongestElement}, Score: ${sortedElements[1].score}`);
+  console.log(
+    `Strongest Element: ${strongestElement}, Score: ${sortedElements[0].score}`
+  );
+  console.log(
+    `Second Strongest Element: ${secondStrongestElement}, Score: ${sortedElements[1].score}`
+  );
   console.log(`Gap between top two elements: ${gap}`);
 
   // Define adjustments based on gap
-  const adjustments = gap < 4
-    ? {
-        produces: 1,
-        producedBy: -0.5,
-        counters: -1.5,
-        counteredBy: -1
-      }
-    : {
-        produces: 2.5,
-        producedBy: -1,
-        counters: -2,
-        counteredBy: -1.5
-      };
+  const adjustments =
+    gap < 4
+      ? {
+          produces: 1,
+          producedBy: -0.5,
+          counters: -1.5,
+          counteredBy: -1,
+        }
+      : {
+          produces: 2.5,
+          producedBy: -1,
+          counters: -2,
+          counteredBy: -1.5,
+        };
 
   // Apply adjustments to daYunAnnualElementScores
   Object.keys(daYunAnnualElementScores).forEach((element) => {
@@ -1484,105 +2191,143 @@ const applyAnnualAffectsLuck = () => {
       return;
     }
 
-    const relations = ELEMENT_RELATIONS[element as keyof typeof ELEMENT_RELATIONS];
+    const relations =
+      ELEMENT_RELATIONS[element as keyof typeof ELEMENT_RELATIONS];
     if (relations.produces === strongestElement) {
       daYunAnnualElementScores[element] += adjustments.producedBy;
-      console.log(`Adjusting ${element} (producedBy) by ${adjustments.producedBy}`);
+      console.log(
+        `Adjusting ${element} (producedBy) by ${adjustments.producedBy}`
+      );
     } else if (relations.producedBy === strongestElement) {
       daYunAnnualElementScores[element] += adjustments.produces;
       console.log(`Adjusting ${element} (produces) by ${adjustments.produces}`);
     } else if (relations.counters === strongestElement) {
       daYunAnnualElementScores[element] += adjustments.counteredBy;
-      console.log(`Adjusting ${element} (counteredBy) by ${adjustments.counteredBy}`);
+      console.log(
+        `Adjusting ${element} (counteredBy) by ${adjustments.counteredBy}`
+      );
     } else if (relations.counteredBy === strongestElement) {
       daYunAnnualElementScores[element] += adjustments.counters;
       console.log(`Adjusting ${element} (counters) by ${adjustments.counters}`);
     }
   });
 
-  console.log("Adjusted DaYun+Annual Element Scores: ", daYunAnnualElementScores);
+  console.log(
+    "Adjusted DaYun+Annual Element Scores: ",
+    daYunAnnualElementScores
+  );
 
+  // Step 5: Translate DaYun+Annual element scores to Natal points
+  const natalAdjustments: Record<string, number> = {};
+  TIANGAN_ORDER.forEach((stem) => (natalAdjustments[stem] = 0));
 
-    // Step 5: Translate DaYun+Annual element scores to Natal points
-    const natalAdjustments: Record<string, number> = {};
-    TIANGAN_ORDER.forEach(stem => natalAdjustments[stem] = 0);
-  
-    Object.entries(daYunAnnualElementScores).forEach(([element, score]) => {
-      console.log(`Element ${element}: Score = ${score}`);
-  
-      // Find stems corresponding to this element
-      const stems = TIANGAN_ORDER.filter(stem => FIVE_ELEMENTS[stem] === element);
-      const scorePerStem = score / stems.length; // Distribute score equally
-  
-      stems.forEach(stem => {
-        // Apply translation: 1 point = 1 natal points, -1 point = -3 natal points
-        let natalAdjustment = 0;
-        if (scorePerStem >= 0) {
-          natalAdjustment = scorePerStem * 1;
-        } else {
-          natalAdjustment = scorePerStem * 3;
-        }
-        natalAdjustments[stem] += natalAdjustment;
-        console.log(`Translating ${scorePerStem} points for stem ${stem} to ${natalAdjustment} natal points`);
-      });
-    });
-    
-    // Merge all scores into combinedStemScores (natal only + translated adjustments)
-    const combinedStemScores: Record<string, number> = {};
-    TIANGAN_ORDER.forEach(stem => {
-      combinedStemScores[stem] = 0;
-      // Sum hidden stem scores across natal pillars (0 to 3)
-      for (let i = 0; i <= 3; i++) {
-        combinedStemScores[stem] += stemScores[i.toString()][stem] || 0;
+  Object.entries(daYunAnnualElementScores).forEach(([element, score]) => {
+    console.log(`Element ${element}: Score = ${score}`);
+
+    // Find stems corresponding to this element
+    const stems = TIANGAN_ORDER.filter(
+      (stem) => FIVE_ELEMENTS[stem] === element
+    );
+    const scorePerStem = score / stems.length; // Distribute score equally
+
+    stems.forEach((stem) => {
+      // Apply translation: 1 point = 1 natal points, -1 point = -3 natal points
+      let natalAdjustment = 0;
+      if (scorePerStem >= 0) {
+        natalAdjustment = scorePerStem * 1;
+      } else {
+        natalAdjustment = scorePerStem * 3;
       }
-      // Add heavenly stem scores (natal only)
-      if (heavenlyStemScores[stem]) {
-        combinedStemScores[stem] += heavenlyStemScores[stem];
-      }
-      // Add translated natal adjustments from DaYun+Annual
-      combinedStemScores[stem] += natalAdjustments[stem] || 0;
+      natalAdjustments[stem] += natalAdjustment;
+      console.log(
+        `Translating ${scorePerStem} points for stem ${stem} to ${natalAdjustment} natal points`
+      );
     });
+  });
 
-  const totalCombinedStemScores = Object.values(combinedStemScores).reduce((sum, score) => sum + score, 0);
+  // Merge all scores into combinedStemScores (natal only + translated adjustments)
+  const combinedStemScores: Record<string, number> = {};
+  TIANGAN_ORDER.forEach((stem) => {
+    combinedStemScores[stem] = 0;
+    // Sum hidden stem scores across natal pillars (0 to 3)
+    for (let i = 0; i <= 3; i++) {
+      combinedStemScores[stem] += stemScores[i.toString()][stem] || 0;
+    }
+    // Add heavenly stem scores (natal only)
+    if (heavenlyStemScores[stem]) {
+      combinedStemScores[stem] += heavenlyStemScores[stem];
+    }
+    // Add translated natal adjustments from DaYun+Annual
+    combinedStemScores[stem] += natalAdjustments[stem] || 0;
+  });
+
+  const totalCombinedStemScores = Object.values(combinedStemScores).reduce(
+    (sum, score) => sum + score,
+    0
+  );
 
   const combinedStemPercentages: Record<string, string> = {};
-  TIANGAN_ORDER.forEach(stem => {
-    combinedStemPercentages[stem] = combinedStemScores[stem] > 0 
-      ? (combinedStemScores[stem] / totalCombinedStemScores * 100).toFixed(2)
-      : "0.00";
+  TIANGAN_ORDER.forEach((stem) => {
+    combinedStemPercentages[stem] =
+      combinedStemScores[stem] > 0
+        ? ((combinedStemScores[stem] / totalCombinedStemScores) * 100).toFixed(
+            2
+          )
+        : "0.00";
   });
 
   // Convert to Five Elements percentages (combined)
   const elementScores: Record<string, number> = {
-    'Wood': 0, 'Fire': 0, 'Earth': 0, 'Metal': 0, 'Water': 0
+    Wood: 0,
+    Fire: 0,
+    Earth: 0,
+    Metal: 0,
+    Water: 0,
   };
   Object.entries(combinedStemScores).forEach(([stem, score]) => {
     const element = FIVE_ELEMENTS[stem];
     elementScores[element] += score;
   });
 
-  const totalScore = Object.values(elementScores).reduce((sum, score) => sum + Math.max(score, 0), 0);
+  const totalScore = Object.values(elementScores).reduce(
+    (sum, score) => sum + Math.max(score, 0),
+    0
+  );
   const elementPercentages: Record<string, string> = {};
   Object.entries(elementScores).forEach(([element, score]) => {
     const percentage = totalScore > 0 ? (score / totalScore) * 100 : 0;
     // Safeguard: ensure percentage is non-negative
     const finalPercentage = Math.max(0, percentage);
     elementPercentages[element] = `${finalPercentage.toFixed(2)}%`;
-    console.log(`Percentage for ${element}: ${score} / ${totalScore} = ${finalPercentage.toFixed(2)}%`);
+    console.log(
+      `Percentage for ${element}: ${score} / ${totalScore} = ${finalPercentage.toFixed(
+        2
+      )}%`
+    );
   });
   // Calculate natal-only Five Elements percentages
   const natalElementScores: Record<string, number> = {
-    'Wood': 0, 'Fire': 0, 'Earth': 0, 'Metal': 0, 'Water': 0
+    Wood: 0,
+    Fire: 0,
+    Earth: 0,
+    Metal: 0,
+    Water: 0,
   };
   Object.entries(natalCombinedStemScores).forEach(([stem, score]) => {
     const element = FIVE_ELEMENTS[stem];
     natalElementScores[element] += score;
   });
 
-  const natalTotalScore = Object.values(natalElementScores).reduce((sum, score) => sum + Math.max(score, 0), 0);
+  const natalTotalScore = Object.values(natalElementScores).reduce(
+    (sum, score) => sum + Math.max(score, 0),
+    0
+  );
   const natalElementPercentages: Record<string, string> = {};
   Object.entries(natalElementScores).forEach(([element, score]) => {
-    natalElementPercentages[element] = natalTotalScore > 0 ? `${((score / natalTotalScore) * 100).toFixed(2)}%` : '0%';
+    natalElementPercentages[element] =
+      natalTotalScore > 0
+        ? `${((score / natalTotalScore) * 100).toFixed(2)}%`
+        : "0%";
   });
 
   // Render
@@ -1590,85 +2335,225 @@ const applyAnnualAffectsLuck = () => {
     <div className="max-w-md max-h-md overflow-y-auto p-4">
       {lunar.toString()}
       <div>
-        <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginBottom: "20px",
+          }}
+        >
           <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Hour ({eightChar.getTimeShiShenGan()})</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Day ({eightChar.getDayShiShenGan()})</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Month ({eightChar.getMonthShiShenGan()})</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Year ({eightChar.getYearShiShenGan()})</th>
+            <tr>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Hour ({eightChar.getTimeShiShenGan()})
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Day ({eightChar.getDayShiShenGan()})
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Month ({eightChar.getMonthShiShenGan()})
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Year ({eightChar.getYearShiShenGan()})
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{pillars[3][0]}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{pillars[2][0]}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{pillars[1][0]}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{pillars[0][0]}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {pillars[3][0]}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {pillars[2][0]}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {pillars[1][0]}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {pillars[0][0]}
+              </td>
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{pillars[3][1]}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{pillars[2][1]}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{pillars[1][1]}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{pillars[0][1]}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {pillars[3][1]}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {pillars[2][1]}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {pillars[1][1]}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {pillars[0][1]}
+              </td>
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{eightChar.getTimeHideGan()}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{eightChar.getDayHideGan()}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{eightChar.getMonthHideGan()}</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{eightChar.getYearHideGan()}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {eightChar.getTimeHideGan()}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {eightChar.getDayHideGan()}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {eightChar.getMonthHideGan()}
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {eightChar.getYearHideGan()}
+              </td>
             </tr>
           </tbody>
         </table>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginBottom: "20px",
+          }}
+        >
           <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Stem</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Natal Only</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Natal + DaYun + Current Year</th>
+            <tr style={{ backgroundColor: "#f2f2f2" }}>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Stem
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Natal Only
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Natal + DaYun + Current Year
+              </th>
             </tr>
           </thead>
           <tbody>
-            {[...new Set([...Object.keys(natalStemPercentages), ...Object.keys(combinedStemPercentages)])]
+            {[
+              ...new Set([
+                ...Object.keys(natalStemPercentages),
+                ...Object.keys(combinedStemPercentages),
+              ]),
+            ]
               .sort() // Sort stems alphabetically for consistency
               .map((stem) => (
                 <tr key={stem}>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{stem}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {stem}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                     {natalStemPercentages[stem] !== undefined
                       ? `${natalStemPercentages[stem]}%`
-                      : '0.00%'}
+                      : "0.00%"}
                   </td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                     {combinedStemPercentages[stem] !== undefined
                       ? `${combinedStemPercentages[stem]}%`
-                      : '0.00%'}
+                      : "0.00%"}
                   </td>
                 </tr>
               ))}
           </tbody>
         </table>
 
-        <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginBottom: "20px",
+          }}
+        >
           <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Element</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Natal Only</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Natal + DaYun + Current Year</th>
+            <tr style={{ backgroundColor: "#f2f2f2" }}>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Element
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Natal Only
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Natal + DaYun + Current Year
+              </th>
             </tr>
           </thead>
           <tbody>
-            {[...new Set([...Object.keys(natalElementPercentages), ...Object.keys(elementPercentages)])]
+            {[
+              ...new Set([
+                ...Object.keys(natalElementPercentages),
+                ...Object.keys(elementPercentages),
+              ]),
+            ]
               .sort() // Sort elements alphabetically for consistency
               .map((element) => (
                 <tr key={element}>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>{element}</td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                    {natalElementPercentages[element] !== undefined ? natalElementPercentages[element] : '-'}
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {element}
                   </td>
-                  <td style={{ border: '1px solid #ddd', padding: '8px' }}>
-                    {elementPercentages[element] !== undefined ? elementPercentages[element] : '-'}
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {natalElementPercentages[element] !== undefined
+                      ? natalElementPercentages[element]
+                      : "-"}
+                  </td>
+                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                    {elementPercentages[element] !== undefined
+                      ? elementPercentages[element]
+                      : "-"}
                   </td>
                 </tr>
               ))}
@@ -1676,93 +2561,261 @@ const applyAnnualAffectsLuck = () => {
         </table>
 
         <h2 className="text-base font-semibold mb-1">Five Features</h2>
-        <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
+        <table
+          style={{
+            width: "100%",
+            borderCollapse: "collapse",
+            marginBottom: "20px",
+          }}
+        >
           <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Feature</th>
-              <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'left' }}>Zodiac</th>
+            <tr style={{ backgroundColor: "#f2f2f2" }}>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Feature
+              </th>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "8px",
+                  textAlign: "left",
+                }}
+              >
+                Zodiac
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>Nobleman (贵人)</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{nobleman || 'None'}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Nobleman (贵人)
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {nobleman || "None"}
+              </td>
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>Intelligence (文昌星)</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{wenchang}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Intelligence (文昌星)
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {wenchang}
+              </td>
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>Sky Horse (驛馬)</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{travelerStar}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Sky Horse (驛馬)
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {travelerStar}
+              </td>
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>Peach Blossom (桃花)</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{peachBlossom}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Peach Blossom (桃花)
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {peachBlossom}
+              </td>
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>Solitary (孤辰)</td>
-              <td style={{ border: '1px solid #ddd', padding: '8px' }}>{solitaryStar}</td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                Solitary (孤辰)
+              </td>
+              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                {solitaryStar}
+              </td>
             </tr>
           </tbody>
         </table>
 
         <ul>
-          <li>年干: {currentYearStem} 年支: {currentYearBranch}</li>
+          <li>
+            年干: {currentYearStem} 年支: {currentYearBranch}
+          </li>
         </ul>
 
-        <h2 className="text-base font-semibold mb-1">Luck Pillars (大运) 起运：{qiYun} </h2>
-        <table style={{ borderCollapse: 'collapse', marginBottom: '12px', fontSize: '12px' }}>
+        <h2 className="text-base font-semibold mb-1">
+          Luck Pillars (大运) 起运：{qiYun}{" "}
+        </h2>
+        <table
+          style={{
+            borderCollapse: "collapse",
+            marginBottom: "12px",
+            fontSize: "12px",
+          }}
+        >
           <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th style={{ border: '1px solid #ddd', padding: '5px', textAlign: 'left' }}></th>
-              {daYunTable.map((entry: { index: number; startYear: number; startAge: number; ganZhi: string; hiddenStems: string }) => (
-                <th key={entry.index} style={{ border: '1px solid #ddd', padding: '5px', textAlign: 'left' }}>
-                  大运[{entry.index}]
-                </th>
-              ))}
+            <tr style={{ backgroundColor: "#f2f2f2" }}>
+              <th
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "5px",
+                  textAlign: "left",
+                }}
+              ></th>
+              {daYunTable.map(
+                (entry: {
+                  index: number;
+                  startYear: number;
+                  startAge: number;
+                  ganZhi: string;
+                  hiddenStems: string;
+                }) => (
+                  <th
+                    key={entry.index}
+                    style={{
+                      border: "1px solid #ddd",
+                      padding: "5px",
+                      textAlign: "left",
+                    }}
+                  >
+                    大运[{entry.index}]
+                  </th>
+                )
+              )}
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '5px', fontWeight: 'bold' }}>Index</td>
-              {daYunTable.map((entry: { index: number; startYear: number; startAge: number; ganZhi: string; hiddenStems: string }) => (
-                <td key={entry.index} style={{ border: '1px solid #ddd', padding: '5px' }}>
-                  {entry.index}
-                </td>
-              ))}
+              <td
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "5px",
+                  fontWeight: "bold",
+                }}
+              >
+                Index
+              </td>
+              {daYunTable.map(
+                (entry: {
+                  index: number;
+                  startYear: number;
+                  startAge: number;
+                  ganZhi: string;
+                  hiddenStems: string;
+                }) => (
+                  <td
+                    key={entry.index}
+                    style={{ border: "1px solid #ddd", padding: "5px" }}
+                  >
+                    {entry.index}
+                  </td>
+                )
+              )}
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '5px', fontWeight: 'bold' }}>年</td>
-              {daYunTable.map((entry: { index: number; startYear: number; startAge: number; ganZhi: string; hiddenStems: string }) => (
-                <td key={entry.index} style={{ border: '1px solid #ddd', padding: '5px' }}>
-                  {entry.startYear}
-                </td>
-              ))}
+              <td
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "5px",
+                  fontWeight: "bold",
+                }}
+              >
+                年
+              </td>
+              {daYunTable.map(
+                (entry: {
+                  index: number;
+                  startYear: number;
+                  startAge: number;
+                  ganZhi: string;
+                  hiddenStems: string;
+                }) => (
+                  <td
+                    key={entry.index}
+                    style={{ border: "1px solid #ddd", padding: "5px" }}
+                  >
+                    {entry.startYear}
+                  </td>
+                )
+              )}
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '5px', fontWeight: 'bold' }}>岁</td>
-              {daYunTable.map((entry: { index: number; startYear: number; startAge: number; ganZhi: string; hiddenStems: string }) => (
-                <td key={entry.index} style={{ border: '1px solid #ddd', padding: '5px' }}>
-                  {entry.startAge}
-                </td>
-              ))}
+              <td
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "5px",
+                  fontWeight: "bold",
+                }}
+              >
+                岁
+              </td>
+              {daYunTable.map(
+                (entry: {
+                  index: number;
+                  startYear: number;
+                  startAge: number;
+                  ganZhi: string;
+                  hiddenStems: string;
+                }) => (
+                  <td
+                    key={entry.index}
+                    style={{ border: "1px solid #ddd", padding: "5px" }}
+                  >
+                    {entry.startAge}
+                  </td>
+                )
+              )}
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '5px', fontWeight: 'bold' }}>干支</td>
-              {daYunTable.map((entry: { index: number; startYear: number; startAge: number; ganZhi: string; hiddenStems: string }) => (
-                <td key={entry.index} style={{ border: '1px solid #ddd', padding: '5px' }}>
-                  {entry.ganZhi}
-                </td>
-              ))}
+              <td
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "5px",
+                  fontWeight: "bold",
+                }}
+              >
+                干支
+              </td>
+              {daYunTable.map(
+                (entry: {
+                  index: number;
+                  startYear: number;
+                  startAge: number;
+                  ganZhi: string;
+                  hiddenStems: string;
+                }) => (
+                  <td
+                    key={entry.index}
+                    style={{ border: "1px solid #ddd", padding: "5px" }}
+                  >
+                    {entry.ganZhi}
+                  </td>
+                )
+              )}
             </tr>
             <tr>
-              <td style={{ border: '1px solid #ddd', padding: '5px', fontWeight: 'bold' }}>藏干</td>
-              {daYunTable.map((entry: { index: number; startYear: number; startAge: number; ganZhi: string; hiddenStems: string }) => (
-                <td key={entry.index} style={{ border: '1px solid #ddd', padding: '5px' }}>
-                  {entry.hiddenStems}
-                </td>
-              ))}
+              <td
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "5px",
+                  fontWeight: "bold",
+                }}
+              >
+                藏干
+              </td>
+              {daYunTable.map(
+                (entry: {
+                  index: number;
+                  startYear: number;
+                  startAge: number;
+                  ganZhi: string;
+                  hiddenStems: string;
+                }) => (
+                  <td
+                    key={entry.index}
+                    style={{ border: "1px solid #ddd", padding: "5px" }}
+                  >
+                    {entry.hiddenStems}
+                  </td>
+                )
+              )}
             </tr>
           </tbody>
         </table>

@@ -1,0 +1,7 @@
+<svg width="202" height="202" viewBox="0 0 202 202" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="20" height="20" transform="matrix(1 0 0 -1 22 180)" stroke="#EECB87" stroke-width="4"/>
+<path d="M2 140V142H0V140H2ZM22 140H24V142H22V140ZM2 140V138H22V140V142H2V140ZM22 140H20V0H22H24V140H22ZM2 0H4V140H2H0V0H2Z" fill="#EECB87"/>
+<path d="M62 200L60 200L60 202L62 202L62 200ZM62 180L62 178L60 178L60 180L62 180ZM62 200L64 200L64 180L62 180L60 180L60 200L62 200ZM62 180L62 182L202 182L202 180L202 178L62 178L62 180ZM202 200L202 198L62 198L62 200L62 202L202 202L202 200Z" fill="#EECB87"/>
+<rect width="20" height="20" transform="matrix(1 0 0 -1 22 160)" stroke="#EECB87" stroke-width="4"/>
+<rect width="20" height="20" transform="matrix(1 0 0 -1 42 180)" stroke="#EECB87" stroke-width="4"/>
+</svg>

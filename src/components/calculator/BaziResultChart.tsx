@@ -5,6 +5,7 @@ import Image from "next/image";
 import BaziChart from "./components/bazi-chart";
 import TenYears from "./components/ten-years";
 import Promotion from "../promotion";
+import InnerProfile from "./components/profile";
 
 type ElementType = "水" | "木" | "火" | "金" | "土";
 
@@ -2384,6 +2385,8 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
           <BaziChart eightChar={eightChar} pillars={pillars} />
 
           <TenYears />
+
+          <InnerProfile natalElementPercentages={natalElementPercentages} />
         </div>
 
         <Promotion />
@@ -2482,24 +2485,10 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
                 >
                   Natal Only
                 </th>
-                <th
-                  style={{
-                    border: "1px solid #ddd",
-                    padding: "8px",
-                    textAlign: "left",
-                  }}
-                >
-                  Natal + DaYun + Current Year
-                </th>
               </tr>
             </thead>
             <tbody>
-              {[
-                ...new Set([
-                  ...Object.keys(natalElementPercentages),
-                  ...Object.keys(elementPercentages),
-                ]),
-              ]
+              {[...new Set([...Object.keys(natalElementPercentages)])]
                 .sort() // Sort elements alphabetically for consistency
                 .map((element) => (
                   <tr key={element}>
@@ -2509,11 +2498,6 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
                     <td style={{ border: "1px solid #ddd", padding: "8px" }}>
                       {natalElementPercentages[element] !== undefined
                         ? natalElementPercentages[element]
-                        : "-"}
-                    </td>
-                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                      {elementPercentages[element] !== undefined
-                        ? elementPercentages[element]
                         : "-"}
                     </td>
                   </tr>

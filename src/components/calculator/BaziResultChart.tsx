@@ -1,5 +1,7 @@
 import { Lunar } from "lunar-typescript";
 import React from "react";
+import HiddenCoreSection from "./components/hidden-core";
+import Image from "next/image";
 
 type ElementType = "水" | "木" | "火" | "金" | "土";
 
@@ -2332,8 +2334,20 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
 
   // Render
   return (
-    <div className="max-w-md max-h-md overflow-y-auto p-4">
-      {lunar.toString()}
+    <div className="flex flex-col w-full px-[24px] xl:px-14 2xl:px-40 pt-10 xl:pt-20 pb-10 gap-[150px] relative">
+      <div className="absolute top-0 left-0 h-full w-full min-h-screen z-[-1]">
+        <Image
+          src="/images/Hidden Core Personality/bg-texture.png"
+          alt="Background Landing Page"
+          fill
+          sizes="2880px"
+          className="object-cover object-top opacity-20"
+          priority
+        />
+      </div>
+
+      <HiddenCoreSection />
+
       <div>
         <table
           style={{
@@ -2643,7 +2657,7 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
         <h2 className="text-base font-semibold mb-1">
           Luck Pillars (大运) 起运：{qiYun}{" "}
         </h2>
-        <table
+        {/* <table
           style={{
             borderCollapse: "collapse",
             marginBottom: "12px",
@@ -2818,7 +2832,7 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
               )}
             </tr>
           </tbody>
-        </table>
+        </table> */}
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import React from "react";
 import HiddenCoreSection from "./components/hidden-core";
 import Image from "next/image";
 import BaziChart from "./components/bazi-chart";
+import TenYears from "./components/ten-years";
 
 type ElementType = "水" | "木" | "火" | "金" | "土";
 
@@ -2378,6 +2379,8 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
       <HiddenCoreSection />
 
       <BaziChart eightChar={eightChar} pillars={pillars} />
+
+      <TenYears />
 
       <div>
         <table

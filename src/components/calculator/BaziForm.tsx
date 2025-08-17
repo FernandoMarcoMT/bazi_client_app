@@ -47,8 +47,6 @@ const BaziForm = (props: BaziFormProps) => {
     error, // Destructure the error state
   } = context;
 
-  console.log(error);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

@@ -2,6 +2,7 @@ import { Lunar } from "lunar-typescript";
 import React from "react";
 import HiddenCoreSection from "./components/hidden-core";
 import Image from "next/image";
+import BaziChart from "./components/bazi-chart";
 
 type ElementType = "水" | "木" | "火" | "金" | "土";
 
@@ -765,6 +766,34 @@ interface BaziResultChartProps {
   lunar: any;
   gender: string;
 }
+
+export const zodiacHanzi = {
+  子: "Rat",
+  丑: "Ox",
+  寅: "Tiger",
+  卯: "Rabbit",
+  辰: "Dragon",
+  巳: "Snake",
+  午: "Horse",
+  未: "Goat",
+  申: "Monkey",
+  酉: "Rooster",
+  戌: "Dog",
+  亥: "Pig",
+};
+
+export const tianganHanzi = {
+  甲: "Jia",
+  乙: "Yi",
+  丙: "Bing",
+  丁: "Ding",
+  戊: "Wu",
+  己: "Ji",
+  庚: "Geng",
+  辛: "Xin",
+  壬: "Ren",
+  癸: "Gui",
+};
 
 const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
   const eightChar: EightChar = lunar.getEightChar();
@@ -2348,100 +2377,9 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
 
       <HiddenCoreSection />
 
-      <div>
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            marginBottom: "20px",
-          }}
-        >
-          <thead>
-            <tr>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Hour ({eightChar.getTimeShiShenGan()})
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Day ({eightChar.getDayShiShenGan()})
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Month ({eightChar.getMonthShiShenGan()})
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Year ({eightChar.getYearShiShenGan()})
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {pillars[3][0]}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {pillars[2][0]}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {pillars[1][0]}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {pillars[0][0]}
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {pillars[3][1]}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {pillars[2][1]}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {pillars[1][1]}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {pillars[0][1]}
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {eightChar.getTimeHideGan()}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {eightChar.getDayHideGan()}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {eightChar.getMonthHideGan()}
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {eightChar.getYearHideGan()}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <BaziChart eightChar={eightChar} pillars={pillars} />
 
+      <div>
         <table
           style={{
             width: "100%",

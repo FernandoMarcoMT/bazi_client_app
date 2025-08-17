@@ -2391,7 +2391,7 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
 
         <Promotion />
 
-        <div>
+        {/* <div>
           <table
             style={{
               width: "100%",
@@ -2589,183 +2589,183 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
             Luck Pillars (大运) 起运：{qiYun}{" "}
           </h2>
 
-          {/* <table
-          style={{
-            borderCollapse: "collapse",
-            marginBottom: "12px",
-            fontSize: "12px",
-          }}
-        >
-          <thead>
-            <tr style={{ backgroundColor: "#f2f2f2" }}>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "5px",
-                  textAlign: "left",
-                }}
-              ></th>
-              {daYunTable.map(
-                (entry: {
-                  index: number;
-                  startYear: number;
-                  startAge: number;
-                  ganZhi: string;
-                  hiddenStems: string;
-                }) => (
-                  <th
-                    key={entry.index}
-                    style={{
-                      border: "1px solid #ddd",
-                      padding: "5px",
-                      textAlign: "left",
-                    }}
-                  >
-                    大运[{entry.index}]
-                  </th>
-                )
-              )}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "5px",
-                  fontWeight: "bold",
-                }}
-              >
-                Index
-              </td>
-              {daYunTable.map(
-                (entry: {
-                  index: number;
-                  startYear: number;
-                  startAge: number;
-                  ganZhi: string;
-                  hiddenStems: string;
-                }) => (
-                  <td
-                    key={entry.index}
-                    style={{ border: "1px solid #ddd", padding: "5px" }}
-                  >
-                    {entry.index}
-                  </td>
-                )
-              )}
-            </tr>
-            <tr>
-              <td
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "5px",
-                  fontWeight: "bold",
-                }}
-              >
-                年
-              </td>
-              {daYunTable.map(
-                (entry: {
-                  index: number;
-                  startYear: number;
-                  startAge: number;
-                  ganZhi: string;
-                  hiddenStems: string;
-                }) => (
-                  <td
-                    key={entry.index}
-                    style={{ border: "1px solid #ddd", padding: "5px" }}
-                  >
-                    {entry.startYear}
-                  </td>
-                )
-              )}
-            </tr>
-            <tr>
-              <td
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "5px",
-                  fontWeight: "bold",
-                }}
-              >
-                岁
-              </td>
-              {daYunTable.map(
-                (entry: {
-                  index: number;
-                  startYear: number;
-                  startAge: number;
-                  ganZhi: string;
-                  hiddenStems: string;
-                }) => (
-                  <td
-                    key={entry.index}
-                    style={{ border: "1px solid #ddd", padding: "5px" }}
-                  >
-                    {entry.startAge}
-                  </td>
-                )
-              )}
-            </tr>
-            <tr>
-              <td
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "5px",
-                  fontWeight: "bold",
-                }}
-              >
-                干支
-              </td>
-              {daYunTable.map(
-                (entry: {
-                  index: number;
-                  startYear: number;
-                  startAge: number;
-                  ganZhi: string;
-                  hiddenStems: string;
-                }) => (
-                  <td
-                    key={entry.index}
-                    style={{ border: "1px solid #ddd", padding: "5px" }}
-                  >
-                    {entry.ganZhi}
-                  </td>
-                )
-              )}
-            </tr>
-            <tr>
-              <td
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "5px",
-                  fontWeight: "bold",
-                }}
-              >
-                藏干
-              </td>
-              {daYunTable.map(
-                (entry: {
-                  index: number;
-                  startYear: number;
-                  startAge: number;
-                  ganZhi: string;
-                  hiddenStems: string;
-                }) => (
-                  <td
-                    key={entry.index}
-                    style={{ border: "1px solid #ddd", padding: "5px" }}
-                  >
-                    {entry.hiddenStems}
-                  </td>
-                )
-              )}
-            </tr>
-          </tbody>
-        </table> */}
-        </div>
+          <table
+            style={{
+              borderCollapse: "collapse",
+              marginBottom: "12px",
+              fontSize: "12px",
+            }}
+          >
+            <thead>
+              <tr style={{ backgroundColor: "#f2f2f2" }}>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "5px",
+                    textAlign: "left",
+                  }}
+                ></th>
+                {daYunTable.map(
+                  (entry: {
+                    index: number;
+                    startYear: number;
+                    startAge: number;
+                    ganZhi: string;
+                    hiddenStems: string;
+                  }) => (
+                    <th
+                      key={entry.index}
+                      style={{
+                        border: "1px solid #ddd",
+                        padding: "5px",
+                        textAlign: "left",
+                      }}
+                    >
+                      大运[{entry.index}]
+                    </th>
+                  )
+                )}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Index
+                </td>
+                {daYunTable.map(
+                  (entry: {
+                    index: number;
+                    startYear: number;
+                    startAge: number;
+                    ganZhi: string;
+                    hiddenStems: string;
+                  }) => (
+                    <td
+                      key={entry.index}
+                      style={{ border: "1px solid #ddd", padding: "5px" }}
+                    >
+                      {entry.index}
+                    </td>
+                  )
+                )}
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  年
+                </td>
+                {daYunTable.map(
+                  (entry: {
+                    index: number;
+                    startYear: number;
+                    startAge: number;
+                    ganZhi: string;
+                    hiddenStems: string;
+                  }) => (
+                    <td
+                      key={entry.index}
+                      style={{ border: "1px solid #ddd", padding: "5px" }}
+                    >
+                      {entry.startYear}
+                    </td>
+                  )
+                )}
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  岁
+                </td>
+                {daYunTable.map(
+                  (entry: {
+                    index: number;
+                    startYear: number;
+                    startAge: number;
+                    ganZhi: string;
+                    hiddenStems: string;
+                  }) => (
+                    <td
+                      key={entry.index}
+                      style={{ border: "1px solid #ddd", padding: "5px" }}
+                    >
+                      {entry.startAge}
+                    </td>
+                  )
+                )}
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  干支
+                </td>
+                {daYunTable.map(
+                  (entry: {
+                    index: number;
+                    startYear: number;
+                    startAge: number;
+                    ganZhi: string;
+                    hiddenStems: string;
+                  }) => (
+                    <td
+                      key={entry.index}
+                      style={{ border: "1px solid #ddd", padding: "5px" }}
+                    >
+                      {entry.ganZhi}
+                    </td>
+                  )
+                )}
+              </tr>
+              <tr>
+                <td
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  藏干
+                </td>
+                {daYunTable.map(
+                  (entry: {
+                    index: number;
+                    startYear: number;
+                    startAge: number;
+                    ganZhi: string;
+                    hiddenStems: string;
+                  }) => (
+                    <td
+                      key={entry.index}
+                      style={{ border: "1px solid #ddd", padding: "5px" }}
+                    >
+                      {entry.hiddenStems}
+                    </td>
+                  )
+                )}
+              </tr>
+            </tbody>
+          </table>
+        </div> */}
       </div>
     </>
   );

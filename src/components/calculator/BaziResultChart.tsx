@@ -4,6 +4,7 @@ import HiddenCoreSection from "./components/hidden-core";
 import Image from "next/image";
 import BaziChart from "./components/bazi-chart";
 import TenYears from "./components/ten-years";
+import Promotion from "../promotion";
 
 type ElementType = "水" | "木" | "火" | "金" | "土";
 
@@ -2364,241 +2365,247 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
 
   // Render
   return (
-    <div className="flex flex-col w-full px-[24px] xl:px-14 2xl:px-40 pt-10 xl:pt-20 pb-10 gap-[150px] relative">
-      <div className="absolute top-0 left-0 h-full w-full min-h-screen z-[-1]">
-        <Image
-          src="/images/Hidden Core Personality/bg-texture.png"
-          alt="Background Landing Page"
-          fill
-          sizes="2880px"
-          className="object-cover object-top opacity-20"
-          priority
-        />
-      </div>
+    <>
+      <div className="flex flex-col w-full pt-10 xl:pt-20 pb-10 gap-[150px] relative">
+        <div className="absolute top-0 left-0 h-full w-full min-h-screen z-[-1]">
+          <Image
+            src="/images/Hidden Core Personality/bg-texture.png"
+            alt="Background Landing Page"
+            fill
+            sizes="2880px"
+            className="object-cover object-top opacity-20"
+            priority
+          />
+        </div>
 
-      <HiddenCoreSection />
+        <div className="flex flex-col px-[24px] xl:px-14 2xl:px-40 gap-[150px]">
+          <HiddenCoreSection />
 
-      <BaziChart eightChar={eightChar} pillars={pillars} />
+          <BaziChart eightChar={eightChar} pillars={pillars} />
 
-      <TenYears />
+          <TenYears />
+        </div>
 
-      <div>
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            marginBottom: "20px",
-          }}
-        >
-          <thead>
-            <tr style={{ backgroundColor: "#f2f2f2" }}>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Stem
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Natal Only
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Natal + DaYun + Current Year
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              ...new Set([
-                ...Object.keys(natalStemPercentages),
-                ...Object.keys(combinedStemPercentages),
-              ]),
-            ]
-              .sort() // Sort stems alphabetically for consistency
-              .map((stem) => (
-                <tr key={stem}>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                    {stem}
-                  </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                    {natalStemPercentages[stem] !== undefined
-                      ? `${natalStemPercentages[stem]}%`
-                      : "0.00%"}
-                  </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                    {combinedStemPercentages[stem] !== undefined
-                      ? `${combinedStemPercentages[stem]}%`
-                      : "0.00%"}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <Promotion />
 
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            marginBottom: "20px",
-          }}
-        >
-          <thead>
-            <tr style={{ backgroundColor: "#f2f2f2" }}>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Element
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Natal Only
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Natal + DaYun + Current Year
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {[
-              ...new Set([
-                ...Object.keys(natalElementPercentages),
-                ...Object.keys(elementPercentages),
-              ]),
-            ]
-              .sort() // Sort elements alphabetically for consistency
-              .map((element) => (
-                <tr key={element}>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                    {element}
-                  </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                    {natalElementPercentages[element] !== undefined
-                      ? natalElementPercentages[element]
-                      : "-"}
-                  </td>
-                  <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                    {elementPercentages[element] !== undefined
-                      ? elementPercentages[element]
-                      : "-"}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
+        <div>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              marginBottom: "20px",
+            }}
+          >
+            <thead>
+              <tr style={{ backgroundColor: "#f2f2f2" }}>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Stem
+                </th>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Natal Only
+                </th>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Natal + DaYun + Current Year
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ...new Set([
+                  ...Object.keys(natalStemPercentages),
+                  ...Object.keys(combinedStemPercentages),
+                ]),
+              ]
+                .sort() // Sort stems alphabetically for consistency
+                .map((stem) => (
+                  <tr key={stem}>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {stem}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {natalStemPercentages[stem] !== undefined
+                        ? `${natalStemPercentages[stem]}%`
+                        : "0.00%"}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {combinedStemPercentages[stem] !== undefined
+                        ? `${combinedStemPercentages[stem]}%`
+                        : "0.00%"}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
 
-        <h2 className="text-base font-semibold mb-1">Five Features</h2>
-        <table
-          style={{
-            width: "100%",
-            borderCollapse: "collapse",
-            marginBottom: "20px",
-          }}
-        >
-          <thead>
-            <tr style={{ backgroundColor: "#f2f2f2" }}>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Feature
-              </th>
-              <th
-                style={{
-                  border: "1px solid #ddd",
-                  padding: "8px",
-                  textAlign: "left",
-                }}
-              >
-                Zodiac
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                Nobleman (贵人)
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {nobleman || "None"}
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                Intelligence (文昌星)
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {wenchang}
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                Sky Horse (驛馬)
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {travelerStar}
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                Peach Blossom (桃花)
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {peachBlossom}
-              </td>
-            </tr>
-            <tr>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                Solitary (孤辰)
-              </td>
-              <td style={{ border: "1px solid #ddd", padding: "8px" }}>
-                {solitaryStar}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              marginBottom: "20px",
+            }}
+          >
+            <thead>
+              <tr style={{ backgroundColor: "#f2f2f2" }}>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Element
+                </th>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Natal Only
+                </th>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Natal + DaYun + Current Year
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ...new Set([
+                  ...Object.keys(natalElementPercentages),
+                  ...Object.keys(elementPercentages),
+                ]),
+              ]
+                .sort() // Sort elements alphabetically for consistency
+                .map((element) => (
+                  <tr key={element}>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {element}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {natalElementPercentages[element] !== undefined
+                        ? natalElementPercentages[element]
+                        : "-"}
+                    </td>
+                    <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                      {elementPercentages[element] !== undefined
+                        ? elementPercentages[element]
+                        : "-"}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
 
-        <ul>
-          <li>
-            年干: {currentYearStem} 年支: {currentYearBranch}
-          </li>
-        </ul>
+          <h2 className="text-base font-semibold mb-1">Five Features</h2>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              marginBottom: "20px",
+            }}
+          >
+            <thead>
+              <tr style={{ backgroundColor: "#f2f2f2" }}>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Feature
+                </th>
+                <th
+                  style={{
+                    border: "1px solid #ddd",
+                    padding: "8px",
+                    textAlign: "left",
+                  }}
+                >
+                  Zodiac
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  Nobleman (贵人)
+                </td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  {nobleman || "None"}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  Intelligence (文昌星)
+                </td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  {wenchang}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  Sky Horse (驛馬)
+                </td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  {travelerStar}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  Peach Blossom (桃花)
+                </td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  {peachBlossom}
+                </td>
+              </tr>
+              <tr>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  Solitary (孤辰)
+                </td>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>
+                  {solitaryStar}
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
-        <h2 className="text-base font-semibold mb-1">
-          Luck Pillars (大运) 起运：{qiYun}{" "}
-        </h2>
-        {/* <table
+          <ul>
+            <li>
+              年干: {currentYearStem} 年支: {currentYearBranch}
+            </li>
+          </ul>
+
+          <h2 className="text-base font-semibold mb-1">
+            Luck Pillars (大运) 起运：{qiYun}{" "}
+          </h2>
+
+          {/* <table
           style={{
             borderCollapse: "collapse",
             marginBottom: "12px",
@@ -2774,8 +2781,9 @@ const BaziResultChart: React.FC<BaziResultChartProps> = ({ lunar, gender }) => {
             </tr>
           </tbody>
         </table> */}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

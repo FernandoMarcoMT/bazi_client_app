@@ -149,7 +149,7 @@ export default function BaziChart({ eightChar, pillars }: BaziChartProps) {
             return (
               <div
                 key={key}
-                className="border border-secondary border-collapse"
+                className="border border-secondary border-collapse h-full"
               >
                 <div className="flex flex-col items-center justify-center relative p-5">
                   <p className="text-2xl font-oswald">
@@ -158,7 +158,7 @@ export default function BaziChart({ eightChar, pillars }: BaziChartProps) {
                   <p className="text-[70px] font-zhi-mang-xing">{data[0]}</p>
                 </div>
 
-                <div className="grid grid-cols-2 border-t border-secondary">
+                <div className="grid grid-cols-2 border-t border-secondary h-[calc(100%_-_168px)]">
                   <div className="flex flex-col gap-5 items-center justify-center relative p-5">
                     <p className="text-2xl font-oswald">
                       {tianganHanzi[data[1] as keyof typeof tianganHanzi]}

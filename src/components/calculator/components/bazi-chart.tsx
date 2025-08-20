@@ -1,6 +1,6 @@
 import { EightChar } from "lunar-typescript";
 import React, { Fragment } from "react";
-import { tianganHanzi, zodiacHanzi } from "../BaziResultChart";
+import { tianganHanzi, zodiacHanzi } from "../result";
 
 interface BaziChartProps {
   eightChar: any;

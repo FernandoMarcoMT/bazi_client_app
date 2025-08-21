@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
 import {
@@ -7,6 +9,8 @@ import {
   IconBrandX,
 } from "@tabler/icons-react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface FooterItemProps {
   title: string;
@@ -39,18 +43,27 @@ function FooterItem({ title, items }: FooterItemProps) {
 }
 
 export default function FooterSection() {
+  const pathname = usePathname();
+
   return (
-    <div className="flex flex-col py-16 lg:py-10 px-[24px] xl:px-14 2xl:px-40 relative">
-      <div className="absolute top-0 left-0 h-full w-full z-[-1]">
-        <Image
-          src="/images/Hidden Core Personality/bg-texture.png"
-          alt="Background Landing Page"
-          fill
-          sizes="2880px"
-          className="object-cover object-top opacity-20 rotate-180"
-          priority
-        />
-      </div>
+    <div
+      className={cn(
+        "flex flex-col py-16 lg:py-10 px-[24px] xl:px-14 2xl:px-40 relative",
+        pathname.includes("other-result") ? "bg-[#2D0501]" : "bg-background"
+      )}
+    >
+      {pathname.includes("calculator") && (
+        <div className="absolute top-0 left-0 h-full w-full z-[-1]">
+          <Image
+            src="/images/Hidden Core Personality/bg-texture.png"
+            alt="Background Landing Page"
+            fill
+            sizes="2880px"
+            className="object-cover object-top opacity-20 rotate-180"
+            priority
+          />
+        </div>
+      )}
 
       <div className="flex flex-col lg:flex-row justify-between gap-6">
         <div className="flex flex-col gap-5">

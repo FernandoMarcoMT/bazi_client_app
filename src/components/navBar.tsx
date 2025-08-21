@@ -48,11 +48,18 @@ export function NavBar() {
 
   return (
     <nav
-      className={`sticky top-0 w-full z-50 duration-300 py-[16px] md:py-[28px] px-[24px] xl:px-14 2xl:px-40 shadow-lg shadow-black/10 ${
+      className={cn(
+        "sticky top-0 w-full z-50 duration-300 py-[16px] md:py-[28px] px-[24px] xl:px-14 2xl:px-40 shadow-lg shadow-black/10",
         scrolled
-          ? "bg-primary/65 backdrop-blur-lg"
-          : "bg-primary backdrop-blur-none"
-      }`}
+          ? `${
+              pathname.includes("other-result")
+                ? "bg-[#2B0502]/60"
+                : "bg-primary/65"
+            } backdrop-blur-lg`
+          : `${
+              pathname.includes("other-result") ? "bg-[#2D0501]" : "bg-primary"
+            } backdrop-blur-none`
+      )}
     >
       <div className="w-full flex justify-between items-center">
         {/* Logo */}
@@ -140,7 +147,7 @@ export function NavBar() {
             <Link href="/calculator">
               <ButtonShaped
                 text="Calculate Birth Now"
-                variant={theme}
+                variant={pathname.includes("other-result") ? "light" : theme}
                 buttonClassName="h-[60px]"
               />
             </Link>

@@ -7,6 +7,7 @@ import TenGod from "./components/ten-god";
 import CoreIdentity from "./components/identity";
 import Depth from "./components/depth";
 import Personality from "./components/personality";
+import Growth from "./components/growth";
 
 export default function Result2() {
   return (
@@ -102,6 +103,7 @@ export default function Result2() {
           <CoreIdentity />
           <Depth />
           <Personality />
+          <Growth />
         </div>
       </div>
     </section>

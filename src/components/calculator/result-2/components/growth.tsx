@@ -94,7 +94,6 @@ export default function Growth() {
                   placeholder="name@example.com"
                   onChange={(e) => setEmail(e.target.value)}
                   className="h-12 bg-[#F4FAFF]! xl:bg-[#A8A8A8]/10! border-[#898888] text-black text-sm! xl:text-base! focus-within:bg-[#F6F6F0]! focus-within:border-secondary! focus-visible:ring-0 transition-all duration-200"
-                  autoFocus
                 />
 
                 <ButtonShaped
@@ -160,7 +159,11 @@ export default function Growth() {
               to unlock more insights about yourself.
             </p>
 
-            <img src="/images/Professional Growth/locked.png" alt="Locked" className="max-w-[100px] my-2" />
+            <img
+              src="/images/Professional Growth/locked.png"
+              alt="Locked"
+              className="max-w-[100px] my-2"
+            />
 
             <ButtonShaped text="Join Us Now" variant="light" />
           </div>

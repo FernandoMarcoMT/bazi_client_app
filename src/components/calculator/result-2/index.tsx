@@ -44,9 +44,28 @@ export default function Result2() {
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <p className="text-black text-2xl text-center font-semibold italic whitespace-break-spaces leading-[1.6em]">
-                "River or lake being protected by un-wavering Earth. <br />{" "}
-                Rather when the negative emerges shows mountains being covered
+              <p className="text-black text-lg lg:text-2xl text-center font-semibold italic whitespace-break-spaces leading-[1.6em] max-w-[500px] lg:max-w-[700px] 2xl:max-w-full">
+                <span className="hidden md:inline">
+                  "River or lake being protected by un-wavering Earth.
+                  <br /> Rather when the negative emerges shows mountains being
+                  covered by heavy mist giving mysterious fill for person"
+                </span>
+                <span className="inline md:hidden">
+                  "River or lake being protected by un-wavering Earth."
+                </span>
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="flex md:hidden h-screen items-center justify-center z-[1]">
+            <motion.div
+              className="flex flex-col gap-12 px-[24px] xl:px-14 2xl:px-40"
+              initial={{ opacity: 0, scale: 0.7, y: 50 }}
+              whileInView={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <p className="text-black text-lg lg:text-2xl text-center font-semibold italic whitespace-break-spaces leading-[1.6em] max-w-[700px] 2xl:max-w-full">
+                "Rather when the negative emerges shows mountains being covered
                 by heavy mist giving mysterious fill for person"
               </p>
             </motion.div>
@@ -54,17 +73,17 @@ export default function Result2() {
 
           <div className="flex h-screen items-center justify-center z-[1]">
             <motion.div
-              className="flex flex-col gap-12 px-[24px] xl:px-14 2xl:px-40"
+              className="flex flex-col gap-6 lg:gap-12 px-[24px] xl:px-14 2xl:px-40"
               initial={{ opacity: 0, scale: 0.7, y: 50 }}
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <p className="text-black text-2xl text-center font-semibold italic whitespace-break-spaces leading-[1.6em]">
+              <p className="text-black text-lg lg:text-2xl text-center font-semibold italic whitespace-break-spaces leading-[1.6em]">
                 Your Day Pillar is the most significant aspect of your Bazi
                 Chart:
               </p>
 
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col items-center gap-4 scale-75 lg:scale-100">
                 <div className="relative">
                   <img
                     src={`/images/Bazi Chart/element-overlay/Desktop/fire.png`}
@@ -90,7 +109,7 @@ export default function Result2() {
               whileInView={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <p className="text-black text-2xl text-center font-semibold italic whitespace-break-spaces leading-[1.6em]">
+              <p className="text-black text-lg lg:text-2xl text-center font-semibold italic whitespace-break-spaces leading-[1.6em] max-w-[500px] lg:max-w-[700px] 2xl:max-w-full">
                 Before we continue with the Day Pillar, let's take a look at the
                 Day Master — the element that defines your inner core.
               </p>
@@ -98,14 +117,20 @@ export default function Result2() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-[160px] px-[24px] xl:px-14 2xl:px-40 mb-[80px]">
+        <div className="block md:hidden">
           <TenGod />
-          <CoreIdentity />
-          <Depth />
-          <Personality />
         </div>
 
-        <Growth />
+        <div className="flex flex-col gap-20 lg:gap-[160px] px-[24px] xl:px-14 2xl:px-40 mb-[80px]">
+          <div className="hidden md:block">
+            <TenGod />
+          </div>
+          <CoreIdentity />
+          <Depth />
+          {/* <Personality /> */}
+        </div>
+
+        {/* <Growth /> */}
       </div>
     </section>
   );

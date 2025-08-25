@@ -98,13 +98,14 @@ export default function Result2() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-[160px] px-[24px] xl:px-14 2xl:px-40">
+        <div className="flex flex-col gap-[160px] px-[24px] xl:px-14 2xl:px-40 mb-[80px]">
           <TenGod />
           <CoreIdentity />
           <Depth />
           <Personality />
-          <Growth />
         </div>
+
+        <Growth />
       </div>
     </section>
   );

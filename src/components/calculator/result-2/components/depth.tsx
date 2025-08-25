@@ -23,11 +23,11 @@ export default function Depth() {
         />
 
         <div className="flex flex-col gap-2 absolute top-24 left-[-300px] max-w-[350px]">
-          <p className="text-white font-bold font-oswald text-3xl uppercase">
+          <p className="text-white font-bold font-oswald text-[30px] uppercase">
             Inherit Strength
           </p>
 
-          <p className="text-sm font-light">
+          <p className="text-white font-light">
             Picture a mountain that has weathered countless storms yet remains
             unmoved, Wu Zi individuals stand firmly on their principles. Their
             ethical foundation isn't easily shaken by changing circumstances or
@@ -36,11 +36,11 @@ export default function Depth() {
         </div>
 
         <div className="flex flex-col gap-2 absolute bottom-[-30px] right-[-260px] max-w-[350px]">
-          <p className="text-white font-bold font-oswald text-3xl uppercase">
+          <p className="text-white font-bold font-oswald text-[30px] uppercase">
             Shadown Aspect
           </p>
 
-          <p className="text-sm font-light">
+          <p className="text-white font-light">
             Yet this same steadfastness can manifest as emotional reserve—a
             protective boundary that keeps others at a distance. Like a mountain
             lake reflecting only what's on the surface while concealing its

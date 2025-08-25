@@ -24,12 +24,12 @@ export default function CoreIdentity() {
         </div>
 
         <div className="chara-hanzi-desc flex flex-col gap-4 max-w-[500px]">
-          <p className="uppercase text-2xl text-white font-bold">
+          <p className="uppercase text-[32px] text-white font-bold font-oswald">
             Inheritenly Trustworthy
           </p>
 
           <div className="flex flex-col gap-4 pl-6 border-l-2 border-white">
-            <p className="text-white font-light">
+            <p className="text-white text-lg font-light">
               You embody a rare form of reliability that extends beyond mere
               consistency into profound moral integrity. Your word becomes an
               absolute guarantee, creating a foundation of trust that others
@@ -37,7 +37,7 @@ export default function CoreIdentity() {
               relationships. This unshakable dependability emerges naturally
               rather than through conscious effort or strategic calculation.
             </p>
-            <p className="text-white font-light">
+            <p className="text-white text-lg font-light">
               This quality manifests the Earth-Rat partnership—Wu Earth's
               mountain-like stability combined with the Rat's shrewd
               discernment, creating someone who provides safe harbor for

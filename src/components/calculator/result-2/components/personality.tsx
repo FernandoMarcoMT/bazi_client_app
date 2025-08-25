@@ -9,10 +9,10 @@ import { PolarAngleAxis, PolarGrid, Radar, RadarChart } from "recharts";
 
 const chartData = [
   { month: "Emotional\nIntelligence", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 273 },
-  { month: "May", desktop: 209 },
+  { month: "Ambition", desktop: 305 },
+  { month: "Values & Beliefs", desktop: 237 },
+  { month: "Core Traits", desktop: 273 },
+  { month: "Social\nInteraction", desktop: 209 },
 ];
 const chartConfig = {
   desktop: {
@@ -28,7 +28,7 @@ const CustomPolarAngleLabel = (props: any) => {
 
   // The amount of "padding" you want to add.
   // You might need to adjust this value based on your chart size.
-  const padding = labelText.includes("Emotional") ? 60 : 40;
+  const padding = labelText.includes("Emotional") ? 60 : 30;
 
   // Calculate the distance from the center (cx, cy) to the original label position (x, y)
   const dx = x - cx;

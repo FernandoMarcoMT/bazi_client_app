@@ -28,7 +28,7 @@ const CustomPolarAngleLabel = (props: any) => {
 
   // The amount of "padding" you want to add.
   // You might need to adjust this value based on your chart size.
-  const padding = labelText.includes("Emotional") ? 40 : 30;
+  const padding = labelText.includes("Emotional") ? 60 : 40;
 
   // Calculate the distance from the center (cx, cy) to the original label position (x, y)
   const dx = x - cx;
@@ -89,9 +89,9 @@ export default function Personality() {
 
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square w-full h-full max-h-[633px]"
+        className="mx-auto aspect-square w-full h-full max-h-[533px]"
       >
-        <RadarChart data={chartData}>
+        <RadarChart data={chartData} cy={305}>
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           <PolarAngleAxis
             dataKey="month"

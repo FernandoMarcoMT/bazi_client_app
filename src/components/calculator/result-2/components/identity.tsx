@@ -3,7 +3,7 @@ import React from "react";
 
 export default function CoreIdentity() {
   return (
-    <div className="flex flex-col gap-6 md:mt-[-80px]">
+    <div className="flex flex-col gap-6 xl:mt-[-80px]">
       <div className="chara-hanzi-desc flex flex-col gap-4">
         <p className="uppercase text-sm md:text-base lg:text-2xl text-white font-bold">Core Identity</p>
 

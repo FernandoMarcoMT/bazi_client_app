@@ -131,7 +131,7 @@ export default function Result2() {
           <Personality />
         </div>
 
-        {/* <Growth /> */}
+        <Growth />
 
         <HelpFriend />
       </div>

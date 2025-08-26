@@ -22,13 +22,15 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const CustomPolarAngleLabel = (props: any) => {
-  const { x, y, cx, cy, payload, key } = props;
+  const { x, y, cx, cy, payload, key, initialPadding = 10 } = props;
   const labelText = payload.value;
   const index = payload.index;
 
   // The amount of "padding" you want to add.
   // You might need to adjust this value based on your chart size.
-  const padding = labelText.includes("Emotional") ? 60 : 30;
+  const padding = labelText.includes("Emotional")
+    ? initialPadding + 5
+    : initialPadding;
 
   // Calculate the distance from the center (cx, cy) to the original label position (x, y)
   const dx = x - cx;
@@ -64,7 +66,7 @@ const CustomPolarAngleLabel = (props: any) => {
           key={index}
           x={x}
           dy={index === 0 ? 0 : "1.2em"}
-          className="text-3xl font-oswald font-bold fill-white uppercase"
+          className="text-xs md:text-xl xl:text-3xl font-oswald font-bold fill-white uppercase"
         >
           {line}
         </tspan>
@@ -75,13 +77,13 @@ const CustomPolarAngleLabel = (props: any) => {
 
 export default function Personality() {
   return (
-    <div className="flex flex-col gap-20 border-l-2 border-white pl-[60px]">
-      <div className="flex flex-col gap-3 max-w-[350px]">
-        <p className="text-white font-oswald font-bold text-3xl uppercase">
+    <div className="flex flex-col gap-8 md:gap-12 xl:gap-20 border-l-2 border-white pl-[30px] xl:pl-[60px]">
+      <div className="flex flex-col gap-3 xl:max-w-[350px]">
+        <p className="text-white font-oswald font-bold text-xl md:text-3xl uppercase">
           Personality Profile
         </p>
 
-        <p className="text-white text-lg font-light text-balance">
+        <p className="text-white text-sm md:text-base xl:text-lg font-light text-balance">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
           pretium fermentum nunc, in pellentesque dolor convallis vitae.
         </p>
@@ -89,9 +91,41 @@ export default function Personality() {
 
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square w-full h-full max-h-[533px]"
+        className="mx-auto aspect-square w-full h-full max-h-[533px] hidden xl:block"
       >
         <RadarChart data={chartData} cy={305}>
+          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+          <PolarAngleAxis
+            dataKey="month"
+            className="fill-[#BCBCBC]"
+            tick={<CustomPolarAngleLabel initialPadding={45} />}
+          />
+          <PolarGrid />
+          <Radar dataKey="desktop" fill="#4A4A4A" fillOpacity={0.5} />
+        </RadarChart>
+      </ChartContainer>
+
+      <ChartContainer
+        config={chartConfig}
+        className="mx-auto aspect-square w-full h-full max-h-[333px] hidden md:block xl:hidden"
+      >
+        <RadarChart data={chartData} cy={190}>
+          <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+          <PolarAngleAxis
+            dataKey="month"
+            className="fill-[#BCBCBC]"
+            tick={<CustomPolarAngleLabel initialPadding={25} />}
+          />
+          <PolarGrid />
+          <Radar dataKey="desktop" fill="#4A4A4A" fillOpacity={0.5} />
+        </RadarChart>
+      </ChartContainer>
+
+      <ChartContainer
+        config={chartConfig}
+        className="mx-auto aspect-square w-full h-full max-h-[183px] md:hidden"
+      >
+        <RadarChart data={chartData} cy={100}>
           <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
           <PolarAngleAxis
             dataKey="month"

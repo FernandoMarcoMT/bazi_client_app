@@ -121,13 +121,13 @@ export default function Result2() {
           <TenGod />
         </div>
 
-        <div className="flex flex-col gap-20 lg:gap-[160px] px-[24px] xl:px-14 2xl:px-40 mb-[80px]">
+        <div className="flex flex-col gap-20 xl:gap-[160px] px-[24px] xl:px-14 2xl:px-40 mb-[80px]">
           <div className="hidden md:block">
             <TenGod />
           </div>
           <CoreIdentity />
           <Depth />
-          {/* <Personality /> */}
+          <Personality />
         </div>
 
         {/* <Growth /> */}

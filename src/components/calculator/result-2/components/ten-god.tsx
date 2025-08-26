@@ -23,7 +23,6 @@ export default function TenGod() {
               start: "top center",
               end: "+=200 center",
               scrub: 1,
-              markers: true,
             },
             translateX: 80,
           });
@@ -34,7 +33,6 @@ export default function TenGod() {
               start: "-80px center",
               end: "+=200 center",
               scrub: 1,
-              markers: true,
             },
             translateY: -100,
             translateX: -20,
@@ -210,7 +208,7 @@ export default function TenGod() {
         </div>
       </div>
 
-      <div className="chara-desc flex flex-col gap-2 md:absolute bottom-10 left-[24px] xl:left-0 xl:right-14 2xl:right-20 md:ml-auto max-w-[450px] md:opacity-0 px-6 md:px-0">
+      <div className="chara-desc flex flex-col gap-2 md:absolute bottom-10 left-[24px] xl:left-0 xl:right-0 2xl:right-20 md:ml-auto max-w-[450px] md:opacity-0 px-6 md:px-0">
         <p className="font-bold font-oswald text-[20px] md:text-3xl text-white uppercase">
           Wu Earth
         </p>

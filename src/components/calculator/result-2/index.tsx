@@ -8,6 +8,7 @@ import CoreIdentity from "./components/identity";
 import Depth from "./components/depth";
 import Personality from "./components/personality";
 import Growth from "./components/growth";
+import HelpFriend from "./components/help-friend";
 
 export default function Result2() {
   return (
@@ -131,6 +132,8 @@ export default function Result2() {
         </div>
 
         {/* <Growth /> */}
+
+        <HelpFriend />
       </div>
     </section>
   );

@@ -9,6 +9,7 @@ import Depth from "./components/depth";
 import Personality from "./components/personality";
 import Growth from "./components/growth";
 import HelpFriend from "./components/help-friend";
+import Discover from "./components/discover";
 
 export default function Result2() {
   return (
@@ -128,6 +129,7 @@ export default function Result2() {
           </div>
           <CoreIdentity />
           <Depth />
+          <Discover />
           <Personality />
         </div>
 

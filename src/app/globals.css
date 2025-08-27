@@ -54,6 +54,11 @@
   --color-dark-outer-stroke: #647ca3;
   --color-dark-inner-fill: #263b43;
   --color-dark-inner-stroke: #647ca3;
+  --color-result-fire: var(--result-fire);
+  --color-result-wood: var(--result-wood);
+  --color-result-earth: var(--result-earth);
+  --color-result-metal: var(--result-metal);
+  --color-result-water: var(--result-water);
 }
 
 :root {
@@ -94,6 +99,11 @@
   --button-outer-stroke: #cb8f19;
   --button-inner-fill: #e9b562;
   --button-inner-stroke: #cb8f19;
+  --result-fire: #ffd6d3;
+  --result-wood: #f1ffb0;
+  --result-earth: #f8cd96;
+  --result-metal: #bdf6eb;
+  --result-water: #d0ebff;
 }
 
 .dark {
@@ -133,6 +143,11 @@
   --button-outer-stroke: #647ca3;
   --button-inner-fill: #263b43;
   --button-inner-stroke: #647ca3;
+  --result-fire: #4b0701;
+  --result-wood: #283000;
+  --result-earth: #583000;
+  --result-metal: #023635;
+  --result-water: #072942;
 }
 
 @layer base {

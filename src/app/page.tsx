@@ -66,7 +66,9 @@ export default function Home() {
 
       <FAQ />
 
-      <Promotion />
+      <div className="bg-background">
+        <Promotion />
+      </div>
 
       <ScrollToSection />
     </div>

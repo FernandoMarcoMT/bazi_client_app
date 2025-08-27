@@ -22,7 +22,7 @@ const oswald = Oswald({
 
 const zhiMangXing = Zhi_Mang_Xing({
   weight: ["400"],
-  display: "fallback",
+  display: "swap",
   subsets: ["latin"],
   variable: "--font-zhi-mang-xing",
 });

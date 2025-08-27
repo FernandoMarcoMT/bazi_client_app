@@ -66,7 +66,7 @@ const CustomPolarAngleLabel = (props: any) => {
           key={index}
           x={x}
           dy={index === 0 ? 0 : "1.2em"}
-          className="text-xs md:text-xl xl:text-3xl font-oswald font-bold fill-white uppercase"
+          className="text-xs md:text-xl xl:text-3xl font-oswald font-bold fill-typography uppercase"
         >
           {line}
         </tspan>
@@ -77,15 +77,17 @@ const CustomPolarAngleLabel = (props: any) => {
 
 export default function Personality() {
   return (
-    <div className="flex flex-col gap-8 md:gap-12 xl:gap-20 border-l-2 border-white pl-[30px] xl:pl-[60px]">
-      <div className="flex flex-col gap-3 xl:max-w-[350px]">
-        <p className="text-white font-oswald font-bold text-xl md:text-3xl uppercase">
-          Personality Profile
+    <div className="flex flex-col gap-8 md:gap-12 xl:gap-20 border-l-2 border-typography pl-[30px] xl:pl-[60px]">
+      <div className="flex flex-col gap-3 xl:max-w-[580px]">
+        <p className="font-oswald font-bold text-xl md:text-3xl uppercase">
+          MBTI RADAR
         </p>
 
-        <p className="text-white text-sm md:text-base xl:text-lg font-light text-balance">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-          pretium fermentum nunc, in pellentesque dolor convallis vitae.
+        <p className="text-sm md:text-base xl:text-lg font-light">
+          This radar chart maps your Bazi-based personality across five key
+          dimensions, drawing inspiration from the Myers-Briggs testing
+          framework to show how your elemental nature translates into
+          recognizable personality traits and behavioral patterns..
         </p>
       </div>
 

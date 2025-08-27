@@ -117,7 +117,7 @@ export default function Discover() {
 
   return (
     <div className="flex flex-col">
-      <p className="font-oswald font-bold text-white text-2xl md:text-3xl lg:text-[44px] xl:text-[120px] uppercase leading-[1.2em] text-balance max-w-[200px] md:max-w-[300px] lg:max-w-1/2 xl:max-w-full">
+      <p className="font-oswald font-bold text-2xl md:text-3xl lg:text-[44px] xl:text-[120px] uppercase leading-[1.2em] text-balance max-w-[200px] md:max-w-[300px] lg:max-w-[500px] xl:max-w-[800px]">
         Discover Your True Being
       </p>
       <div

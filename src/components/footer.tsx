@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   IconBrandFacebook,
   IconBrandInstagram,
@@ -44,24 +44,51 @@ function FooterItem({ title, items }: FooterItemProps) {
 
 export default function FooterSection() {
   const pathname = usePathname();
+  const [element] = useState("wood");
+  const [elementBg, setElementBg] = useState("");
+
+  useEffect(() => {
+    switch (element) {
+      case "fire":
+        setElementBg("bg-result-fire");
+        return;
+      case "wood":
+        setElementBg("bg-result-wood");
+        return;
+      case "earth":
+        setElementBg("bg-result-earth");
+        return;
+      case "metal":
+        setElementBg("bg-result-metal");
+        return;
+      case "water":
+        setElementBg("bg-result-water");
+        return;
+      default:
+        setElementBg("bg-result-fire");
+        return;
+    }
+  }, [element]);
 
   return (
     <div
       className={cn(
         "flex flex-col py-16 lg:py-10 px-[24px] xl:px-14 2xl:px-40 relative",
-        pathname.includes("other-result") ? "bg-[#2D0501]" : "bg-background"
+        pathname.includes("other-result") ? elementBg : "bg-background"
       )}
     >
       {pathname.includes("calculator") && (
-        <div className="absolute top-0 left-0 h-full w-full z-[-1]">
-          <Image
-            src="/images/Hidden Core Personality/bg-texture.png"
-            alt="Background Landing Page"
-            fill
-            sizes="2880px"
-            className="object-cover object-top opacity-20 rotate-180"
-            priority
-          />
+        <div className="absolute top-0 left-0 h-full w-full overflow-hidden">
+          <div className="h-[2000%] w-full">
+            <Image
+              src="/images/Hidden Core Personality/bg-texture.png"
+              alt="Background Landing Page"
+              fill
+              sizes="2880px"
+              className="object-[0_-3800px] opacity-50 h-full object-cover"
+              priority
+            />
+          </div>
         </div>
       )}
 

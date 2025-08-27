@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-export default function TenGod({ element }: { element: string }) {
+export default function TenGodZodiac({ element }: { element: string }) {
   const container = useRef(null);
 
   useGSAP(
@@ -168,15 +168,17 @@ export default function TenGod({ element }: { element: string }) {
         </p>
         <div className="flex flex-col pt-14 gap-4">
           <div className="chara-hanzi-desc flex flex-col gap-4">
-            <p className="uppercase text-lg md:text-2xl font-bold">Wu Earth</p>
+            <p className="uppercase text-lg md:text-2xl font-bold">
+              Wu Earth Rat
+            </p>
 
-            <p className="uppercase font-oswald font-bold text-3xl md:text-[44px] max-w-[160px] md:max-w-[240px] leading-[1.2em] border-l-2 border-typography pl-3 lg:pl-6">
-              The Mountain
+            <p className="uppercase font-oswald font-bold text-3xl md:text-[44px] max-w-[160px] md:max-w-[300px] leading-[1.2em] border-l-2 border-typography pl-3 lg:pl-6">
+              The Visionary Architect
             </p>
           </div>
 
           <p className="chara-hanzi-b font-zhi-mang-xing text-[110px] md:text-[160px] 2xl:text-[240px] leading-[0.7em]">
-            土
+            子
           </p>
         </div>
       </div>
@@ -189,13 +191,13 @@ export default function TenGod({ element }: { element: string }) {
           <div className="chara-hanzi-desc flex flex-col gap-1">
             <p className="uppercase text-sm md:text-2xl font-bold">Wu Earth</p>
 
-            <p className="uppercase font-oswald font-bold text-2xl md:text-[44px] max-w-[140px] md:max-w-[240px] leading-[1.2em] border-l-2 border-typography pl-3 lg:pl-6">
-              The Mountain
+            <p className="uppercase font-oswald font-bold text-2xl md:text-[44px] max-w-[140px] md:max-w-[300px] leading-[1.2em] border-l-2 border-typography pl-3 lg:pl-6">
+              The Visionary Architect
             </p>
           </div>
 
           <p className="chara-hanzi-b font-zhi-mang-xing text-[110px] md:text-[160px] 2xl:text-[240px] leading-[0.7em]">
-            土
+            子
           </p>
         </div>
       </div>

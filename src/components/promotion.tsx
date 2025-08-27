@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Promotion() {
   return (
-    <div className="px-[24px] xl:px-14 2xl:px-40 bg-background py-5 lg:py-20">
+    <div className="px-[24px] xl:px-14 2xl:px-40 py-5 lg:py-20">
       <div className="flex items-center py-12 xl:py-20 pl-8 xl:pl-16 pr-8 xl:pr-14 lg:gap-12 xl:gap-6 bg-[#F4FAFF] rounded-lg relative">
         <div className="flex flex-col gap-4 md:gap-2 w-full max-w-[600px]">
           <p className="font-oswald font-bold text-2xl lg:text-4xl xl:text-[42px] leading-[1.4em] lg:leading-[1.2em] text-black uppercase max-w-[240px] sm:max-w-full">

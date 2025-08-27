@@ -12,8 +12,33 @@ export function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [element] = useState("wood");
+  const [elementBg, setElementBg] = useState("");
   const { theme } = useTheme();
   const pathname = usePathname();
+
+  useEffect(() => {
+    switch (element) {
+      case "fire":
+        setElementBg("bg-result-fire/60");
+        return;
+      case "wood":
+        setElementBg("bg-result-wood/60");
+        return;
+      case "earth":
+        setElementBg("bg-result-earth/60");
+        return;
+      case "metal":
+        setElementBg("bg-result-metal/60");
+        return;
+      case "water":
+        setElementBg("bg-result-water/60");
+        return;
+      default:
+        setElementBg("bg-result-fire/60");
+        return;
+    }
+  }, [element]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,16 +74,10 @@ export function NavBar() {
   return (
     <nav
       className={cn(
-        "sticky top-0 w-full z-50 duration-300 py-[16px] md:py-[28px] px-[24px] xl:px-14 2xl:px-40 shadow-lg shadow-black/10",
+        "sticky top-0 w-full z-50 duration-300 py-[16px] md:py-[28px] px-[24px] xl:px-14 2xl:px-40 shadow-lg shadow-black/10 backdrop-blur-lg",
         scrolled
-          ? `${
-              pathname.includes("other-result")
-                ? "bg-[#2B0502]/60"
-                : "bg-primary/65"
-            } backdrop-blur-lg`
-          : `${
-              pathname.includes("other-result") ? "bg-[#2D0501]" : "bg-primary"
-            } backdrop-blur-none`
+          ? `${pathname.includes("other-result") ? elementBg : "bg-primary/65"}`
+          : `${pathname.includes("other-result") ? elementBg : "bg-primary"}`
       )}
     >
       <div className="w-full flex justify-between items-center">

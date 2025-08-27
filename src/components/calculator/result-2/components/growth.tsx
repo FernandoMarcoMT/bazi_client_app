@@ -16,11 +16,11 @@ export default function Growth() {
     <div className="pt-[80px] pb-[80px] xl:pb-0 relative">
       <div className="flex flex-col xl:flex-row relative gap-8 xl:gap-0 min-h-[800px]">
         <div className="flex flex-col gap-3 px-[24px] xl:px-14 2xl:px-40 z-[1]">
-          <p className="text-white font-bold font-oswald text-3xl lg:text-[36px] xl:text-[48px] 2xl:text-[120px] max-w-[750px] uppercase text-balance leading-[1.2em]">
+          <p className="font-bold font-oswald text-3xl lg:text-[36px] xl:text-[48px] 2xl:text-[120px] max-w-[750px] uppercase text-balance leading-[1.2em]">
             Personal and Professional Growth
           </p>
-          <p className="text-sm md:text-base text-white md:w-[376px]">
-            Choose one and explore the growth area you’re interested in.
+          <p className="text-sm md:text-base md:w-[376px]">
+            Choose one and explore the growth area you're interested in.
           </p>
         </div>
 
@@ -226,16 +226,18 @@ export default function Growth() {
             </p>
 
             <img
-              src="/images/Professional Growth/locked.png"
+              src="/images/Professional Growth/telescope.svg"
               alt="Locked"
-              className="max-w-[60px] md:max-w-[100px] my-2"
+              className="max-w-[100px] md:max-w-[120px] xl:max-w-[180px] my-8"
             />
 
-            <ButtonShaped
-              text="Join Us Now"
-              variant="light"
-              buttonClassName="scale-80 md:scale-100"
-            />
+            <Link href="/auth/sign-in">
+              <ButtonShaped
+                text="Join Us Now"
+                variant="light"
+                buttonClassName="scale-80 md:scale-100"
+              />
+            </Link>
           </div>
         )}
       </div>

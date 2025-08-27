@@ -13,6 +13,8 @@ import Discover from "./components/discover";
 import TenGodZodiac from "./components/ten-god-zodiac";
 import Promotion from "@/components/promotion";
 import { cn } from "@/lib/utils";
+import Ethical from "./components/ethical";
+import Resilient from "./components/resilient";
 
 export default function Result2() {
   const [element] = useState("wood");
@@ -246,14 +248,20 @@ export default function Result2() {
               </div>
             </div>
           </CoreIdentity>
+        </div>
+
+        <div className="flex flex-col gap-20 lg:gap-0 mb-[80px] xl:mt-[80px]">
           <Depth />
+          <Ethical />
+          <Resilient />
+        </div>
+
+        <div className="flex flex-col gap-20 xl:gap-[160px] px-[24px] xl:px-14 2xl:px-40 mb-[80px] xl:mt-[80px]">
           <Discover />
           <Personality />
         </div>
 
         <Growth />
-
-        {/* <HelpFriend /> */}
         <Promotion />
       </div>
     </section>
